@@ -1,0 +1,43 @@
+h1. Direction
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@DIRECTIONA@&nbsp;&nbsp;&nbsp;|The direction of motion. A @subType@ *MUST* always be specified|
+|>.ROTARY|The rotational direction of a rotary motion using the right-hand rule convention.@
+@
+The valid data value *MUST* be @CLOCKWISE@ or @COUNTER_CLOCKWISE@.|
+|>.LINEAR|The direction of motion of linear motion.@
+@
+The valid data value MUST be @POSTIVE@ or @NEGATIVE@.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="ROTARY" subType="ROTARY"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@DIRECTION@|@Direction@|The direction of motion.@
+@
+Subtypes of Direction are @ROTARY@ and @LINEAR@. @
+@
+A subType *MUST* always be specified.@
+@
+Valid Data Values for subtype @ROTARY@ are:
+* @CLOCKWISE@: A @Rotary@ component is rotating in a clockwise fashion using the right-hand rule.
+* @COUNTER_CLOCKWISE@: A @Rotary@ component is rotating in a counter-clockwise fashion using the right-hand rule.@
+@
+Valid Data Values for subtype @LINEAR@ are:
+* POSITIVE: A @Linear@ component is moving in the direction of increasing position value
+* NEGATIVE: A @Linear@ component is moving in the direction of decreasing position value|
+
+h3. Example
+
+<pre>
+  <Direction ... >POSITIVE</PathPosition>
+</pre>

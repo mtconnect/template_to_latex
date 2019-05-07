@@ -1,0 +1,60 @@
+The following is proposed content for the Sample type data items discussed at the last WG meeting.
+
+h1. Additive Data Items
+
+h2. Part 2 Content for Sample category data items to be included in Section 8.1 
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@DEPOSITION_VOLUME@&nbsp;&nbsp;&nbsp;|The spatial volume of material to be deposited in an additive manufacturing process.| CUBIC_MILLIMETER|
+|>.@ACTUAL@|The measured spatial volume of material deposited.| CUBIC_MILLIMETER|
+|>.@COMMANDED@|The target spatial volume of material to be deposited.| CUBIC_MILLIMETER|
+|@DEPOSITION_RATE_VOLUMETRIC@&nbsp;&nbsp;&nbsp;|The rate at which a spatial volume of material is deposited in an additive manufacturing process.| CUBIC_MILLIMETER/SECOND|
+|>.@ACTUAL@|The measured rate at which a spatial volume of material is deposited in an additive manufacturing process.| CUBIC_MILLIMETER/SECOND|
+|>.@COMMANDED@|The programmed rate at which a spatial volume of material is to be deposited in an additive manufacturing process.| CUBIC_MILLIMETER/SECOND|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="SAMPLE" type="DEPOSITION_VOLUME" subType="ACTUAL" units="CUBIC_MILLIMETER"/>
+ <DataItem id="a2346" category="SAMPLE" type="DEPOSITION_RATE_VOLUMETRIC" subType="COMMANDED" units="CUBIC_MILLIMETER/SECOND"/>
+ <DataItem id="49433" category="SAMPLE" type="DEPOSITION_ACCELERATION_VOLUMETRIC" subType="COMMANDED" units="CUBIC_MILLIMETER/SECOND^2"/>
+ <DataItem id="954944" category="SAMPLE" type="DEPOSITION_MASS" subType="COMMANDED" units="MILLIGRAM"/>
+ <DataItem id="994" category="SAMPLE" type="DEPOSITION_DENSITY" subType="COMMANDED" units="MILLIGRAM/CUBIC_MILLIMETER"/>
+</pre>
+
+h3. Units (_Only if new units are required_)
+
+|_.Units|_.Description|
+|@CUBIC_MILLIMETER@|cubic millimeter.|
+|@CUBIC_MILLIMETER/SECOND@|cubic millimeter per second.|
+
+
+h2. Part 3 Content to be added to the table in Section 6.1
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@DEPOSITION_VOLUME@|@DepositionVolume@|The spatial volume of material deposited in an additive manufacturing process.@
+@
+Subtypes of @DepositionVolume@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@DepositionVolume@ *MUST* be reported in units of @CUBIC_MILLIMETER@.|
+|@DEPOSITION_RATE_VOLUMETRIC @|@DepositionRateVolumetric@|The rate at which a spatial volume of material is deposited in an additive manufacturing process.@
+@
+Subtypes of @DepositionRateVolumetric@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@DepositionRateVolumetric@ *MUST* be reported in units of @CUBIC_MILLIMETER/SECOND@.|
+
+h3. Example
+
+<pre>
+  <DepositionVolume ... subType="ACTUAL">23.45</Deposition Volume>
+  <DepositionRateVolumetric ... subType="COMMANDED">354.6</DepositionRateVolumetric>
+  <DepositionAccelerationVolumetric ... subType="COMMANDED">120</DepositionAccelerationVolumetric>
+  <DepositionMass ... subType="COMMANDED">23.5</DepositionMass>
+  <DepositionDensity ... subType="COMMANDED">.0025</DepositionDensity>
+</pre>

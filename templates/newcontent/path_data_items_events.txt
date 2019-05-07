@@ -1,0 +1,65 @@
+
+h1. Additive Event Data Entities
+
+h2. Part 2 Content to be added to Table in Section 8.2
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@PROCESS_TIME@&nbsp;&nbsp;&nbsp;|The time and date associated with an activity or event.@
+@
+@PROCESS_TIME@ *MUST* be reported in ISO 8601 format.|
+|>.@START@|The time and date associated with the beginning of an activity or event.|
+|>.@COMPLETE@|The time and date associated with the completion of an activity or event.|
+|>.@TARGET_COMPLETION@|The projected time and date associated with the end or completion of an activity or event.|
+|@DATE_CODE@&nbsp;&nbsp;&nbsp;|The time and date code associated with a material or other physical item.@
+@
+@DATE_CODE@ *MUST* be reported in ISO 8601 format.|
+|>.@MANUFACTURE@|The time and date code relating to the production of a material or other physical item.|
+|>.@EXPIRATION@|The time and date code relating to the expiration or end of useful life for a material or other physical item.|
+|>.@FIRST_USE@|The time and date code relating the first use of a material or other physical item.|
+|@MATERIAL_LAYER@&nbsp;&nbsp;&nbsp;|Identifies the layers of material applied to a part or product as part of an additive manufacturing process.@
+@
+The valid data value *MUST* be an integer.|
+|>.@ACTUAL@|The current number of layers of material applied to a part or product during an additive manufacturing process.|
+|>.@TARGET@|The target or planned number layers of material applied to a part or product during an additive manufacturing process.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="PROCESS_TIME" subType="TARGET_COMPLETION"/>
+ <DataItem id="29334" category="EVENT" type="DATE_CODE" subType="EXPIRATION/>
+ <DataItem id="69696" category="EVENT" type="MATERIAL_LAYER" subType="TARGET/>
+</pre>
+
+h2. Part 3 Content to be added to table in Section 6.2
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PROCESS_TIME@|@ProcessTime@|The time and date associated with an activity or event.@
+@
+Subtypes of @ProcessTime@ are @START@, @COMPLETE@, and @TARGET_COMPLETION@.@
+@
+A subType *MUST* always be specified.@
+@
+@ProcessTime@ *MUST* be reported in ISO 8601 format.|
+|@DATE_CODE@|@DateCode@|The time and date code associated with a material or other physical item.@
+@
+Subtypes of @DateCode@ are @MANUFACTURE@, @EXPIRATION@, and @FIRST_USE@.@
+@
+A subType *MUST* always be specified.@
+@
+@DateCode@ *MUST* be reported in ISO 8601 format.|
+|@MATERIAL_LAYER@|@MaterialLayer@|Designates the layers of material applied to a part or product as part of an additive manufacturing process.@
+@
+Subtypes of @MaterialLayer@ are @ACTUAL@ and @TARGET@.@
+@
+If a subType is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+The valid data value *MUST* be an integer.|
+
+<pre>
+  <ProcessTime ... subType="TARGET_COMPLETION">2019-04-11T01:50Z"</ProcessTime>
+  <DateCode ... subType="EXPIRATION">2020-09-30</DateCode>
+  <MaterialLayer ... subType="TARGET">23847</MaterialLayer>
+</pre>
+

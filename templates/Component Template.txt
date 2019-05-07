@@ -1,0 +1,11 @@
+h1. @Linear@
+
+h2. Parent: @Axes@ _(unless this is a top-level component)_
+
+A @Linear@ axis represents the movement of a physical piece of equipment, or a portion of the equipment, in a straight line.  
+
+Movement may be either in a positive or negative direction.  
+
+@Linear@ type @Axes@ *MUST* be identified using a value for the name attribute as X, Y, or Z with 
+numbers appended for additional axes in the same plane.  Additional linear axes are often referred to as U, V, and W.   
+However, MTConnect defines the secondary axes to X, Y, and Z as X2, Y2, and Z2.

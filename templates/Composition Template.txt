@@ -1,0 +1,5 @@
+h1. Compressor
+
+|_.Composition Type|_.Description|
+|@COMPRESSOR_BUMP@|A pump or other mechanism for reducing volume and increasing pressure of gases in order to condense the gases to drive pneumatically powered pieces of equipment.|
+
