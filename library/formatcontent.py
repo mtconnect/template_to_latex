@@ -29,7 +29,7 @@ class formatContent:
         name = string.replace('\\','').replace('$','')
         return name
 
-    def to_key(self, string, _type, separator = ' '):
+    def to_key(self, string, _type = str(), separator = ' '):
         string = string.replace('_','').lower()
         if _type:
             string = string + separator + _type.lower()
