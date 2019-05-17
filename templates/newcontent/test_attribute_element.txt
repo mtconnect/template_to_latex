@@ -1,0 +1,13 @@
+h1. @Device@ (_Parent element_)
+
+h2. Part 2 Content
+
+h3. Attributes (_New attribute of the parent element gets added and/or already defined attribute gets updated_)
+
+|_.Attributes|_.Description|_.Occurrence|
+|@nativeId@|@id@ native to the @Device@|0..1|
+
+h3. Elements (_New subelement of the parent element gets added and/or already defined element gets updated_)
+
+|_.Elements|_.Description|_.Occurrence|
+|@Identity@|@id@ specific to device.|1|
