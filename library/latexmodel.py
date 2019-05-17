@@ -384,15 +384,23 @@ class latexModel:
 
 
     def write_glossary(self, file_name='mtc-terms-new'):
-        self.format_glossary() #obsolete
         glossary_string = str()
-        for key, val in self._glossary['terms'].items():
-            string = """\n\n\\newglossaryentry{""" + key + """}\n{\n"""
+        terms = self._glossary['terms'].items()
+
+        if sort: terms = sorted(terms)
+
+        for key, val in terms:
+            glossary_string_end = '\n}\n'
+            gls_entry_command = self._glossary['gls_entry_command'][key]
+            string = """\n\n\\"""+gls_entry_command+"""{""" + key + """}\n{\n"""
 
             for k,v in val.items():
-                string += '  '+k+'='+v+',\n'
+                if gls_entry_command.startswith('long') and k=='description':
+                    glossary_string_end = '}\n{'+v+'}\n'
+                else:
+                    string += '  '+k+'='+v+',\n'
 
-            string = string[:-2]+'\n}\n'
+            string = string[:-2]+glossary_string_end
 
             glossary_string+=string
 
@@ -402,24 +410,28 @@ class latexModel:
         _file.close()
 
 
-    def format_glossary(self): #obsolete
-        #facet for event types; need to add for sample/condition
-        for key,val in self._glossary['terms'].items():
-            if 'event' in val['kind'].lower():
-                self._glossary['terms'][key]['facet'] = '{\\gls{string}}'
-
-
     def _create_glossary_terms(self):
-        gls_substr = self._glossary['string'].split('newglossaryentry')[1:]
+        string_list = self._glossary['string'].split('newglossaryentry')
+        gls_substr = string_list[1:]
+        string_prev = string_list[0]
+
+        self._glossary['gls_entry_command'] = dict()
 
         for string in gls_substr:
             key = self._extract_glossary_key(string)
-            values = self._extract_glossary_values(key, string)
 
+            if string_prev.endswith('long'):
+                if key=='mtconnect document':
+                    print (string_prev)
+                self._glossary['gls_entry_command'][key] = 'longnewglossaryentry'
+            else:
+                self._glossary['gls_entry_command'][key] = 'newglossaryentry'
+
+            values = self._extract_glossary_values(key, string)
             self._glossary['terms'][key] = values
 
             name = values['name'].split('{')[-1].split('}')[0]
-            self._glossary['names'][name] = [key, '\\gls{'] #key, gls call
+            self._glossary['names'][name] = [key, '\\gls{'] #key, gls command
 
             if 'elementname' in values:
                 elementname = values['elementname'].split('{')[-1].split('}')[0]
@@ -438,6 +450,8 @@ class latexModel:
                     plural = name+'S'
                 self._glossary['names'][plural] = [key, '\\glspl{']
 
+            string_prev = string
+
 
     def _extract_glossary_key(self, string):
         return sub('[(){}<>]', '', search('{.+?}', string).group(0))
@@ -445,13 +459,19 @@ class latexModel:
 
     def _extract_glossary_values(self, parent_key, string):
         value_string = sub(parent_key, '', string, 1)
-        value_string = sub('\n', '', value_string)
+        if not self._glossary['gls_entry_command'][parent_key].startswith('long'):
+            value_string = sub('\n', '', value_string)
 
         value_string_list = value_string.split('{',1)[1].rsplit('}',1)[0].split(',')
 
         values = dict()
 
-        for value in value_string_list:
+        for i, value in enumerate(value_string_list):
+
+            if (self._glossary['gls_entry_command'][parent_key].startswith('long')
+                    and i<len(value_string_list)-1):
+                value = sub('\n', '', value)
+
             if '=' not in value:
                 if key and value: values[key] += ','+value
                 continue
@@ -461,6 +481,20 @@ class latexModel:
             key = self._extract_key(key)
 
             values[key] = val
+
+        if self._glossary['gls_entry_command'][parent_key].startswith('long'):
+
+            last_value = list(values.values())[-1]
+            last_key = list(values.keys())[-1]
+
+            if len(last_value.split('}{',1)) == 2:
+                val, description = last_value.split('}{',1)
+
+            elif len(last_value.split('}\n{',1)) == 2:
+                val, description = last_value.split('}\n{',1)
+
+            values['description'] = description
+            values[last_key] = val
 
         return values
 
@@ -479,7 +513,7 @@ class latexModel:
         else:
             return None
 
-    def get_gls_key_entry_call(self, name):
+    def get_gls_key_entry_command(self, name):
         if self.get_gls_key(name):
             gls_key = self.get_gls_key(name)
             gls_string_format = self._glossary['names'][name][1]
@@ -488,9 +522,50 @@ class latexModel:
         else:
             return None
 
+    def update_gls_entry(self, key):
+        entry_command = 'newglossaryentry'
+        entry_command_end = '\n}\n\n'
+        next_entry_command = '\\newglossaryentry'
+
+        gls_string = self._glossary['string'].split(entry_command+'{'+key+'}')
+
+        if len(gls_string) == 2:
+            post_gls_string = gls_string[-1].split(entry_command,1)
+            if post_gls_string[0].endswith('long'):
+                next_entry_command = '\\longnewglossaryentry'
+            gls_string[-1] = post_gls_string[-1]
+
+            updated_key_string = entry_command + """{""" + key + """}\n{\n"""
+
+            for k,v in self._glossary['terms'][key].items():
+                if next_entry_command == '\\longnewglossaryentry' and k == 'description':
+                    entry_command_end = '\n}'+v+'\n\n'
+                else:
+                    updated_key_string += '  '+k+'='+v+',\n'
+
+            updated_key_string = updated_key_string[:-2] + entry_command_end
+
+            gls_string = gls_string[0] + updated_key_string + next_entry_command + gls_string[-1]
+
+            self._glossary['string'] = gls_string
+
+            _path = self._path+'/mtc-terms.tex'
+            _file = open(_path, 'w')
+            _file.write(gls_string)
+            _file.close()
+
+
+        elif len(gls_string)<2:
+            print ('Error: '+key+' not found in glossary!')
+
+        else:
+            print ('Error: '+key+' found multiple times in glossary!')
+
+
+
 if __name__=='__main__':
     latex_model = latexModel('path-to/MTConnect Part 2')
-    latex_model.write_glossary()
+    latex_model.rewrite_glossary()
 
 
         
