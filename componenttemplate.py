@@ -165,6 +165,13 @@ class componentTemplate:
         name = row[0]
         description = row[1]
 
+        if not self._template["is_parent"]:
+            _types = list()
+            _types.append(_type)
+            _types.append(self.fmt.to_key(self.fmt.format_key(self._template["parent"])[0]))
+
+            _type = ','.join(_types)
+
         if not self._latex_model.get_gls_name(gls_key):
             self._latex_model.add_glossary_entry(
                 gls_key,
