@@ -383,7 +383,7 @@ class latexModel:
         self._load_glossary()
 
 
-    def write_glossary(self, file_name='mtc-terms-new'):
+    def write_glossary(self, file_name='mtc-terms'):
         glossary_string = str()
         terms = self._glossary['terms'].items()
 
