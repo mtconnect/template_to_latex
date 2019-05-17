@@ -213,6 +213,9 @@ class componentTemplate:
             new_sub_section = '{'+self.fmt.format_key(self._template['component'])[0]+'}\n'
             new_sub_section += self.fmt.format_desc(self._template['description'])+'\n'
 
+            if new_sub_section in sub_sections: #already added
+                return
+
             sub_sections = sub_sections[:-1]+[new_sub_section]+[sub_sections[-1]]
             sub_sections = [sub_sections[0]]+['\\subsection'+sect for sect in sub_sections[1:]]
 
@@ -223,6 +226,10 @@ class componentTemplate:
                 if sub_sect.startswith('{'+self.fmt.format_key(self._template['parent'])[0]+'}'):
                     subsubsect = '\\subsubsection{'+self.fmt.format_key(self._template['component'])[0]+'}\n'
                     subsubsect += self.fmt.format_desc(self._template['description'])+'\n'
+
+                    if subsubsect in sub_sections[i]: #already added
+                        return
+
                     sub_sections[i] += subsubsect
                     break
 
