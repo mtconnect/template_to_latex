@@ -46,7 +46,7 @@ class formatContent:
         return string_list
 
     def format_col_name(self, string):
-        return string.replace('_.','').lower()
+        return string.replace('_.','')
 
     def to_elem_name(self, string, separator = '_'):
         return string.title().replace(separator,'')

@@ -106,13 +106,18 @@ class latexModel:
     def _table_rows(self, table_name): #should also have row strings
         self._tables[table_name]['rows'] = {}
         rows = self._tables[table_name]['string'].split('\endhead')[-1].split('\hline')[:-1]
+        type_key = str()
 
         for row in rows:
             columns = row.split('&')
             columns[-1] = columns[-1].split("\\\\")[0]
-            columns.append(row)
+            columns.append(row+'\hline')
             key = self._extract_key(columns[0])
 
+            if '\\quad' in columns[0]: #when subtype
+                key = str(',').join([type_key, key])
+            else:
+                type_key = key
             self._tables[table_name]['rows'][key] = columns
 
 
@@ -131,16 +136,12 @@ class latexModel:
         return units_name, units_entry
 
 
-    def _validate_cell_update_args(self, action, table_name, row, column, value):
+    def _validate_cell_update_args(self, action, table_name, row):
         if action not in ['update','replace']:
             return
         elif table_name not in self._tables:
             return
         elif row not in self.get_table_row_names(table_name):
-            return
-        elif column not in self.get_table_column_names(table_name):
-            return
-        elif not value:
             return
         else:
             return True
@@ -171,14 +172,16 @@ class latexModel:
         if action == 'add':
             self.add_table_row(action, table_name, row, columns, values, _type)
         else:
-            self.update_table_cell(action, table_name, row, columns, values)
+            self.update_table_cell(action, table_name, row, columns, values, _type)
 
 
     def add_table_row(self, action, table_name, row, columns, values, _type = str()):
-        if row in self._tables[table_name]['rows'] and _type.lower() != 'subtype':
-            print (row+' already in table '+table_name+'!')
-            return
 
+        if row in self._tables[table_name]['rows']:
+            print (row+' already in table '+table_name+'!')
+            print ('Updating...')
+            self.update_table_cell('replace', table_name, row, columns, values, _type)
+            return
 
         new_string = self.add_table_row_string(columns, values, False, row, _type)
 
@@ -205,16 +208,17 @@ class latexModel:
         else:
             pl, plural = str(), str()
 
-        if row:
-            values[0] = row
-
         if _type == 'subType':
             quad = '\\quad '
+            row = row.split(',')[-1]
+
+        if row:
+            values[0] = row
 
         for index, val in enumerate(values):
             if index == 0: #assumed to be an entry
                 gls_entry = val
-                string_entry = '\n'+quad+'\\gls'+pl+'{'+val+'}\n&\n'
+                string_entry = '\n\n'+quad+'\\gls'+pl+'{'+val+'}\n&\n'
 
             elif columns[index].lower() == 'description':
                 desc = val.split('\n')
@@ -230,7 +234,7 @@ class latexModel:
                     string_description = val
 
                 if index == len(values)-1:
-                    string_description+= ' \\\\\n\\hline\n\n'
+                    string_description+= ' \\\\\n\\hline'
                 else:
                     string_description += '\n&\n'
 
@@ -238,61 +242,37 @@ class latexModel:
                 string_elementname = '\\glselementname{'+gls_entry+'}'+'\n&\n'
 
             elif columns[index].lower() == 'occurrence':
-                string_occurrence = val+' \\\\\n\\hline\n\n'
+                string_occurrence = val+' \\\\\n\\hline'
 
             elif columns[index].lower() == 'units':
                 if _type != 'subType':
                     val = gls_entry
-                string_units = '\\glsentryunits{'+val+'}'+' \\\\\n\\hline\n\n'
+                string_units = '\\glsentryunits{'+val+'}'+' \\\\\n\\hline'
 
         return string_entry+string_elementname+string_description+string_occurrence+string_units
 
 
     def update_table_cell(self, action, table_name, row, column, value):
 
-        if not self._validate_cell_update_args(action, table_name, row, column, value):
+        if not self._validate_cell_update_args(action, table_name, row):
             raise Exception ("Invalid args for update_table_cell !")
-
-        column_index = self._get_column_index(table_name, column)
 
         #partioning file string to identify the substring for update
         parent_file_string = self._tables[table_name]['string']
         row_file_string = self._tables[table_name]['rows'][row][-1]
-        table_cell = self.get_table_cell(table_name, row, column)
 
-        #partitioning to identify the substring and its location
+        #identify the substring and its location
         #avoiding duplicate values
-        file_string = parent_file_string.partition(row_file_string)
+        file_string_list = parent_file_string.split(row_file_string)
 
-        #spliting at table cell substring that needs to be updated
-        #table cell substring will be updated and added later
-        file_sub_strings = file_string[1].split(table_cell)
+        new_string = self.add_table_row_string(columns, values, False, row, _type)
 
-        #updating the value
-        if action == "update":
-            self._tables[table_name]['rows'][row][column_index] += str(' \\newline '+value)
+        file_string_list = file_string_list[0] + new_string + file_string_list[-1]
 
-        elif action == "replace":
-            #asterisks = self._tables[table_name]['rows'][row][column_index].count('*')
-            asterisk_note = str()
-            #for notes in latex document? perhaps change it since in uml * is entirely different
-            #if asterisks: 
-            #    for astrsk in range(asterisks):
-            #        asterisk_note+= '*'
+        self._tables[table_name]['string'] = str().join(file_string_list)
 
-            self._tables[table_name]['rows'][row][column_index] = str('\n'+value+ ' '+ asterisk_note+'\n')
-
-        #updating the table cell substring
-        file_sub_strings = str(file_sub_strings[0]
-                               + self._tables[table_name]['rows'][row][column_index]
-                               + file_sub_strings[1])
-
-        #updating the file string
-        self._tables[table_name]['string'] = str(file_string[0] #string before updated substring
-                                                 + file_sub_strings #updated table cell substring
-                                                 + file_string[2]) #string after updated substring
-        
         self.write_table(table_name)
+        print ("Updated!")
 
 
     def write_table(self, table_name = None):
@@ -565,7 +545,6 @@ class latexModel:
 
 if __name__=='__main__':
     latex_model = latexModel('path-to/MTConnect Part 2')
-    latex_model.rewrite_glossary()
 
 
         
