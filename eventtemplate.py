@@ -208,10 +208,8 @@ class eventTemplate:
             return
 
         if _type == 'subType':
-            parent = self._template['rows'][subtype_type]['initial']['parent']
-            gls_entry_format = '{'+gls_key+'}'
-            if parent and gls_entry_format in parent['subtype']:
-                return
+            #table row keys
+            gls_key = str(',').join([subtype_type,gls_key])
 
         latex_model.update_table(
             action = 'add',

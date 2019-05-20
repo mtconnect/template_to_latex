@@ -246,10 +246,7 @@ class sampleTemplate:
             return
 
         if _type == 'subType':
-            parent = self._template['rows'][subtype_type]['initial']['parent']
-            gls_entry_format = '{'+gls_key+'}'
-            if parent and gls_entry_format in parent['subtype']:
-                return
+            gls_key = str(',').join([subtype_type,gls_key])
 
         latex_model.update_table(
             action = 'add',
@@ -267,9 +264,6 @@ class sampleTemplate:
 
         for row in rows:
             entry_name, entry_key = self._latex_model._format_units(row[0])
-            if self._latex_model.get_gls_name(entry_key):
-                print ("Unit "+row[0].replace('@','')+" already exists!")
-                continue
             self._latex_model.add_glossary_entry(
                 entry_key,
                 entry_name,
@@ -284,7 +278,7 @@ class sampleTemplate:
                 table_name = self._config.table_name(2, kind),
                 row=entry_key,
                 columns=columns,
-                values=[entry_key,str()])
+                values=[entry_key,str()]) #assumes glossary desc
 
 
     def _get_units_from_template(self, units, kind):
