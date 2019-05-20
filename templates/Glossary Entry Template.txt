@@ -1,0 +1,18 @@
+h1. @NOT_READY@  _(Updates if already exists)_
+
+_(specify model for courier new font else style is assumed to be italics)_
+_(Available Keys: type, category, name, kind, description, elementname, units, plural, pluraldescription, elements, attributes, subtype)_
+
+|_.Key|_.Value|
+|description|the measured value of the data item type given by a sensor or encoder.|
+
+h1. @NOT_INSANE@  _(Adds if new)_
+
+_(specify model for courier new font else style is assumed to be italics)_
+_(Available Keys: type, category, name, kind, description, elementname, units, plural, pluraldescription, elements, attributes, subtype)_
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|The measured value of the data item type given by a sensor or encoder.|
+|kind|subtype|
