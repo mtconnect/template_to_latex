@@ -1,0 +1,49 @@
+_(Only New Sections/Subsections)_
+h1. @ComponentRef@ _(Section Heading)_
+
+* Part : Part 2 
+
+h2. Parent: @Reference@ _(Parent Section if any)_
+
+@ComponentRef@ XML element is a pointer to all of the information associated with another Structural Element defined elsewhere in the XML document for a piece of equipment.
+The XML schema in {ref:componentref-schema-diagram} represents the structure of a ComponentRef XML element showing the attributes defined for ComponentRef.
+
+{figure:componentref-schema-diagram}
+
+{ref:attributes-for-componentref} shows attributes for @ComponentRef@
+
+{table:attributes-for-componentref}
+
+{example:example-for-componentref}
+
+
+
+
+h3. Table _(Can be multiple)_
+* label : @attributes-for-componentref@
+
+|_.Attribute|_.Description|Occurrence|
+|@idRef@|A pointer to the id attribute of the Component that contains the information to be associated with this XML element.@
+@
+@idRef@ is a required attribute.|1|
+
+
+
+
+h3. Figure _(Can be multiple)_
+* label : @componentref-schema-diagram@
+
+|_.Key|_.Val|
+|caption|ComponentRef Diagram|
+|filename|componentref-schema-diagram.png|
+|label|componentref-schema-diagram|
+
+
+
+
+h3. Example _(XML example?)_
+*label : @example-for-componentref@
+
+<pre>
+ <ElementHere />
+</pre>
