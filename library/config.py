@@ -34,3 +34,6 @@ class config:
             return self.config_json[self._type][part][doc_type]['docName']
         else:
             return None
+
+    def path_to_content_type_template(self, content_type):
+        return self.config_json[self._type][content_type]['template']

@@ -95,14 +95,6 @@ class latexModel:
         else:
             return key
 
-
-    def _exists(self, string): #obsolete
-        if search('[a-zA-Z0-9*]+',string):
-            return string
-        else:
-            return
-
-
     def _table_rows(self, table_name): #should also have row strings
         self._tables[table_name]['rows'] = {}
         rows = self._tables[table_name]['string'].split('\endhead')[-1].split('\hline')[:-1]
@@ -363,7 +355,7 @@ class latexModel:
         self._load_glossary()
 
 
-    def write_glossary(self, file_name='mtc-terms'):
+    def rewrite_glossary(self, file_name='mtc-terms', sort = True):
         glossary_string = str()
         terms = self._glossary['terms'].items()
 
@@ -411,24 +403,50 @@ class latexModel:
             self._glossary['terms'][key] = values
 
             name = values['name'].split('{')[-1].split('}')[0]
+
+            if name in self._glossary['names']:
+                if 'category' in values and 'model' in values['category']:
+                    category = 'model'
+                else:
+                    category = 'term'
+                name = str(',').join([category,name])
+            else:
+                category = str()
+
             self._glossary['names'][name] = [key, '\\gls{'] #key, gls command
 
             if 'elementname' in values:
                 elementname = values['elementname'].split('{')[-1].split('}')[0]
+                if category:
+                    elementname = str(',').join([category,elementname])
+
                 self._glossary['names'][elementname] = [key, '\\glselementname{']
 
             if 'plural' in values:
                 plural = values['plural'].split('{')[-1].split('}')[0]
+                if category:
+                    plural = str(',').join([category,plural])
+
                 self._glossary['names'][plural] = [key, '\\glspl{']
 
             else: #few pluralization rules
-                if name.endswith('s'):
-                    plural = name+'ES'
-                elif name.endswith('y'):
-                    plural = name[:-1]+'IES'
-                else:
-                    plural = name+'S'
-                self._glossary['names'][plural] = [key, '\\glspl{']
+                if name[-1].islower():
+                    if name.endswith('s'):
+                        plural = name+'es'
+                    elif name.endswith('y'):
+                        plural = name[:-1]+'ies'
+                    else:
+                        plural = name+'s'
+                elif name[-1].isupper():
+                    if name.endswith('S'):
+                        plural = name+'ES'
+                    elif name.endswith('Y'):
+                        plural = name[:-1]+'IES'
+                    else:
+                        plural = name+'S'
+
+                if plural not in self._glossary['names']:
+                    self._glossary['names'][plural] = [key, '\\glspl{']
 
             string_prev = string
 
@@ -494,11 +512,19 @@ class latexModel:
             return None
 
     def get_gls_key_entry_command(self, name):
-        if self.get_gls_key(name):
+        if self.get_gls_key(str(',').join([category,name])):
+            name = str(',').join([category,name])
             gls_key = self.get_gls_key(name)
             gls_string_format = self._glossary['names'][name][1]
 
             return gls_string_format + gls_key + '}'
+
+        elif self.get_gls_key(name):
+            gls_key = self.get_gls_key(name)
+            gls_string_format = self._glossary['names'][name][1]
+
+            return gls_string_format + gls_key + '}'
+            
         else:
             return None
 
