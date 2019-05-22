@@ -1,0 +1,60 @@
+h1. @DATA_SET@ _(Section Name)_
+
+* Part : Part 2
+
+h2. Parent : @representation Attribute for DataItem@
+
+Add a new representation for associative arrays of values for data items. Any data item can have a representation of @DATA_SET@ that will append the suffix @DataSet@ to @type@ as described in the transform from _Part_ 2 enumerations to _Part_ 3. 
+
+The @DataSet@ data items will be represented as list of @Entry@ elements that have the attributes shown in {ref:attributes-for-dataset}.
+
+{table:attributes-for-dataset}
+
+The value of the @Entry@ element will have the same facet or controlled vocabulary from the @type@'s default representation. 
+
+Example:
+
+{example:example-for-dataset}
+
+Or to be odd-never do this:
+
+{example:example-for-dataset-2}
+
+The contents of the @Entry@ has the same constraints as the un-adorned observation.
+
+
+
+
+h3. Table
+* label: @attributes-for-dataset@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|The identity of this entry|1|
+|@removed@|A boolean indicator that the entry has been deleted @
+@@
+@Defaults to @false@|0..1|
+
+
+
+h3. Example
+* label : @example-for-dataset@
+
+<pre>
+  <VariableDataSet timestamp="..." sequence="..." ...>
+    <Entry key="a101">100.21</Entry>
+    <Entry key="a102">609</Entry>
+  </VariableDataSet>
+</pre>
+
+
+
+h3. Example
+*label : @example-for-dataset-2@
+
+<pre>
+  <ExecutionDataSet timestamp="..." sequence="..." ...>
+    <Entry key="O10021">ACTIVE</Entry>
+    <Entry key="O10022">STOPPED</Entry>
+    <Entry key="O90012">READY</Entry>
+  </ExecutionDataSet >
+</pre>
