@@ -63,8 +63,6 @@ class formatContent:
             else:
                 gls_name = self.to_latex_name(term.group(1))
                 term_formatted = self._latex_model.get_gls_key_entry_command(gls_name, category)
-            if not term_formatted:
-                print (term)
 
             desc = desc.replace(term.group(0), term_formatted)
 

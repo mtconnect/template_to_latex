@@ -1,14 +1,13 @@
 from os import path
 from re import search, DOTALL
 
-from library.config import config
-
 class generateContent:
 
-    def __init__(self):
+    def __init__(self, config):
         self._content = dict()
         self._path = dict()
-        self._config = config("generateContent")
+        self._config = config
+        self._config.load_config("generateContent")
         self._get_path_to_content_templates()
         self._load_templates()
 

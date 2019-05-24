@@ -1,23 +1,18 @@
 from os import path
 from re import search, DOTALL
 
-from library.formatcontent import formatContent
-from library.config import config
-from library.latexmodel import latexModel
-
 class glossaryEntryTemplate:
 
-    def __init__(self, _path = None):
-        self._path = _path
+    def __init__(self, config, latex_model, fmt):
         self._template = dict()
-        self._config = config("glossaryEntryTemplate")
-        self._latex_model = latexModel(self._config.latex_model(2))
+        self._config = config
+        self._config.load_config("glossaryEntryTemplate")
+        self._latex_model = latex_model()
+        self._fmt = fmt
 
-        self.fmt = formatContent(self._latex_model)
-        self._load_template()
 
-
-    def _load_template(self):
+    def load_new_content(self, _path):
+        self._path = _path
         if not self._path:
             raise Exception("Enter a valid latex directory path!")
 
@@ -28,28 +23,20 @@ class glossaryEntryTemplate:
 
     def _add_all_content_to_glossary(self, template):
 
-        entries = self._get_content_from_template(template)
-        self._template['entries'] = entries
-        self._update_entry_in_glossary(entries)
-
-
-    def _get_content_from_template(self, template):
-
         entries_str_list = template.split('h1. ')[1:]
         content_pattern = 'h1. (.+?)\n'
 
-        entries_dict = dict()
-
         for entry in entries_str_list:
+            entries_dict = dict()
             entry = 'h1. '+entry
             entry_dict = dict()
             entry_dict['str'] = entry
 
             search_result = search(content_pattern, entry, DOTALL)
             entry_dict['name_str'] = search_result.group(1)
-            name_str = self.fmt.format_key(entry_dict['name_str'])[0]
+            name_str = self._fmt.format_key(entry_dict['name_str'])[0]
 
-            name = self.fmt.to_latex_name(name_str) #check format in gls
+            name = self._fmt.to_latex_name(name_str) 
 
             _type_search = search('\|kind\|(.+?)\|', entry, DOTALL)
 
@@ -59,15 +46,15 @@ class glossaryEntryTemplate:
                 _type = str('new')
 
             if name not in self._latex_model._glossary['names']:
-                name_key = self.fmt.to_key(name_str)
+                name_key = self._fmt.to_key(name_str)
                 if name_key in self._latex_model._glossary['terms']:
-                    name_key = self.fmt.to_key(name_str, _type)
+                    name_key = self._fmt.to_key(name_str, _type)
 
             else:
                 name_key = self._latex_model._glossary['names'][name][0]
 
             columns_str = search('\|(.+?)\|\n', entry, DOTALL).groups()[0]
-            columns = self.fmt.extract_row_columns_from_string(columns_str)
+            columns = self._fmt.extract_row_columns_from_string(columns_str)
 
             entry_dict['keys'] = self._get_keys_from_template(entry, columns, columns_str)
 
@@ -76,14 +63,15 @@ class glossaryEntryTemplate:
             if _type != 'new':
                 entries_dict[name_key]['keys']['kind'] = _type
 
-        return entries_dict
+            self._template['entries'] = entries_dict
+            self._update_entry_in_glossary(entries_dict)
 
 
     def _get_keys_from_template(self, string, columns, columns_str):
 
         #Extract rows from string
         rows_str = string.split(columns_str+'|')[-1]
-        rows_str_list = self.fmt.extract_row_columns_from_string(rows_str)
+        rows_str_list = self._fmt.extract_row_columns_from_string(rows_str)
         rows = list()
 
         for col in rows_str_list:
@@ -96,7 +84,7 @@ class glossaryEntryTemplate:
                 key = col
 
             elif i%len(columns) == 1:
-                rows_dict[key] = self.fmt.format_desc(col)
+                rows_dict[key] = self._fmt.format_desc(col)
 
         return rows_dict
 
@@ -110,7 +98,7 @@ class glossaryEntryTemplate:
 
     def _update_entry_in_glossary(self, entries):
 
-        for entry, entry_dict  in entries.items(): #actual, dict
+        for entry, entry_dict  in entries.items():
             self._add_to_glossary(entry)
 
 
@@ -140,11 +128,4 @@ class glossaryEntryTemplate:
                 self._latex_model._glossary['terms'][gls_key][key] = '{'+new_val+'}'
 
             self._latex_model.update_gls_entry(gls_key)
-
-
-
-if __name__ == '__main__':
-    template = glossaryEntryTemplate('path-to/templates/Glossary Entry Template.txt')
-
-
 

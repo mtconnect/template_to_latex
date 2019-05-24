@@ -1,23 +1,18 @@
 from os import path
 from re import search, DOTALL
 
-from library.formatcontent import formatContent
-from library.config import config
-from library.latexmodel import latexModel
-
 class componentTemplate:
 
-    def __init__(self, _path = None):
-        self._path = _path
+    def __init__(self, config, latex_model, fmt):
         self._template = dict()
-        self._config = config("componentTemplate")
-        self._latex_model = latexModel(self._config.latex_model(2))
+        self._config = config
+        self._config.load_config("componentTemplate")
+        self._latex_model = latex_model()
+        self._fmt = fmt
 
-        self.fmt = formatContent(self._latex_model)
-        self._load_template()
 
-
-    def _load_template(self):
+    def load_new_content(self, _path):
+        self._path = _path
         if not self._path:
             raise Exception("Enter a valid latex directory path!")
 
@@ -112,7 +107,7 @@ class componentTemplate:
 
         #Extract rows from string
         rows_str = part.split(columns_str+'|')[-1]
-        rows_str_list = self.fmt.extract_row_columns_from_string(rows_str)
+        rows_str_list = self._fmt.extract_row_columns_from_string(rows_str)
         rows = list()
         
         for col in rows_str_list:
@@ -123,10 +118,10 @@ class componentTemplate:
         rows_dict = dict()
         for i,col in enumerate(rows):
             if i%len(columns) == 0:
-                col, _type = self.fmt.format_key(col)
+                col, _type = self._fmt.format_key(col)
                 if _type == 'type':
-                    key = self.fmt.to_key(col)
-                    self._latex_model._glossary['names'][self.fmt.to_latex_name(col)] = [key, '\\gls{']
+                    key = self._fmt.to_key(col)
+                    self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -138,7 +133,7 @@ class componentTemplate:
                         rows_dict[key]['initial']['parent'] = None
 
             elif i%len(columns) >= 1:
-                col = self.fmt.format_desc(col)
+                col = self._fmt.format_desc(col)
                 if _type == 'type':
                     rows_dict[key][key].append(col)
 
@@ -168,14 +163,14 @@ class componentTemplate:
         if not self._template["is_parent"]:
             _types = list()
             _types.append(_type)
-            _types.append(self.fmt.to_key(self.fmt.format_key(self._template["parent"])[0]))
+            _types.append(self._fmt.to_key(self._fmt.format_key(self._template["parent"])[0]))
 
             _type = ','.join(_types)
 
         if not self._latex_model.get_gls_name(gls_key):
             self._latex_model.add_glossary_entry(
                 gls_key,
-                self.fmt.to_latex_name(name),
+                self._fmt.to_latex_name(name),
                 description,
                 'type', 'model',
                 'category', 'code',
@@ -199,7 +194,7 @@ class componentTemplate:
 
 
     def _add_to_doc(self): #move to the library?
-        _file_path = self._config.latex_model(2) +'/'+ self._config.doc_name(2, "component")
+        _file_path = path.join(self._config.latex_model(2),self._config.doc_name(2, "component"))
         _file=open(_file_path+'.tex','r',errors='ignore')
         _file=_file.read()
 
@@ -210,8 +205,8 @@ class componentTemplate:
 
         sub_sections_str = str()
         if self._template['is_parent']:
-            new_sub_section = '{'+self.fmt.format_key(self._template['component'])[0]+'}\n'
-            new_sub_section += self.fmt.format_desc(self._template['description'])+'\n'
+            new_sub_section = '{'+self._fmt.format_key(self._template['component'])[0]+'}\n'
+            new_sub_section += self._fmt.format_desc(self._template['description'])+'\n'
 
             if new_sub_section in sub_sections: #already added
                 return
@@ -223,9 +218,9 @@ class componentTemplate:
 
         else:
             for i,sub_sect in enumerate(sub_sections):
-                if sub_sect.startswith('{'+self.fmt.format_key(self._template['parent'])[0]+'}'):
-                    subsubsect = '\\subsubsection{'+self.fmt.format_key(self._template['component'])[0]+'}\n'
-                    subsubsect += self.fmt.format_desc(self._template['description'])+'\n'
+                if sub_sect.startswith('{'+self._fmt.format_key(self._template['parent'])[0]+'}'):
+                    subsubsect = '\\subsubsection{'+self._fmt.format_key(self._template['component'])[0]+'}\n'
+                    subsubsect += self._fmt.format_desc(self._template['description'])+'\n'
 
                     if subsubsect in sub_sections[i]: #already added
                         return
@@ -249,6 +244,3 @@ class componentTemplate:
             _file_write.write(_new_file)
             _file_write.close()
 
-
-if __name__ == '__main__':
-    template = componentTemplate('path-to/newcontent/deposition_component_composition.txt')

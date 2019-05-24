@@ -1,24 +1,19 @@
 from os import path
 from re import search, DOTALL
 
-from library.formatcontent import formatContent
-from library.config import config
-from library.latexmodel import latexModel
-
 class attributesSubElementsTemplate:
 
-    def __init__(self, _path = None):
-        self._path = _path
+    def __init__(self, config, latex_model, fmt):
         self._template = dict()
-        self._config = config("attributesSubElementsTemplate")
-        self._latex_model = latexModel(self._config.latex_model(2))
-        self._latex_model3 = latexModel(self._config.latex_model(3))
+        self._config = config
+        self._config.load_config("attributesSubElementsTemplate")
+        self._latex_model = latex_model(2)
+        self._latex_model3 = latex_model(3)
+        self._fmt = fmt
 
-        self.fmt = formatContent(self._latex_model)
-        self._load_template()
 
-
-    def _load_template(self):
+    def load_new_content(self, _path):
+        self._path = _path
         if not self._path:
             raise Exception("Enter a valid latex directory path!")
 
@@ -83,14 +78,14 @@ class attributesSubElementsTemplate:
         self._template['model'] = model
 
         if parent:
-            parent = self.fmt.to_key(self.fmt.format_key(parent)[0])
+            parent = self._fmt.to_key(self._fmt.format_key(parent)[0])
             self._create_table_name(parent, model)
 
         if attributes:
             self._template['attribute'] = dict()
 
             columns_str = search('\|(.+?)\|\n', attributes, DOTALL).groups()[0]
-            columns = self.fmt.extract_row_columns_from_string(columns_str)
+            columns = self._fmt.extract_row_columns_from_string(columns_str)
 
             self._template['attribute']['columns'] = columns
             self._template['attribute']['columns_str'] = columns_str
@@ -99,7 +94,7 @@ class attributesSubElementsTemplate:
             self._template['element'] = dict()
 
             columns_str = search('\|(.+?)\|\n', elements, DOTALL).groups()[0]
-            columns = self.fmt.extract_row_columns_from_string(columns_str)
+            columns = self._fmt.extract_row_columns_from_string(columns_str)
 
             self._template['element']['columns'] = columns
             self._template['element']['columns_str'] = columns_str
@@ -111,7 +106,7 @@ class attributesSubElementsTemplate:
 
         #Extract rows from string
         rows_str = string.split(columns_str+'|')[-1]
-        rows_str_list = self.fmt.extract_row_columns_from_string(rows_str)
+        rows_str_list = self._fmt.extract_row_columns_from_string(rows_str)
         rows = list()
         
         for col in rows_str_list:
@@ -122,10 +117,10 @@ class attributesSubElementsTemplate:
         rows_dict = dict()
         for i,col in enumerate(rows):
             if i%len(columns) == 0:
-                col, _type = self.fmt.format_key(col)
+                col, _type = self._fmt.format_key(col)
                 if _type == 'type':
-                    key = self.fmt.to_key(col)
-                    self._latex_model._glossary['names'][self.fmt.to_latex_name(col)] = [key, '\\gls{']
+                    key = self._fmt.to_key(col)
+                    self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -137,7 +132,7 @@ class attributesSubElementsTemplate:
                         rows_dict[key]['initial']['parent'] = None
 
             elif i%len(columns) >= 1:
-                col = self.fmt.format_desc(col)
+                col = self._fmt.format_desc(col)
                 if _type == 'type':
                     rows_dict[key][key].append(col)
 
@@ -193,7 +188,7 @@ class attributesSubElementsTemplate:
         if not self._latex_model.get_gls_name(gls_key):
             self._latex_model.add_glossary_entry(
                 gls_key,
-                self.fmt.to_latex_name(name),
+                self._fmt.to_latex_name(name),
                 description,
                 'type', 'model',
                 'category', 'code',
@@ -223,7 +218,8 @@ class attributesSubElementsTemplate:
             gls_attrib_keys = self._latex_model._glossary['terms'][parent]['attributes'][:-1]
 
             for key in new_attrib_keys:
-                gls_attrib_keys = ','.join([gls_attrib_keys, '\\gls{' + key + '}'])
+                if '\\gls{' + key + '}' not in gls_attrib_keys:
+                    gls_attrib_keys = ','.join([gls_attrib_keys, '\\gls{' + key + '}'])
 
             gls_attrib_keys = gls_attrib_keys + '}'
 
@@ -235,7 +231,8 @@ class attributesSubElementsTemplate:
             gls_element_keys = self._latex_model._glossary['terms'][parent]['elements'][:-1]
 
             for key in new_element_keys:
-                gls_element_keys = ','.join([gls_element_keys, '\\gls{' + key + '}'])
+                if '\\gls{' + key + '}' not in gls_element_keys:
+                    gls_element_keys = ','.join([gls_element_keys, '\\gls{' + key + '}'])
 
             gls_element_keys = gls_element_keys + '}'
 
@@ -243,6 +240,3 @@ class attributesSubElementsTemplate:
 
         self._latex_model.update_gls_entry(parent)
 
-
-if __name__ == '__main__':
-    template = attributesSubElementsTemplate('path-to/newcontent/test_attribute_element.txt')

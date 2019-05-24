@@ -1,23 +1,18 @@
 from os import path
 from re import search, DOTALL
 
-from library.formatcontent import formatContent
-from library.config import config
-from library.latexmodel import latexModel
-
 class compositionTemplate:
 
-    def __init__(self, _path = None):
-        self._path = _path
+    def __init__(self, config, latex_model, fmt):
         self._template = dict()
-        self._config = config("compositionTemplate")
-        self._latex_model = latexModel(self._config.latex_model(2))
+        self._config = config
+        self._config.load_config("compositionTemplate")
+        self._latex_model = latex_model()
+        self._fmt = fmt
 
-        self.fmt = formatContent(self._latex_model)
-        self._load_template()
 
-
-    def _load_template(self):
+    def load_new_content(self, _path):
+        self._path = _path
         if not self._path:
             raise Exception("Enter a valid latex directory path!")
 
@@ -57,7 +52,7 @@ class compositionTemplate:
     def _get_content_from_pattern(self, string):
 
         columns_str = search('\|(.+?)\|\n', string, DOTALL).groups()[0]
-        columns = self.fmt.extract_row_columns_from_string(columns_str)
+        columns = self._fmt.extract_row_columns_from_string(columns_str)
 
         self._template['columns'] = dict()
         self._template['columns_str'] = dict()
@@ -75,7 +70,7 @@ class compositionTemplate:
 
         #Extract rows from string
         rows_str = part.split(columns_str+'|')[-1]
-        rows_str_list = self.fmt.extract_row_columns_from_string(rows_str)
+        rows_str_list = self._fmt.extract_row_columns_from_string(rows_str)
         rows = list()
         
         for col in rows_str_list:
@@ -86,10 +81,10 @@ class compositionTemplate:
         rows_dict = dict()
         for i,col in enumerate(rows):
             if i%len(columns) == 0:
-                col, _type = self.fmt.format_key(col)
+                col, _type = self._fmt.format_key(col)
                 if _type == 'type':
-                    key = self.fmt.to_key(col)
-                    self._latex_model._glossary['names'][self.fmt.to_latex_name(col)] = [key, '\\gls{']
+                    key = self._fmt.to_key(col)
+                    self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -101,7 +96,7 @@ class compositionTemplate:
                         rows_dict[key]['initial']['parent'] = None
 
             elif i%len(columns) >= 1:
-                col = self.fmt.format_desc(col)
+                col = self._fmt.format_desc(col)
                 if _type == 'type':
                     rows_dict[key][key].append(col)
 
@@ -133,7 +128,7 @@ class compositionTemplate:
         if not self._latex_model.get_gls_name(gls_key):
             self._latex_model.add_glossary_entry(
                 gls_key,
-                self.fmt.to_latex_name(name),
+                self._fmt.to_latex_name(name),
                 description,
                 'type', 'model',
                 'category', 'code',
@@ -151,5 +146,3 @@ class compositionTemplate:
             _type = _type
             )
 
-if __name__ == '__main__':
-    template = compositionTemplate('path-to/newcontent/deposition_component_composition.txt')

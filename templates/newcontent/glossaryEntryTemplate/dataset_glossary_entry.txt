@@ -1,0 +1,27 @@
+
+h1. @key@ 
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|The identity of this entry.|
+|kind|attribute|
+
+h1. @Entry@ 
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|The value of this entry.|
+|kind|element|
+
+h1. @DATA_SET@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|elementname|DataSet|
+|kind|representation|
+|description|A data set. |
+|elements|@Entry@|
+|attributes|@key@|

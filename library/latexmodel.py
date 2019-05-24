@@ -1,4 +1,3 @@
-
 from os import path, listdir
 from re import search, sub, DOTALL
 
@@ -16,9 +15,9 @@ class latexModel:
 
     def _create_latex_tree(self):
         if not self._path:
-            raise Exception("Enter a valid latex directory path!")
+            return
 
-        elif not path.isfile(self._path+'/main.tex'):
+        elif not path.isfile(path.join(self._path,'main.tex')):
             raise Exception("Invalid latex directory path!")
 
         else:
@@ -27,17 +26,20 @@ class latexModel:
 
 
     def _load_content(self):
+        self._glossary_path = path.join(self._path,'mtc-terms.tex')
+        self._tables_path = path.join(self._path,'tables')
         self._load_tables()
         self._load_glossary()
-        #self._load_other_content() #other models:figures?sections?
+
 
     def _load_tables(self):
-        _path = self._path+'/tables/'
+        _path = self._tables_path
 
         for filename in listdir(_path):
 
             if filename.endswith(".tex"):
-                _file = open(_path+filename, 'r')
+                file_path = path.join(_path, filename)
+                _file = open(file_path, 'r')
                 table_name = filename.split('.')[0]
 
                 _file_str = _file.read()
@@ -244,7 +246,7 @@ class latexModel:
         return string_entry+string_elementname+string_description+string_occurrence+string_units
 
 
-    def update_table_cell(self, action, table_name, row, column, value):
+    def update_table_cell(self, action, table_name, row, columns, values, _type = str()):
 
         if not self._validate_cell_update_args(action, table_name, row):
             raise Exception ("Invalid args for update_table_cell !")
@@ -271,7 +273,7 @@ class latexModel:
         if table_name not in self._tables:
             raise Exception("Invalid table name!")
 
-        _path = self._path+'/tables/'+table_name+'.tex'
+        _path = path.join(self._tables_path,table_name+'.tex')
 
         if not path.isfile(_path):
             raise Exception("Write Error. Invalid path!")
@@ -284,7 +286,7 @@ class latexModel:
 
 
     def _load_glossary(self):
-        _path = self._path+'/mtc-terms.tex'
+        _path = self._glossary_path
 
         _file = open(_path,encoding="utf8" ,errors='ignore')
 
@@ -311,6 +313,8 @@ class latexModel:
         kind = str()
         elementname = str()
         subtype = str()
+        elements = str()
+        attributes = str()
 
         for i,arg in enumerate(args):
             if i%2 == 0:
@@ -330,6 +334,10 @@ class latexModel:
                     elementname = args[i+1]
                 elif arg == 'subtype':
                     subtype = args[i+1]
+                elif arg == 'elements':
+                    elements = args[i+1]
+                elif arg == 'attributes':
+                    attributes = args[i+1]
 
         string = """\n\n\\newglossaryentry{""" + entry + """}\n{\n"""
 
@@ -343,10 +351,12 @@ class latexModel:
         if units: string += '  units=\cfont{\gls{'+units+'}},\n'
         if kind: string += '  kind={'+kind+'},\n'
         if subtype: string += '  subtype={'+subtype+'},\n'
+        if attributes: string += '  attributes={'+attributes+'},\n'
+        if elements: string += '  elements={'+elements+'},\n'
 
         string = string[:-2]+'\n}\n'
 
-        _path = self._path+'/mtc-terms.tex'
+        _path = self._glossary_path
         _file = open(_path, 'w')
         _file.write(self._glossary['string']+string)
         _file.close()
@@ -393,8 +403,6 @@ class latexModel:
             key = self._extract_glossary_key(string)
 
             if string_prev.endswith('long'):
-                if key=='mtconnect document':
-                    print (string_prev)
                 self._glossary['gls_entry_command'][key] = 'longnewglossaryentry'
             else:
                 self._glossary['gls_entry_command'][key] = 'newglossaryentry'
@@ -511,7 +519,7 @@ class latexModel:
         else:
             return None
 
-    def get_gls_key_entry_command(self, name):
+    def get_gls_key_entry_command(self, name, category):
         if self.get_gls_key(str(',').join([category,name])):
             name = str(',').join([category,name])
             gls_key = self.get_gls_key(name)
@@ -537,8 +545,13 @@ class latexModel:
 
         if len(gls_string) == 2:
             post_gls_string = gls_string[-1].split(entry_command,1)
-            if post_gls_string[0].endswith('long'):
+            if 'newglossaryentry' not in gls_string[-1]:
+                next_entry_command = str()
+                post_gls_string[-1] = str()
+
+            elif post_gls_string[0].endswith('long'):
                 next_entry_command = '\\longnewglossaryentry'
+
             gls_string[-1] = post_gls_string[-1]
 
             updated_key_string = entry_command + """{""" + key + """}\n{\n"""
@@ -551,14 +564,19 @@ class latexModel:
 
             updated_key_string = updated_key_string[:-2] + entry_command_end
 
-            gls_string = gls_string[0] + updated_key_string + next_entry_command + gls_string[-1]
+            if next_entry_command:
+                gls_string = gls_string[0] + updated_key_string + next_entry_command + gls_string[-1]
+            else:
+                gls_string = gls_string[0] + updated_key_string
 
             self._glossary['string'] = gls_string
 
-            _path = self._path+'/mtc-terms.tex'
+            _path = self._glossary_path
             _file = open(_path, 'w')
             _file.write(gls_string)
             _file.close()
+
+            print("Term "+key+" updated in the glossary!")
 
 
         elif len(gls_string)<2:
@@ -567,10 +585,3 @@ class latexModel:
         else:
             print ('Error: '+key+' found multiple times in glossary!')
 
-
-
-if __name__=='__main__':
-    latex_model = latexModel('path-to/MTConnect Part 2')
-
-
-        

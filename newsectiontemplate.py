@@ -1,31 +1,26 @@
 from os import path
 from re import search, DOTALL
-
-from library.formatcontent import formatContent
-from library.config import config
-from library.latexmodel import latexModel
 from library.generatecontent import generateContent
 
 class newSectionTemplate:
 
-    def __init__(self, _path = None):
-        self._path = _path
+    def __init__(self, config, latex_model, fmt):
         self._template = dict()
         self._contents = dict()
         self._contents['tables'] = dict()
         self._contents['figures'] = dict()
         self._contents['examples'] = dict()
         self._contents['labels'] = dict()
-        self._config = config("newSectionTemplate")
-        self._latex_model2 = latexModel(self._config.latex_model(2))
-        self._latex_model3 = latexModel(self._config.latex_model(3))
+        self._config = config
+        self._generate = generateContent(config)
+        self._config.load_config("newSectionTemplate")
+        self._latex_model2 = latex_model(2)
+        self._latex_model3 = latex_model(3)
+        self._fmt = fmt
 
-        self.fmt = formatContent(self._latex_model2)
-        self.generate = generateContent()
-        self._load_template()
 
-
-    def _load_template(self):
+    def load_new_content(self, _path):
+        self._path = _path
         if not self._path:
             raise Exception("Enter a valid latex directory path!")
 
@@ -92,11 +87,11 @@ class newSectionTemplate:
     def _add_table(self, label, table_str):
 
         columns_str = search('\|(.+?)\|\n', table_str, DOTALL).groups()[0]
-        columns = self.fmt.extract_row_columns_from_string(columns_str)
+        columns = self._fmt.extract_row_columns_from_string(columns_str)
 
         if table_str not in self._latex_model._tables:
             path = self._latex_model._path +'/tables/' + label + '.tex'
-            self.generate.create_table(path, label, columns)
+            self._generate.create_table(path, label, columns)
             self._latex_model._load_tables()
             self._contents['tables'][label] = dict()
             self._contents['tables'][label]['string'] = '\\input{tables/'+label+'.tex}'
@@ -120,7 +115,7 @@ class newSectionTemplate:
 
         #Extract rows from string
         rows_str = part.split(columns_str+'|')[-1]
-        rows_str_list = self.fmt.extract_row_columns_from_string(rows_str)
+        rows_str_list = self._fmt.extract_row_columns_from_string(rows_str)
         rows = list()
 
         for col in rows_str_list:
@@ -131,10 +126,10 @@ class newSectionTemplate:
         rows_dict = dict()
         for i,col in enumerate(rows):
             if i%len(columns) == 0:
-                col, _type = self.fmt.format_key(col)
+                col, _type = self._fmt.format_key(col)
                 if _type == 'type':
-                    key = self.fmt.to_key(col)
-                    name = self.fmt.to_latex_name(col)
+                    key = self._fmt.to_key(col)
+                    name = self._fmt.to_latex_name(col)
                     if name in self._latex_model._glossary['names']:
                         category = 'model'
                         name = str(',').join([category,name])
@@ -144,7 +139,7 @@ class newSectionTemplate:
                     rows_dict[key][key] = [col]
 
             elif i%len(columns) >= 1:
-                col = self.fmt.format_desc(col)
+                col = self._fmt.format_desc(col)
                 if _type == 'type':
                     rows_dict[key][key].append(col)
 
@@ -161,7 +156,7 @@ class newSectionTemplate:
             caption_pattern = '\|caption\|(.+?)\|\n'
             caption = search(caption_pattern, figure_str, DOTALL).group(1)
 
-            figure_latex_str = self.generate._generate_figure_str(filename,label,caption)
+            figure_latex_str = self._generate._generate_figure_str(filename,label,caption)
             self._contents['figures'][label] = dict()
             self._contents['figures'][label]['string'] = figure_latex_str
             self._contents['labels'][label] = 'figure'
@@ -174,7 +169,7 @@ class newSectionTemplate:
             content_pattern = '<pre>\n(.+?)\n</pre>'
             content = search(content_pattern, example_str, DOTALL).group(1)
 
-            example_latex_str = self.generate._generate_example_str(content,label)
+            example_latex_str = self._generate._generate_example_str(content,label)
             self._contents['examples'][label] = dict()
             self._contents['examples'][label]['string'] = example_latex_str
             self._contents['labels'][label] = 'example'
@@ -195,7 +190,8 @@ class newSectionTemplate:
         section_desc = section.split(pattern_search.group(0))[-1]
 
         doc_str = self._read_doc()
-        section_name = self.fmt.format_key(section_name_str)[0]
+        section_name = self._fmt.format_key(section_name_str)[0]
+        section_name = self._fmt.to_latex_name(section_name)
         parent, parent_sect_type = self._get_parent_section(section, doc_str)
         section_desc = self._format_section_content(section_desc)
 
@@ -252,11 +248,15 @@ class newSectionTemplate:
         new_section.append('\n\\'+section_type+'{'+section_name+'}\n')
         new_section.append(section_desc)
 
-        new_section_str = str().join(new_section)
+        if str().join(new_section[1:]) not in parent_sect:
+            new_section_str = str().join(new_section)
+            doc_str = doc_str.replace(parent_sect, new_section_str)
 
-        doc_str = doc_str.replace(parent_sect, new_section_str)
-
-        self._write_doc(doc_str)
+            self._write_doc(doc_str)
+        else:
+            print("Duplicate: New Content for Section "
+                  + self._fmt.from_latex_name(section_name)
+                  + " already in the document!")
 
 
     def _get_parent_section(self, section, doc_str = str()):
@@ -269,7 +269,7 @@ class newSectionTemplate:
 
         if search(parent_pattern, section, DOTALL):
             parent = search(parent_pattern, section, DOTALL).group(1)
-            parent = self.fmt.format_key(parent)[0]
+            parent = self._fmt.format_key(parent)[0]
 
         for _type in sect_types:
             sect_type_str = '\n\\'+_type+'{'+parent+'}'
@@ -286,7 +286,7 @@ class newSectionTemplate:
 
         if search(label_pattern, content, DOTALL):
             label_str = search(label_pattern, content, DOTALL).group(1)
-            label = self.fmt.format_key(label_str)[0]
+            label = self._fmt.format_key(label_str)[0]
 
         return label
 
@@ -317,7 +317,7 @@ class newSectionTemplate:
             return self._format_section_content(section)
 
         else:
-            return self.fmt.format_desc(section)
+            return self._fmt.format_desc(section)
 
 
     def _get_table_from_ref(self, key, val):
@@ -338,8 +338,3 @@ class newSectionTemplate:
             return '\\lst{'+val+'}'
         elif key == 'example':
             return self._contents['examples'][val]['string']
-
-
-
-if __name__ == '__main__':
-    template = newSectionTemplate('path-to/templates/newcontent/data_set_representation.txt')
