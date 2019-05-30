@@ -1,0 +1,12 @@
+h1. @representation@ (_Parent if any_)
+
+h2. Part 2 Content (_for corressponding table updates_)
+
+
+h3. Representation (_New representation type gets added and/or already defined gets updated_)
+
+|_.Representation|_.Description|
+|@DATA_SET@|A new representation.|
+
+
+(_h3 can be any "kind". kind = [attribute, element, enumeration, representation, coordinatesystem, units, nativeunits, subtype, component, composition, reference, filter, category, configuration, statistic, type])
