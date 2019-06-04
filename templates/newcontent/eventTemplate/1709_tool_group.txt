@@ -1,0 +1,28 @@
+h1. TOOL_GROUP
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@TOOL_GROUP@&nbsp;&nbsp;&nbsp;|An identifier for the tool group associated with a specific tool. Commonly used to designate spare tools.|
+
+
+h3. Examples
+
+<pre>
+<DataItem id="tg" category="EVENT" type="TOOL_GROUP" />
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@TOOL_GROUP@|@ToolGroup@&nbsp;&nbsp;&nbsp;|An identifier for the tool group associated with a specific tool. Commonly used to designate spare tools.@
+@
+The valid data value *MUST* be any text string.|
+
+h3. Example
+
+<pre>
+<ToolGroup dataItemId="tg" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571">text</ToolGroup>
+</pre>

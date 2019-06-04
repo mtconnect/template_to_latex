@@ -1,0 +1,25 @@
+
+h1. @PART_DETECT@
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.DataItem type/subType|_.Description|
+|@PART_DETECT@&nbsp;&nbsp;&nbsp;|An indication designating whether a part or work piece has been detected or is present.@
+@
+The valid data value *MUST* be @PRESENT@ or @NOT_PRESENT@|
+
+
+h2. Part 3 Content
+
+|_.DataItem type/subType|_.Element Name|_.Description|
+|@PART_DETECT@|@PartDetect@|An indication designating whether a part or work piece has been detected or is present.@
+@
+The valid data value *MUST* be:@
+@
+@PRESENT@ if a part or work piece has been detected or is present.@
+@
+@NOT_PRESENT@ if a part or work piece is not detected or is not present.|
+
+

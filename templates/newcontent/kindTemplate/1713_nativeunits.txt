@@ -1,0 +1,9 @@
+h1. nativeunits attribute for dataitem
+
+h2. Part 2 Content 
+
+h3. nativeUnits
+
+|_.nativeUnits|_.Description|
+|@HOUR@|A measurement of time in hours|
+|@MINUTE@|A measurement of time in minutes|

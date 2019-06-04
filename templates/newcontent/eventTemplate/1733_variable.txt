@@ -1,0 +1,30 @@
+h1. VARIABLE
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@VARIABLE@&nbsp;&nbsp;&nbsp;| A data value with no constant meaning. |
+
+h3. Examples
+
+<pre>
+<DataItem category="EVENT" id="IDCVar" representation="DATA_SET" type="VARIABLE"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@VARIABLE@|@Variable@|A data value with no constant meaning.@
+@
+The _valid data value_ *MUST* be a string.|
+
+h3. Example
+
+<VariableDataSet dataItemId="IDCVar" timestamp="2019-05-13T19:58:48.875228Z" sequence="120" sampleCount="3">
+<Entry key="var1">111.111</Entry>
+<Entry key="var2">222.222</Entry>
+<Entry key="var3">333.333</Entry>
+</VariableDataSet>
+

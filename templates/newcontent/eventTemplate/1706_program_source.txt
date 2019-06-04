@@ -1,0 +1,64 @@
+h1. PROGRAM_LOCATION_TYPE, PROGRAM_LOCATION, and subtypes SCHEDULE, MAIN, ACTIVE
+
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@PROGRAM_LOCATION_TYPE@&nbsp;&nbsp;&nbsp;|Defines whether the logic or motion program defined by @PROGRAM@ is being executed from the local memory of the controller or from an outside source.
+The valid data value *MUST* be @MEMORY@ or @EXTERNAL@.||
+|>.@SCHEDULE@|A identity of a control program that is used to specify the order of execution of other programs.|
+|>.@MAIN@|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
+|>.@ACTIVE@|The identity of the logic or motion program currently executing.|
+|@PROGRAM_LOCATION@&nbsp;&nbsp;&nbsp;|The Uniform Resource Identifier (URI) for the source file associated with @PROGRAM@.|
+|>.@SCHEDULE@|A identity of a control program that is used to specify the order of execution of other programs.|
+|>.@MAIN@|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
+|>.@ACTIVE@|The identity of the logic or motion program currently executing.|
+
+
+h3. Examples
+
+<pre>
+<DataItem type="PROGRAM_LOCATION_TYPE" subType="MAIN" id="pgmlocmain" category="EVENT"/>
+<DataItem type="PROGRAM_LOCATION_TYPE" subType="ACTIVE" id="pgmlocactive" category="EVENT"/>
+<DataItem type="PROGRAM_LOCATION_TYPE" subType="SCHEDULE" id="pgmlocsched" category="EVENT"/>
+<DataItem type="PROGRAM_LOCATION" subType="MAIN" id="pgmsrcmain" category="EVENT"/>
+<DataItem type="PROGRAM_LOCATION" subType="ACTIVE" id="pgmsrcactive" category="EVENT"/>
+<DataItem type="PROGRAM_LOCATION" subType="SCHEDULE" id="pgmsrcsched" category="EVENT"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PROGRAM_LOCATION_TYPE@|@ProgramLocationType@&nbsp;&nbsp;&nbsp;|Defines whether the logic or motion program defined by @PROGRAM@ is being executed from the local memory of the controller or from an outside source.
+The valid data value *MUST* be @MEMORY@ or @EXTERNAL@.
+@
+A subType *MUST* always be specified.@
+@
+@
+Subtypes of @PROGRAM_LOCATION_TYPE@ are @SCHEDULE@, @MAIN@, and @ACTIVE@.
+|
+|@PROGRAM_LOCATION@|@ProgramLocation@&nbsp;&nbsp;&nbsp;|The Uniform Resource Identifier (URI) for the source file associated with @PROGRAM@.  
+The Valid Data Value MUST be any text string.
+@
+A subType *MUST* always be specified.@
+@
+@
+Subtypes of @PROGRAM_LOCATION@ are @SCHEDULE@, @MAIN@, and @ACTIVE@.
+|
+
+
+
+h3. Example
+
+<pre>
+<ProgramLocationType subType="SCHEDULE"... >text</ProgramLocationType>
+<ProgramLocationType subType="MAIN"... >text</ProgramLocationType>
+<ProgramLocationType subType="ACTIVE"... >text</ProgramLocationType>
+<ProgramLocation subType="SCHEDULE"... >URI</ProgramLocation>
+<ProgramLocation subType="MAIN"... >URI</ProgramLocation>
+<ProgramLocation subType="ACTIVE"... >URI</ProgramLocation>
+...
+</pre>

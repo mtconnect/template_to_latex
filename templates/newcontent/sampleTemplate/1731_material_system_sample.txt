@@ -1,0 +1,64 @@
+h1. Additive Sample Data Items
+
+h2. Part 2 Content to be added to table in Section 8.1
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@VOLUME_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric volume of an object or container.| @CUBIC_MILLIMETER@|
+|>.@ACTUAL@|The amount of bulk material currently present in an object or container.| @CUBIC_MILLIMETER@|
+|>.@CONSUMED@|The amount of bulk material consumed from an object or container during a manufacturing process.| @CUBIC_MILLIMETER@|
+|@VOLUME_FLUID@&nbsp;&nbsp;&nbsp;|The fluid volume of an object or container.| @MILLILITER@|
+|>.@ACTUAL@|The amount of fluid currently present in an object or container.| @MILLILITER@|
+|>.@CONSUMED@|The amount of fluid material consumed from an object or container during a manufacturing process.| @MILLILITER@|
+|@CAPACITY_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric capacity of an object or container.| @CUBIC_MILLIMETER@|
+|@CAPACITY_FLUID@&nbsp;&nbsp;&nbsp;|The fluid capacity of an object or container.| @MILLILITERS@|
+|@DENSITY@&nbsp;&nbsp;&nbsp;|The volumetric mass of a material per unit volume of that material.| @MILLIGRAM/CUBIC_MILLIMETER@|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="SAMPLE" type="VOLUME_SPATIAL" subType="ACTUAL" units="CUBIC_MILLIMETER"/>
+ <DataItem id="29393" category="SAMPLE" type="VOLUME_FLUID" subType="CONSUMED" units="MILLILITER"/>
+ <DataItem id="49430" category="SAMPLE" type="CAPACITY_SPATIAL" units="CUBIC_MILLIMETER"/>
+ <DataItem id="27239" category="SAMPLE" type="CAPACITY_FLUID" units="MILLILITER"/>
+ <DataItem id="95958" category="SAMPLE" type="DENSITY" units="MILLIGRAM/CUBIC_MILLIMETER"/>
+</pre>
+
+
+h2. Part 3 Content to be added to table in Section 6.2
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@VOLUME_SPATIAL@|@VolumeSpatial@|The geometric volume of an object or container.@
+@
+Subtypes of @VolumeSpatial@ are @ACTUAL@ and @CONSUMED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@VolumeSpatial@ *MUST* be reported in units of @CUBIC_MILLIMETER@.|
+|@VOLUME_FLUID@|@VolumeFluid@|The fluid volume of an object or container.@
+@
+Subtypes of @VolumeFluid@ are @ACTUAL@ and @CONSUMED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@VolumeFluid@ *MUST* be reported in units of @MILLILITER@.|
+|@CAPACITY_SPATIAL@|@CapacitySpatial@|The geometric capacity of an object or container.@
+@
+@CapacitySpatial@ *MUST* be reported in units of @CUBIC_MILLIMETER@.|
+|@CAPACITY_FLUID@|@CapacityFluid@|The fluid capacity of an object or container.@
+@
+@CapacityFluid@ *MUST* be reported in units of @MILLILITERS@.|
+|@DENSITY@|@Density@|The volumetric mass of a material per unit volume of that material.@
+@
+@Density@ *MUST* be reported in units of @MILLIGRAM/CUBIC_MILLIMETER@.|
+
+h3. Example
+
+<pre>
+  <VolumeSpatial ... subType="VOLUME_SPATIAL">250</VolumeSpatial>
+  <VolumeFluid ... subType="CONSUMED">35.6</VolumeFluid>
+  <CapacitySpatial ...>400</CapacitySpatial>
+  <CapacityFluid...>1250</CapacityFluid>
+  <Density...>35.494</Density>
+</pre>

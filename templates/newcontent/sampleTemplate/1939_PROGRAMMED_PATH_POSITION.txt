@@ -1,0 +1,39 @@
+h1. PATH_POSITION
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@PATH_POSITION@&nbsp;&nbsp;&nbsp;|A measured or calculated position of a control point associated with a CONTROLLER element, or PATH element if provided, of a piece of equipment. The control point MUST be reported as a set of space-delimited floating-point numbers representing a point in 3-D space. The position of the control point MUST be reported in units of MILLIMETER and listed in order of X, Y, and Z referenced to the coordinate system of the piece of equipment. Any control point representing a position in 1-D or 2-D space MAY be represented in terms of 3-D space by setting any undefined coordinate to zero (0). PATH_POSITION SHOULD be further defined with a coordinateSytem attribute. If a coordinateSystem attribute is not specified, the position of the control point MUST be reported in WORK coordinates.|@MILLIMETER_3D@|
+|>.@ACTUAL@|The measured position of the current program control point as reported by the piece of equipment.| @MILLIMETER_3D@|
+|>.@PROGRAMMED@|The position of the control point for a Component specified by a logic or motion program| @MILLIMETER_3D@|
+|>.@COMMANDED@|The position computed by the Controller type component.|@MILLIMETER_3D@|
+|>.@TARGET@|The desired end position for a movement or a series of movements. Multiple discrete movements may need to be completed to achieve the final TARGET position.|@MILLIMETER_3D@|
+|>.@PROBE@|The position provided by a measurement probe.|@MILLIMETER_3D@|
+
+h3. Examples
+
+<pre>
+<DataItem id="pp1" category="SAMPLE" type="PATH_POSITION" subType="ACTUAL" units="MILLIMETER_3D"/>
+<DataItem id="pp2" category="SAMPLE" type="PATH_POSITION" subType="PROGRAMMED" units="MILLIMETER_3D"/>
+<DataItem id="pp3" category="SAMPLE" type="PATH_POSITION" subType="COMMANDED" units="MILLIMETER_3D"/>
+<DataItem id="pp4" category="SAMPLE" type="PATH_POSITION" subType="TARGET" units="MILLIMETER_3D"/>
+<DataItem id="pp5" category="SAMPLE" type="PATH_POSITION" subType="PROBE" units="MILLIMETER_3D"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PATH_POSITION@|@PathPosition@|A measured or calculated position of a control point reported by the CONTROLLER element of a piece of equipment expressed in WORK coordinates. The coordinate system will revert to MACHINE coordinates if WORK coordinates are not available. Subtypes of PathPosition are ACTUAL, PROGRAMMED, COMMANDED, TARGET, and PROBE. If a subType is not specified, the reported value for the data MUST default to the subtype of ACTUAL. PathPosition MUST be reported as a set of space-delimited floating-point numbers representing a point in 3-D space. The position of the control point MUST be reported in units of MILLIMETER and listed in order of X, Y, and Z referenced to the coordinate system of the piece of equipment. An example of the value reported for PathPosition would be: <PathPosition …>10.123 55.232 100.981 </PathPosition> Where X = 10.123, Y = 55.232, and Z=100.981.|
+
+h4. Example
+
+<pre>
+  <PathPosition dataItemId="pp1" timestamp="2019-04-01T20:44:46.218059Z" subType="ACTUAL" sequence="932076" >10.123 55.232 100.981</PathPosition>
+  <PathPosition dataItemId="pp2" timestamp="2019-04-01T20:44:46.218059Z" subType="PROGRAMMED" sequence="932076" >10.123 55.232 100.981</PathPosition>
+  <PathPosition dataItemId="pp3" timestamp="2019-04-01T20:44:46.218059Z" subType="COMMANDED" sequence="932076" >10.123 55.232 100.981</PathPosition>
+  <PathPosition dataItemId="pp4" timestamp="2019-04-01T20:44:46.218059Z" subType="TARGET" sequence="932076" >10.123 55.232 100.981</PathPosition>
+  <PathPosition dataItemId="pp5" timestamp="2019-04-01T20:44:46.218059Z" subType="PROBE" sequence="932076" >10.123 55.232 100.981</PathPosition>
+</pre>

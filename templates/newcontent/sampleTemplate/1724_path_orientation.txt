@@ -1,0 +1,43 @@
+Would also suggest adding a three space path orientation that would consist of the A, B, and C angles relative to the reference frame.
+
+h1. Orientation
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@ORIENTATION@&nbsp;&nbsp;&nbsp;|A measured or calculated orientation of a plane or vector relative to a cartesian coordinate system. 
+@Orientation@ *MUST* be reported as a set of space-delimited floating-point numbers and *MUST* be reported in units of @DEGREE_3D@ that is an ordered set of values representing the degrees of rotation around the  @X@, @Y@, and @Z@ axes of a coordinate system (@A@, @B@, @C@).@
+@
+Any orientation representing a vector or plane in 2-D space *MAY* be represented in terms of 3-D space by setting any undefined coordinate to zero (0). @
+@
+@ORIENTATION@ *SHOULD* be further defined with a coordinateSytem attribute.  If a coordinateSystem attribute is not specified, the position of the control point *MUST* be reported in *WORK* coordinates. |@DEGREE_3D@|
+|>.@ACTUAL@|The measured orientation as reported by the piece of equipment.|@DEGREE_3D@|
+|>.@COMMANDED@|The orientation computed by the Controller type component.|@DEGREE_3D@|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="SAMPLE" type="ORIENTATION" subType="ACTUAL" units="DEGREE_3D"/>
+</pre>
+
+h3. Units
+
+|_.Units|_.Description|
+|@DEGREE_3D@|A space delimited, floating-point representation of the angular rotation in degrees around the X, Y, and Z axes relative to a cartesian coordinate system.|
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@ORIENTATION@||@Orientation@|A measured or calculated orientation of a plane or vector relative to a cartesian coordinate system.@
+@
+Orientation *MUST* be reported as a set of space-delimited floating-point numbers representing an orientation in 3-D space.@
+@
+Orientation *MUST* be reported in units of @DEGREE@ and listed as an ordered set of values representing a rotation around the  @X@, @Y@, and @Z@ axes of a coordinate system.|
+
+h3. Example
+
+<pre>
+  <Orientation ... >10.123 55.232 100.981</Orientation>
+</pre>

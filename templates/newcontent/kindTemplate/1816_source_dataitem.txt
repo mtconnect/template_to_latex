@@ -1,0 +1,10 @@
+h1. @DataItem@ 
+
+h2. Part 2 Content
+
+h3. Elements (_New subelement of the parent element gets added and/or already defined element gets updated_)
+
+|_.Elements|_.Description|_.Occurrence|
+|@Source@|Source is an optional XML element that identifies the Component, DataItem, or Composition representing the area of the piece of equipment from which a measured value originates.@
+@
+Additional information relating to the identity of the source information may be provided as CDATA. (example, a PLC tag)|0..1|

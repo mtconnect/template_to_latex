@@ -1,0 +1,13 @@
+_(Templated Content using New Section Template)_
+
+h1. @References@
+
+* Part : Part 1
+
+h2. Parent: @MTConnect Request/Response Information Exchange Implemented with HTTP@ _(Parent Section if any)_
+
+A _Structural Element_ *MAY* include a set of _References_ of the following types that *MAY* alter the content of the _Current_ and _Sample Request Response Documents_ as specified:
+
+* A _Component Reference_ (@ComponentRef@) modifies the set of resulting _Data Entities_, limited by a path query parameter of a _Current_ or _Sample Request_, to include the _Data Entities_ associated with the _Structural Element_ whose value for its @id@ attribute matches the value provided for the @idRef@ attribute of the @ComponentRef@ element. Additionally, _Data Entities_ defined for any _Lower Level Structural Element(s)_ associated with the identified _Structural Element_ *MUST* also be returned. The result is equivalent to appending @//[@id=<"idRef">]@ to the path query parameters of the _Current_ or _Sample Request_. See _Section 8.3.2 in Part 1.0, Overview and Fundamentals_ for more details on path queries.
+
+* A _Data Item Reference_ (@DataItemRef@) modifies the set of resulting _Data Entities_, limited by a path query parameter of a _Current_ or _Sample Request_, to include the _Data Entity_ whose value for its @id@ attribute matches the value provided for the @idRef@ attribute of the @DataItemRef@ element. The result is equivalent to appending @//[@id=<"idRef">]@ to the path query parameters of the _Current_ or _Sample Request_. See _Section 8.3.2 in Part 1.0, Overview and Fundamentals_ for more details on path queries.

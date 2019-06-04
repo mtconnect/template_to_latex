@@ -1,11 +1,5 @@
 
-h1. @Deposition@ System (Component)
-
-h2. Parent: @Auxiliaries@
-
-@Deposition@ is an XML container that represents the information for a system that manages the addition of material or state change of material being performed in an additive manufacturing process.  For example, this could describe the portion of a piece of equipment that manages a material extrusion process or a vat polymerization process.
-
-h1. The following content is proposed for addition to the table of Composition Elements in Section 6 of Part 2.0
+h1. Composition Elements
 
 |_.Composition Type|_.Description|
 |@GALVANOMOTOR@|An electromechanical actuator that produces deflection of a beam of light or energy in response to electric current through its coil in a magnetic field.|

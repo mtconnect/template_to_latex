@@ -9,20 +9,20 @@ h2. Part 2 Content to be added to Table in Section 8.2
 |@PROCESS_TIME@&nbsp;&nbsp;&nbsp;|The time and date associated with an activity or event.@
 @
 @PROCESS_TIME@ *MUST* be reported in ISO 8601 format.|
-|>.@START@|The time and date associated with the beginning of an activity or event.|
-|>.@COMPLETE@|The time and date associated with the completion of an activity or event.|
-|>.@TARGET_COMPLETION@|The projected time and date associated with the end or completion of an activity or event.|
+|>.START|The time and date associated with the beginning of an activity or event.|
+|>.COMPLETE|The time and date associated with the completion of an activity or event.|
+|>.TARGET_COMPLETION|The projected time and date associated with the end or completion of an activity or event.|
 |@DATE_CODE@&nbsp;&nbsp;&nbsp;|The time and date code associated with a material or other physical item.@
 @
 @DATE_CODE@ *MUST* be reported in ISO 8601 format.|
-|>.@MANUFACTURE@|The time and date code relating to the production of a material or other physical item.|
-|>.@EXPIRATION@|The time and date code relating to the expiration or end of useful life for a material or other physical item.|
-|>.@FIRST_USE@|The time and date code relating the first use of a material or other physical item.|
+|>.MANUFACTURE|The time and date code relating to the production of a material or other physical item.|
+|>.EXPIRATION|The time and date code relating to the expiration or end of useful life for a material or other physical item.|
+|>.FIRST_USE|The time and date code relating the first use of a material or other physical item.|
 |@MATERIAL_LAYER@&nbsp;&nbsp;&nbsp;|Identifies the layers of material applied to a part or product as part of an additive manufacturing process.@
 @
-The valid data value *MUST* be an integer.|
-|>.@ACTUAL@|The current number of layers of material applied to a part or product during an additive manufacturing process.|
-|>.@TARGET@|The target or planned number layers of material applied to a part or product during an additive manufacturing process.|
+The valid data value MUST be an integer.|
+|>.ACTUAL|The current number of layers of material applied to a part or product during an additive manufacturing process.|
+|>.TARGET|The target or planned number layers of material applied to a part or product during an additive manufacturing process.|
 
 h3. Examples
 
@@ -56,6 +56,8 @@ Subtypes of @MaterialLayer@ are @ACTUAL@ and @TARGET@.@
 If a subType is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
 @
 The valid data value *MUST* be an integer.|
+
+h3. Examples
 
 <pre>
   <ProcessTime ... subType="TARGET_COMPLETION">2019-04-11T01:50Z"</ProcessTime>

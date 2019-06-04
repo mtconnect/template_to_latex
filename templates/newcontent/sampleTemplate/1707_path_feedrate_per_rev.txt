@@ -1,0 +1,42 @@
+h1. PATH_FEEDRATE_PER_REVOLUTION
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|_.Units|
+|@PATH_FEEDRATE_PER_REVOLUTION@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis, associated with a Path component– a vector.| MILLIMETER/REVOLUTION|
+|>.@ACTUAL@|The measured value of the feedrate of the axes, or a single axis, associated with a Path component.|MILLIMETER/REVOLUTION|
+|>.@COMMANDED@|The feedrate as specified by the Controller type component for the axes, or a single axis, associated with a Path component. The COMMANDED feedrate is a calculated value that includes adjustments and overrides.|MILLIMETER/REVOLUTION|
+|>.@PROGRAMMED@|The feedrate specified by a logic or motion program or set by a switch as the feedrate for the axes, or a single axis, associated with a Path .| MILLIMETER/REVOLUTION|
+
+
+h3. Examples
+
+<pre>
+<DataItem category="SAMPLE" id="pfm1" subType="ACTUAL" type="PATH_FEED_PER_REVOLUTION" units="MILLIMETER/REVOLUTION"/>
+<DataItem category="SAMPLE" id="pfm2" subType="COMMANDED" type="PATH_FEED_PER_REVOLUTION" units="MILLIMETER/REVOLUTION"/>
+<DataItem category="SAMPLE" id="pfm3" subType="PROGRAMMED" type="PATH_FEED_PER_REVOLUTION" units="MILLIMETER/REVOLUTION"/>
+<DataItem category="SAMPLE" id="pfm4" subType="JOG" type="PATH_FEED_PER_REVOLUTION" units="MILLIMETER/REVOLUTION"/>
+<DataItem category="SAMPLE" id="pfm5" subType="RAPID" type="PATH_FEED_PER_REVOLUTION" units="MILLIMETER/REVOLUTION"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PATH_FEEDRATE_PER_REVOLUTION@|@PathFeedratePerRevolution@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis, associated with a Path component– a vector.
+@
+The Valid Data Value MUST be any text string.@
+@
+Subtypes of PathFeedratePerRevolution are ACTUAL, COMMANDED, and PROGRAMMED.
+@|
+
+h3. Example
+
+<pre>
+<PathFeedratePerRevolution dataItemId="pfm1" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="ACTUAL">text</PathFeedratePerRevolution>
+<PathFeedratePerRevolution dataItemId="pfm2" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="COMMANDED">text</PathFeedratePerRevolution>
+<PathFeedratePerRevolution dataItemId="pfm3" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="PROGRAMMED">text</PathFeedratePerRevolution>
+<PathFeedratePerRevolution dataItemId="pfm4" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="JOG">text</PathFeedratePerRevolution>
+<PathFeedratePerRevolution dataItemId="pfm5" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="RAPID">text</PathFeedratePerRevolution>
+</pre>

@@ -1,0 +1,43 @@
+h1. CUTTING_SPEED
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|_.Units|
+|@CUTTING_SPEED@&nbsp;&nbsp;&nbsp;| The speed difference (relative velocity) between the cutting mechanism and the surface of the workpiece it is operating on.| MILLIMETER/SECOND|
+|>.@ACTUAL@|The measured value between the cutting mechanism and the surface of the workpiece it is operating on.|MILLIMETER/SECOND|
+|>.@COMMANDED@|The commanded value between the cutting mechanism and the surface of the workpiece it is operating on.|MILLIMETER/SECOND|
+|>.@PROGRAMMED@|The programmed value between the cutting mechanism and the surface of the workpiece it is operating on.|MILLIMETER/SECOND|
+
+h3. Examples
+
+<pre>
+<DataItem id="cs1" category="SAMPLE" type="CUTTING_SPEED" subType="ACTUAL" units="MILLIMETERS/SECOND"/>
+<DataItem id="cs2" category="SAMPLE" type="CUTTING_SPEED" subType="COMMANDED" units="MILLIMETERS/SECOND"/>
+<DataItem id="cs3" category="SAMPLE" type="CUTTING_SPEED" subType="PROGRAMMED" units="MILLIMETERS/SECOND"/>
+</pre>
+
+h2. Part 3 Content
+
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@CUTTING_SPEED@&nbsp;&nbsp;&nbsp;|CuttingSpeed|The speed difference (relative velocity) between the cutting mechanism and the surface of the workpiece it is operating on.
+@
+Subtypes of @CUTTING_SPEED@ are @ACTUAL@, @COMMANDED@, and @PROGRAMMED@.@
+@
+If no subType is specified, the reported value must default to @PROGRAMMED@.@
+@
+@CuttingSpeed@ is reported in units of @MILLIMETERS/SECOND@.|
+
+
+
+
+
+h3. Example
+
+<pre>
+<CuttingSpeed dataItemId="cs1" timestamp="2019-04-06T13:55:46.756391Z" sequence="1783571" subType="ACTUAL">text</CuttingSpeed>
+<CuttingSpeed dataItemId="cs2" timestamp="2019-04-06T13:56:46.756391Z" sequence="1783572" subType="COMMANDED">text</CuttingSpeed>
+<CuttingSpeed dataItemId="cs3" timestamp="2019-04-06T13:57:46.756391Z" sequence="1783573" subType="PROGRAMMED">text</CuttingSpeed>
+</pre>

@@ -1,0 +1,20 @@
+h1. @PROGRAM@
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@PROGRAM@&nbsp;&nbsp;&nbsp;|The identity of the logic or motion program being executed.@
+@
+The _valid data value_ *MUST* be a text string.|
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PROGRAM@&nbsp;&nbsp;&nbsp;|@Program@|The identity of the logic or motion program being executed.@
+@
+This is usually the name of the file containing the program instructions.@
+@
+The _Valid Data Value_ *MUST* be any text string.|

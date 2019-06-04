@@ -1,0 +1,61 @@
+h1. Addition of SCHEDULE, MAIN, and ACTIVE subtypes for PROGRAM and PROGRAM_COMMENT DataItems
+Update section 8.2 Data Items of in Category EVENT
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|PROGRAM&nbsp;&nbsp;&nbsp;|The identity of the logic or motion program being executed by the @Controller@ component.
+The valid data value *MUST* be a text string.|
+|>.SCHEDULE|The identity of a control program that is used to specify the order of execution of other programs.|
+|>.MAIN|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
+|>.ACTIVE|The identity of the logic or motion program currently executing.|
+|PROGRAM_COMMENT&nbsp;&nbsp;&nbsp;|A comment or non-executable statement in the control program. The valid data value MUST be a text string.|
+|>.SCHEDULE|The identity of a control program that is used to specify the order of execution of other programs.|
+|>.MAIN|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
+|>.ACTIVE|The identity of the logic or motion program currently executing.|
+
+h3. Examples
+
+<pre>
+<DataItem type="PROGRAM" subType="SCHEDULE" id="schedprgm" category="EVENT"/>
+<DataItem type="PROGRAM" subType="MAIN" id="mainprgm" category="EVENT"/>
+<DataItem type="PROGRAM" subType="ACTIVE" id="actprgm" category="EVENT"/>
+<DataItem type="PROGRAM_COMMENT" subType="SCHEDULE" id="schedprgmcmnt" category="EVENT"/>
+<DataItem type="PROGRAM_COMMENT" subType="MAIN" id="pgm" category="EVENT"/>
+<DataItem type="PROGRAM_COMMENT" subType="ACTIVE" id="pgmactive" category="EVENT"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|PROGRAM|Program|The identity of the logic or motion program being executed.  
+The Valid Data Value MUST be any text string.
+@
+@
+Subtypes of @PROGRAM@ are @SCHEDULE@, @MAIN@, @ACTIVE@.
+@
+@
+If a subType is not specified, it is assumed to be MAIN.
+|
+|PROGRAM_COMMENT|ProgramComment|A comment or non-executable statement in the control program.  
+The Valid Data Value MUST be any text string.
+@
+@
+Subtypes of @PROGRAM_COMMENT@ are @SCHEDULE@, @MAIN@, @ACTIVE@.
+@
+@
+If a subType is not specified, it is assumed to be MAIN.
+|
+
+h3. Example
+
+<pre>
+<Program subType="SCHEDULE"... >text</Program>
+<Program subType="MAIN"... >text</Program>
+<Program subType="ACTIVE"... >text</Program>
+<ProgramComment subType="SCHEDULE"... >text</<ProgramComment >
+<ProgramComment subType="MAIN"... >text</<ProgramComment >
+<ProgramComment subType="ACTIVE"... >text</<ProgramComment >
+</pre>

@@ -1,0 +1,10 @@
+
+h1. @SYSTEM@ 
+
+h2. Part 2 and Part 3 Content
+
+h3. CONDITION (_New Condition type gets added and/or already defined gets updated_)
+
+|_.DataItem Type|_.Description|
+|@SYSTEM@|An indication of a fault associated with a piece of equipment or component that cannot be classified as a specific type.|
+
