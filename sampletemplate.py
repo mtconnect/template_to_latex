@@ -1,19 +1,23 @@
 from os import path
 from re import search, DOTALL
 
+from library.formatcontent import formatContent
+
 class sampleTemplate:
 
-    def __init__(self, config, latex_model, fmt):
+    def __init__(self, config, latex_model, formatter):
         self._template = dict()
         self._config = config
         self._config.load_config("sampleTemplate")
-        self._latex_model = latex_model(2)
-        self._latex_model3 = latex_model(3)
-        self._fmt = fmt
+        self._get_latex_model = latex_model
+        self._latex_model = self._get_latex_model()
+        self._fmt = formatter
 
 
     def load_new_content(self, _path):
         self._path = _path
+        self._latex_model = self._get_latex_model(2) #default
+        self._fmt = formatContent(self._get_latex_model())
         if not self._path:
             raise Exception("Enter a valid LaTeX directory path!")
 
@@ -30,6 +34,7 @@ class sampleTemplate:
         self._add_units_to_glossary(nativeUnits, kind = 'nativeUnits')
 
         self._add_types_to_glossary(part2, 'meta')
+        self._fmt = formatContent(self._get_latex_model())
         self._add_types_to_glossary(part3, 'observation')
 
 
@@ -92,13 +97,13 @@ class sampleTemplate:
                         else:
                             content = search_result.group(i)
 
-                        if 'example' in content.lower():
+                        if 'example' in content.lower().split('\n')[0]:
                             return_dict['example'] = content
 
-                        elif 'nativeunit' in content.lower():
+                        elif 'nativeunit' in content.lower().split('\n')[0]:
                             return_dict['nativeUnits'] = content
 
-                        elif 'unit' in content.lower():
+                        elif 'unit' in content.lower().split('\n')[0]:
                             return_dict['units'] = content
 
                     return_dict['content'] = search_result.group(index)
@@ -138,9 +143,11 @@ class sampleTemplate:
                 elif _type == 'type':
                     key = self._fmt.to_key(col, category)
                     self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
+                    self._fmt._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     if category.lower() == 'sample':
                         elem_name = self._fmt.to_elem_name(col)
                         self._latex_model._glossary['names'][elem_name] = [key, '\\glselementname{']
+                        self._fmt._latex_model._glossary['names'][elem_name] = [key, '\\glselementname{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -200,7 +207,8 @@ class sampleTemplate:
     def _add_to_glossary(self, row, gls_key, _type = 'sample,type', subtype = list(), model = str(), subtype_type = str()):
 
         if model == 'meta':
-            latex_model = self._latex_model
+            self._latex_model = self._get_latex_model(2)
+            self._fmt = formatContent(self._get_latex_model())
 
             #Expecting row content to be in the following order
             name = row[0]
@@ -222,8 +230,8 @@ class sampleTemplate:
                     gls_key,
                     self._fmt.to_latex_name(name),
                     description,
-                    'type', 'model',
-                    'category', 'code',
+                    'type', 'mtc',
+                    'category', 'model',
                     'units', units,
                     'kind', _type.lower(),
                     'elementname',elementname,
@@ -233,7 +241,8 @@ class sampleTemplate:
             values = [gls_key, description, units]
 
         elif model == 'observation':
-            latex_model = self._latex_model3
+            self._latex_model = self._get_latex_model(3)
+            self._fmt = formatContent(self._get_latex_model())
 
             elementname = row[1]
             description = row[2]
@@ -247,7 +256,7 @@ class sampleTemplate:
         if _type == 'subType':
             gls_key = str(',').join([subtype_type,gls_key])
 
-        latex_model.update_table(
+        self._latex_model.update_table(
             action = 'add',
             table_name = table_name,
             row = gls_key,
@@ -267,8 +276,8 @@ class sampleTemplate:
                 entry_key,
                 entry_name,
                 row[1],
-                'type', 'model',
-                'category', 'code',
+                'type', 'mtc',
+                'category', 'model',
                 'kind', kind.lower()
                 )
 
@@ -293,7 +302,7 @@ class sampleTemplate:
         for i,col in enumerate(units_list):
             if '\n' in col and len(col) < 5 and i!=0:  #length check is arbitrary
                 break
-            elif not('\n' in col and len(col) < 5):
+            elif not('\n' in col and len(col) < 5) and i!=0:
                 columns.append(self._fmt.format_col_name(col))
 
 

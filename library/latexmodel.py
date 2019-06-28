@@ -4,8 +4,9 @@ from re import search, sub, DOTALL
 
 class latexModel:
 
-    def __init__(self, _path = None):
+    def __init__(self, _path = None, gls_parent_dir = None):
         self._path = _path
+        self._gls_parent_dir = gls_parent_dir
         self._tables = dict()
         self._glossary = dict()
         self._glossary['terms'] = dict()
@@ -26,7 +27,12 @@ class latexModel:
 
 
     def _load_content(self):
-        self._glossary_path = path.join(self._path,'mtc-terms.tex')
+        if not self._gls_parent_dir:
+            gls_parent_dir = self._path
+        else:
+            gls_parent_dir = self._gls_parent_dir
+
+        self._glossary_path = path.join(gls_parent_dir ,'mtc-terms.tex')
         self._tables_path = path.join(self._path,'tables')
         self._load_tables()
         self._load_glossary()
@@ -386,7 +392,7 @@ class latexModel:
 
             glossary_string+=string
 
-        _path = self._path+'/'+file_name+'.tex'
+        _path = self._glossary_path
         _file = open(_path, 'w')
         _file.write(glossary_string)
         _file.close()
@@ -498,7 +504,8 @@ class latexModel:
 
             elif len(last_value.split('}\n{',1)) == 2:
                 val, description = last_value.split('}\n{',1)
-
+            else:
+                print (last_value)
             values['description'] = description
             values[last_key] = val
 

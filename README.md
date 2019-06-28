@@ -4,4 +4,4 @@ Automating new content from Project Site into the MTConnect Standard LaTeX docum
 Update Paths
 ------------
 
-Update LaTeX path in the config file `config/template.cfg` and match the names of all the MTConnect Part LaTeX projects.
+Update Perl and LaTeX path in the config file `config/template.cfg` and verify the names of all the MTConnect Part LaTeX projects.

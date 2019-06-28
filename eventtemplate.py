@@ -1,18 +1,23 @@
 from os import path
 from re import search, DOTALL
 
+from library.formatcontent import formatContent
+
 class eventTemplate:
 
-    def __init__(self,  config, latex_model, fmt):
+    def __init__(self,  config, latex_model, formatter):
         self._template = dict()
         self._config = config
         self._config.load_config("eventTemplate")
-        self._latex_model = latex_model(2)
-        self._latex_model3 = latex_model(3)
-        self._fmt = fmt
+        self._get_latex_model = latex_model
+        self._latex_model = self._get_latex_model()
+        self._fmt = formatter
 
     def load_new_content(self, _path):
         self._path = _path
+        self._latex_model = self._get_latex_model(2) #default
+        self._fmt = formatContent(self._get_latex_model())
+
         if not self._path:
             raise Exception("Enter a valid LaTeX directory path!")
 
@@ -26,6 +31,7 @@ class eventTemplate:
         part2, part3, examples2, examples3 = self._get_content_from_template(template)
 
         self._add_types_to_glossary(part2, 'meta')
+        self._fmt = formatContent(self._get_latex_model())
         self._add_types_to_glossary(part3, 'observation')
 
 
@@ -102,9 +108,11 @@ class eventTemplate:
                 elif _type == 'type':
                     key = self._fmt.to_key(col, category)
                     self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
+                    self._fmt._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     if category.lower() == 'event':
                         elem_name = self._fmt.to_elem_name(col)
                         self._latex_model._glossary['names'][elem_name] = [key, '\\glselementname{']
+                        self._fmt._latex_model._glossary['names'][elem_name] = [key, '\\glselementname{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -163,7 +171,8 @@ class eventTemplate:
     def _add_to_glossary(self, row, gls_key, _type = 'event,type', subtype = list(), model = str(), subtype_type = str()):
 
         if model == 'meta':
-            latex_model = self._latex_model
+            self._latex_model = self._get_latex_model(2)
+            self._fmt = formatContent(self._get_latex_model())
 
             #Expecting row content to be in the following order
             name = row[0]
@@ -184,8 +193,8 @@ class eventTemplate:
                     gls_key,
                     self._fmt.to_latex_name(name),
                     description,
-                    'type', 'model',
-                    'category', 'code',
+                    'type', 'mtc',
+                    'category', 'model',
                     'kind', _type.lower(),
                     'elementname',elementname,
                     'subtype',subtype
@@ -194,7 +203,8 @@ class eventTemplate:
             values = [gls_key, description]
 
         elif model == 'observation':
-            latex_model = self._latex_model3
+            self._latex_model = self._get_latex_model(3)
+            self._fmt = formatContent(self._get_latex_model())
 
             elementname = row[1]
             description = row[2]
@@ -209,7 +219,7 @@ class eventTemplate:
             #table row keys
             gls_key = str(',').join([subtype_type,gls_key])
 
-        latex_model.update_table(
+        self._latex_model.update_table(
             action = 'add',
             table_name = table_name,
             row = gls_key,
@@ -217,4 +227,5 @@ class eventTemplate:
             values = values,
             _type = _type
             )
+
 

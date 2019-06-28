@@ -32,11 +32,11 @@ class generateContent:
         return _file.read()
 
 
-    def _generate_table_str(self, label, columns):
+    def _generate_table_str(self, label, columns, caption):
         template  = self._content['table']['template']
 
         textwidth = self._get_textwidth(columns)
-        caption = '\\caption{'+self._create_caption_from_label(label)+'}'
+        caption = '\\caption{'+self._create_caption_from_label(label, caption)+'}'
         columns_str = str(' & ').join(columns)
         label_str = '\\label{' + str(':').join(['table',label]) + '}'
         ref_str = '\\ref{' + str(':').join(['table',label]) + '}'
@@ -62,13 +62,16 @@ class generateContent:
         return '\\textwidth{'+textwidth+'}'
 
 
-    def _create_caption_from_label(self, label):
-        caption = label.replace('-',' ')
-        return caption.title()
+    def _create_caption_from_label(self, label, caption = str()):
+        if not caption:
+            caption = label.replace('-',' ')
+            return caption.title()
+        else:
+            return caption
 
 
-    def create_table(self, path, label, columns):
-        table_str =  self._generate_table_str(label, columns)
+    def create_table(self, path, label, columns, caption = str()):
+        table_str =  self._generate_table_str(label, columns, caption)
         _file = open(path, 'w')
         _file.write(table_str)
 

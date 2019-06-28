@@ -3,12 +3,12 @@ from re import search, DOTALL
 
 class compositionTemplate:
 
-    def __init__(self, config, latex_model, fmt):
+    def __init__(self, config, latex_model, formatter):
         self._template = dict()
         self._config = config
         self._config.load_config("compositionTemplate")
-        self._latex_model = latex_model()
-        self._fmt = fmt
+        self._latex_model = latex_model(2)
+        self._fmt = formatter
 
 
     def load_new_content(self, _path):
@@ -130,8 +130,8 @@ class compositionTemplate:
                 gls_key,
                 self._fmt.to_latex_name(name),
                 description,
-                'type', 'model',
-                'category', 'code',
+                'type', 'mtc',
+                'category', 'model',
                 'kind', _type.lower()
                 )
         table_name = self._config.table_name(2, "composition")

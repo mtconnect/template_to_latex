@@ -3,12 +3,12 @@ from re import search, DOTALL
 
 class glossaryEntryTemplate:
 
-    def __init__(self, config, latex_model, fmt):
+    def __init__(self, config, latex_model, formatter):
         self._template = dict()
         self._config = config
         self._config.load_config("glossaryEntryTemplate")
         self._latex_model = latex_model()
-        self._fmt = fmt
+        self._fmt = formatter
 
 
     def load_new_content(self, _path):
@@ -45,6 +45,12 @@ class glossaryEntryTemplate:
             else:
                 _type = str('new')
 
+            if not name:
+                name_search = search('_(.+?)_', entry_dict['name_str'], DOTALL)
+                if name_search:
+                    name_str = name_search.group(1)
+                    name = self._fmt.to_latex_name(name_str)
+
             if name not in self._latex_model._glossary['names']:
                 name_key = self._fmt.to_key(name_str)
                 if name_key in self._latex_model._glossary['terms']:
@@ -59,7 +65,8 @@ class glossaryEntryTemplate:
             entry_dict['keys'] = self._get_keys_from_template(entry, columns, columns_str)
 
             entries_dict[name_key] = entry_dict
-            entries_dict[name_key]['keys']['name'] = name
+            if 'name' not in entries_dict[name_key]['keys']:
+                entries_dict[name_key]['keys']['name'] = name
             if _type != 'new':
                 entries_dict[name_key]['keys']['kind'] = _type
 

@@ -1,10 +1,11 @@
 from os import path
 from re import search, DOTALL
 from library.generatecontent import generateContent
+from library.formatcontent import formatContent
 
 class newSectionTemplate:
 
-    def __init__(self, config, latex_model, fmt):
+    def __init__(self, config, latex_model, formatter):
         self._template = dict()
         self._contents = dict()
         self._contents['tables'] = dict()
@@ -14,9 +15,8 @@ class newSectionTemplate:
         self._config = config
         self._generate = generateContent(config)
         self._config.load_config("newSectionTemplate")
-        self._latex_model2 = latex_model(2)
-        self._latex_model3 = latex_model(3)
-        self._fmt = fmt
+        self._get_latex_model = latex_model
+        self._fmt = formatter
 
 
     def load_new_content(self, _path):
@@ -31,12 +31,19 @@ class newSectionTemplate:
 
     def _add_all_content_to_doc(self, template):
 
-        section, tables, figures, examples = self._get_content_from_template(template)
+        sub_templates = template.split('h1. ')
+        self.doc_str = str()
 
-        self._get_tables_content(tables)
-        self._get_figures_content(figures)
-        self._get_examples_content(examples)
-        self._get_section_content(section)
+        for sub_template in sub_templates[1:]:
+            sub_template = 'h1. '+sub_template
+            section, tables, figures, examples = self._get_content_from_template(sub_template)
+
+            self._get_tables_content(tables)
+            self._get_figures_content(figures)
+            self._get_examples_content(examples)
+            self._get_section_content(section)
+
+        self._write_doc(self.doc_str)
 
 
     def _get_content_from_template(self, template):
@@ -67,37 +74,44 @@ class newSectionTemplate:
 
         if search(part_no_pattern, section, DOTALL):
             part_no_str = search(part_no_pattern, section, DOTALL).group(1)
+            part_no_str = part_no_str.lower().split('part')[-1]
 
-            if 'part 3' in part_no_str.lower():
-                self._template['model'] = 3
-                self._latex_model = self._latex_model3
+            if float(part_no_str) == int(float(part_no_str)):
+                part_no = int(part_no_str)
             else:
-                self._template['model'] = 2
-                self._latex_model = self._latex_model2
-                
+                part_no = float(part_no_str)
+
+            self._latex_model = self._get_latex_model(part_no)
+            self._config.load_config("newSectionTemplate")
+
+        self._template['model'] = part_no
         return part_no
 
 
     def _get_tables_content(self, tables):
         for table_str in tables:
             label = self._get_label_from_content(table_str)
-            self._add_table(label, table_str)
+            caption = self._get_caption_from_content(table_str)
+            self._add_table(label, table_str, caption)
             
 
-    def _add_table(self, label, table_str):
+    def _add_table(self, label, table_str, caption = str()):
 
         columns_str = search('\|(.+?)\|\n', table_str, DOTALL).groups()[0]
         columns = self._fmt.extract_row_columns_from_string(columns_str)
 
-        if table_str not in self._latex_model._tables:
+        if label not in self._latex_model._tables:
             path = self._latex_model._path +'/tables/' + label + '.tex'
-            self._generate.create_table(path, label, columns)
+            self._generate.create_table(path, label, columns, caption)
             self._latex_model._load_tables()
-            self._contents['tables'][label] = dict()
-            self._contents['tables'][label]['string'] = '\\input{tables/'+label+'.tex}'
-            self._contents['labels'][label] = 'table'
+
+        self._contents['tables'][label] = dict()
+        self._contents['tables'][label]['string'] = '\\input{tables/'+label+'.tex}'
+        self._contents['labels'][label] = 'table'
 
         rows = self._get_types_from_template(table_str, columns, columns_str)
+
+        self._add_to_glossary(columns, rows)
 
         for key, val in rows.items():
             row = val[key]
@@ -105,10 +119,50 @@ class newSectionTemplate:
             self._latex_model.update_table(
                 action = 'add',
                 table_name = label,
-                row = row[0],
+                row = key,
                 columns = columns,
                 values = row
                 )
+
+
+    def _add_to_glossary(self, columns, rows = dict(), _type = str()):
+        for key, val in rows.items():
+            row = val[key]
+            if not _type:
+                if 'element' in columns[0].lower():
+                    _type = 'element'
+                elif 'attribute' in columns[0].lower():
+                    _type = 'attribute'
+                elif 'enum' in columns[0].lower():
+                    _type = 'enum'
+                else:
+                    _type = columns[0].lower().replace(' ','')
+
+            name = row[0]
+            description = str()
+            if 'Description' in columns:
+                description = row[columns.index('Description')]
+
+
+            if not self._latex_model.get_gls_name(key):
+                self._latex_model.add_glossary_entry(
+                    key,
+                    self._fmt.to_latex_name(name),
+                    description,
+                    'type', 'mtc',
+                    'category', 'model',
+                    'kind', _type
+                    )
+
+            elif 'kind' not in self._latex_model._glossary['terms'][key].keys():
+                keys = self._latex_model._glossary['terms'][key].keys()
+
+                if 'description' not in keys:
+                    self._latex_model._glossary['terms'][key]['description'] = '{'+description+'}'
+
+                self._latex_model._glossary['terms'][key]['kind'] = '{'+_type+'}'
+
+                self._latex_model.update_gls_entry(key)
 
 
     def _get_types_from_template(self, part, columns, columns_str):
@@ -139,12 +193,39 @@ class newSectionTemplate:
                     rows_dict[key][key] = [col]
 
             elif i%len(columns) >= 1:
+                self._search_types_within_desc(col)
                 col = self._fmt.format_desc(col)
                 if _type == 'type':
                     rows_dict[key][key].append(col)
 
         return rows_dict
 
+
+    def _search_types_within_desc(self, desc):
+        if search('\n- @(.+?)@:(.+?)@\n|\n- @(.+?)@:(.+?)',desc, DOTALL):
+            category = 'model'
+            term = search('\n- @(.+?)@:(.+?)@\n|\n- @(.+?)@:(.+?)',desc, DOTALL)
+
+            if term.group(1):
+                gls_name = self._fmt.to_latex_name(term.group(1))
+                description = self._fmt.format_desc(term.group(2))
+            else:
+                gls_name = self._fmt.to_latex_name(term.group(3))
+                description = desc.split('\n- @'+term.group(3)+'@:',1)[-1].split('|')[0]
+                description = self._fmt.format_desc(description)
+            term_formatted = self._latex_model.get_gls_key_entry_command(gls_name, category)
+
+            if not term_formatted:
+                self._latex_model.add_glossary_entry(
+                    self._fmt.to_key(self._fmt.from_latex_name(gls_name)),
+                    gls_name,
+                    description,
+                    'type', 'mtc',
+                    'category', 'model'
+                    )
+            return self._search_types_within_desc(desc.split(term.group(0),1)[-1])
+        else:
+            return
 
     def _get_figures_content(self, figures):
         for figure_str in figures:
@@ -189,7 +270,11 @@ class newSectionTemplate:
 
         section_desc = section.split(pattern_search.group(0))[-1]
 
-        doc_str = self._read_doc()
+        
+        if not self.doc_str:
+            self.doc_str = self._read_doc()
+        doc_str = self.doc_str
+
         section_name = self._fmt.format_key(section_name_str)[0]
         section_name = self._fmt.to_latex_name(section_name)
         parent, parent_sect_type = self._get_parent_section(section, doc_str)
@@ -200,7 +285,7 @@ class newSectionTemplate:
 
     def _read_doc(self):
         part = self._template['model']
-        _file_path = self._config.latex_model(part) +'/'+ self._config.doc_name(part, "section")
+        _file_path = path.join(self._config.latex_model(part), self._config.doc_name(part, "section"))
         _file=open(_file_path+'.tex','r',errors='ignore')
         doc_str = _file.read()
         _file.close()
@@ -209,7 +294,7 @@ class newSectionTemplate:
 
     def _write_doc(self, doc_str):
         part = self._template['model']
-        _file_path = self._config.latex_model(part) +'/'+ self._config.doc_name(part, "section")
+        _file_path = path.join(self._config.latex_model(part), self._config.doc_name(part, "section"))
         _file=open(_file_path+'.tex','w')
         _file.write(doc_str)
         _file.close()
@@ -217,6 +302,9 @@ class newSectionTemplate:
 
     def _subsection_type(self, sect_type):
         subsection_type = str()
+
+        if not sect_type:
+            return self._sect_types[0]
 
         for i, _type in enumerate(self._sect_types):
             if sect_type == _type and i < len(self._sect_types)-1:
@@ -237,9 +325,14 @@ class newSectionTemplate:
         section_type = self._subsection_type(parent_sect_type)
 
         if parent:
-            split_str = '\n\\'+parent_sect_type+'{'+parent+'}'
+            split_str = '\\'+parent_sect_type+'{'+parent+'}'
             parent_sect = doc_str.split(split_str)[-1]
-            parent_sect = split_str + parent_sect.split('\n\\'+parent_sect_type)[0]
+
+            for sect_type in self._sect_types:
+                parent_sect_type = parent_sect.split('\n\\'+sect_type)
+                if len(parent_sect_type) >1:
+                    break
+            parent_sect = split_str + parent_sect_type[0]
         else:
             parent_sect = doc_str
 
@@ -252,7 +345,7 @@ class newSectionTemplate:
             new_section_str = str().join(new_section)
             doc_str = doc_str.replace(parent_sect, new_section_str)
 
-            self._write_doc(doc_str)
+            self.doc_str = doc_str
         else:
             print("Duplicate: New Content for Section "
                   + self._fmt.from_latex_name(section_name)
@@ -271,17 +364,17 @@ class newSectionTemplate:
             parent = search(parent_pattern, section, DOTALL).group(1)
             parent = self._fmt.format_key(parent)[0]
 
-        for _type in sect_types:
-            sect_type_str = '\n\\'+_type+'{'+parent+'}'
-            if sect_type_str in doc_str:
-                parent_sect_type = sect_type_str
-                break
+            for _type in sect_types:
+                sect_type_str = '\\'+_type+'{'+parent+'}'
+                if sect_type_str in doc_str:
+                    parent_sect_type = _type
+                    break
 
-        return parent, _type
+        return parent, parent_sect_type
 
 
     def _get_label_from_content(self, content):
-        label_pattern = '\*(.+?)\n'
+        label_pattern = '\* label(.+?)\n'
         label = str()
 
         if search(label_pattern, content, DOTALL):
@@ -289,6 +382,16 @@ class newSectionTemplate:
             label = self._fmt.format_key(label_str)[0]
 
         return label
+
+    def _get_caption_from_content(self, content):
+        caption_pattern = '\* caption(.+?)\n'
+        caption = str()
+
+        if search(caption_pattern, content, DOTALL):
+            caption_str = search(caption_pattern, content, DOTALL).group(1)
+            caption = self._fmt.format_key(caption_str)[0]
+
+        return caption
 
 
     def _format_section_content(self, section):

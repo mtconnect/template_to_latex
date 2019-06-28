@@ -3,12 +3,12 @@ from re import search, DOTALL
 
 class componentTemplate:
 
-    def __init__(self, config, latex_model, fmt):
+    def __init__(self, config, latex_model, formatter):
         self._template = dict()
         self._config = config
         self._config.load_config("componentTemplate")
-        self._latex_model = latex_model()
-        self._fmt = fmt
+        self._latex_model = latex_model(2)
+        self._fmt = formatter
 
 
     def load_new_content(self, _path):
@@ -122,6 +122,7 @@ class componentTemplate:
                 if _type == 'type':
                     key = self._fmt.to_key(col)
                     self._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
+                    self._fmt._latex_model._glossary['names'][self._fmt.to_latex_name(col)] = [key, '\\gls{']
                     rows_dict[key] = dict()
                     rows_dict[key]['_type'] = _type
                     rows_dict[key][key] = [col]
@@ -172,8 +173,8 @@ class componentTemplate:
                 gls_key,
                 self._fmt.to_latex_name(name),
                 description,
-                'type', 'model',
-                'category', 'code',
+                'type', 'mtc',
+                'category', 'model',
                 'kind', _type.lower()
                 )
 
