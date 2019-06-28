@@ -1,0 +1,36 @@
+[submodule "overleaf/v1.4/MTConnect Part 1"]
+	path = overleaf/v1.4/MTConnect Part 1
+	url = https://git.overleaf.com/5c5a48aba01f4b5d93dad5b8
+[submodule "overleaf/v1.5/MTConnect Part 1"]
+	path = overleaf/v1.5/MTConnect Part 1
+	url = https://git.overleaf.com/5c5a48aba01f4b5d93dad5b8
+[submodule "overleaf/v1.4/MTConnect Part 2"]
+	path = overleaf/v1.4/MTConnect Part 2
+	url = https://git.overleaf.com/5c3e01910e55b636e41223c1
+[submodule "overleaf/v1.5/MTConnect Part 2"]
+	path = overleaf/v1.5/MTConnect Part 2
+	url = https://git.overleaf.com/5c3e01910e55b636e41223c1
+[submodule "overleaf/v1.4/MTConnect Part 3"]
+	path = overleaf/v1.4/MTConnect Part 3
+	url = https://git.overleaf.com/5c1aac941720ec107a990500
+[submodule "overleaf/v1.5/MTConnect Part 3"]
+	path = overleaf/v1.5/MTConnect Part 3
+	url = https://git.overleaf.com/5c1aac941720ec107a990500
+[submodule "overleaf/v1.4/MTConnect Part 4.0"]
+	path = overleaf/v1.4/MTConnect Part 4.0
+	url = https://git.overleaf.com/5c73ef86b5d7d7275911d0e1
+[submodule "overleaf/v1.5/MTConnect Part 4.0"]
+	path = overleaf/v1.5/MTConnect Part 4.0
+	url = https://git.overleaf.com/5c73ef86b5d7d7275911d0e1
+[submodule "overleaf/v1.4/MTConnect Part 4.1"]
+	path = overleaf/v1.4/MTConnect Part 4.1
+	url = https://git.overleaf.com/5c7d7f913cd0ac612209cc2e
+[submodule "overleaf/v1.5/MTConnect Part 4.1"]
+	path = overleaf/v1.5/MTConnect Part 4.1
+	url = https://git.overleaf.com/5c7d7f913cd0ac612209cc2e
+[submodule "overleaf/v1.4/MTConnect Part 5"]
+	path = overleaf/v1.4/MTConnect Part 5
+	url = https://git.overleaf.com/5c7ead14d30c3f6341a268d1
+[submodule "overleaf/v1.5/MTConnect Part 5"]
+	path = overleaf/v1.5/MTConnect Part 5
+	url = https://git.overleaf.com/5c7ead14d30c3f6341a268d1
