@@ -1,0 +1,42 @@
+Correction to TOOL_OFFSET Event
+
+h1. TOOL_OFFSET
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@TOOL_OFFSET@&nbsp;&nbsp;&nbsp;|A reference to the tool offset variables applied to the active cutting tool.@
+@
+The valid data value *MUST* be a text string.@ 
+@
+The reported value returned for @TOOL_OFFSET@ identifies the location in a table or list where the actual tool offset values are stored.@
+@
+*DEPRECATED* in V1.5 ---A subType *MUST* always be specified.---|
+|>.@RADIAL@|A reference to a radial type tool offset.|
+|>.@LENGTH@|A reference to a length type tool offset.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="TOOL_OFFSET" subType="RADIAL"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@TOOL_OFFSET@|@ToolOffset@|A reference to the tool offset variables applied to the active cutting tool.@ 
+@
+Subtypes of ToolOffset are @RADIAL@ and @LENGTH@.@ 
+@
+*DEPRECATED* in V1.5 ---A subType *MUST* always be specified.---@ 
+@
+The _Valid Data Value_ *MUST* be a text string.|
+
+h3. Example
+
+<pre>
+<ToolOffset subtype="RADIAL"...>text</ToolOffset>
+<ToolOffset subtype="LENGTH"...>text</ToolOffset>
+</pre>

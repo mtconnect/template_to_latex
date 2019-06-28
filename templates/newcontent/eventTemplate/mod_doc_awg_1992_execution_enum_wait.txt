@@ -1,0 +1,48 @@
+h1. Execution
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@EXECUTION@|The execution status of the @Controller@.@
+@
+The valid data value *MUST* be @READY@, @ACTIVE@, @INTERRUPTED@, @WAIT@, @FEED_HOLD@, @STOPPED@, @OPTIONAL_STOP@, @PROGRAM_STOPPED@, or @PROGRAM_COMPLETED@.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="EXECUTION"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@EXECUTION@|@Execution@|The execution status of the @Controller@ component.@
+@
+_Valid Data Values_:@
+@
+- @READY@:  The controller is ready to execute instructions. It is currently idle.@
+@
+- @ACTIVE@:  The controller is actively executing an instruction.@
+@
+- @INTERRUPTED@:  The execution of the controller’s program has been suspended due to an external signal.  Action is required to resume execution.@
+@
+- @WAIT@:  The execution of the controller's program is suspended while a secondary operation is executing or completing.  Execution will resume automatically once the secondary operation is completed.@
+@
+- @FEED_HOLD@:  Motion of the device has been commanded to stop at its current position.  The controller remains able to execute instructions but cannot complete the current set of instructions until after motion resumes.   The command to stop the motion must be removed before execution can resume.@
+@
+- @STOPPED@:  The execution of the controller’s program has been stopped in an unplanned manner and execution of the program cannot be resumed without intervention by an operator or external signal.@
+@
+- @OPTIONAL_STOP@:  The controller’s program has been intentionally stopped using an M01 or similar command.  The program may be stopped at the designated location based upon the state of a secondary indication provided to the controller indicating whether the program execution must be stopped at this location or program execution should continue.@
+@
+- @PROGRAM_STOPPED@:  The execution of the controller’s program has been stopped by a command from within the program.   Action is required to resume execution.@
+@
+- @PROGRAM_COMPLETED@:  The program has completed execution.|
+
+
+h3. Example
+
+<pre>
+  <Execution ... >WAIT</Execution>
+</pre>

@@ -1,6 +1,5 @@
 h1. PROGRAM_NEST_LEVEL
 
-
 h2. Part 2 Content
 
 * Category: @EVENT@
@@ -21,8 +20,10 @@ h3. Example
 h2. Part 3 Content
 
 |_.DataItem Type|_.Element Name|_.Description|
-|PROGRAM_NEST_LEVEL|ProgramNestLevel|An indication of the nesting level within a control program that is associated with the code or instructions that is currently being executed.
-If an Initial Value is not defined, the nesting level associated with the highest or initial nesting level of the program *MUST* default to zero (0).
+|@PROGRAM_NEST_LEVEL@|@ProgramNestLevel@|An indication of the nesting level within a control program that is associated with the code or instructions that is currently being executed.@
+@
+If an initial value is not defined, the nesting level associated with the highest or initial nesting level of the program *MUST* default to zero (0).@
+@
 The value reported for @ProgramNestLevel@ *MUST* be an integer.|
 
 h3. Example

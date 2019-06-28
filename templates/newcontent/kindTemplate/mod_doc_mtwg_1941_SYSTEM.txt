@@ -1,0 +1,17 @@
+
+h1. CONDITION
+
+h2. Part 2
+
+h3. dataitem-type-category-condition
+
+|_.DataItem Type|_.Description|
+|@SYSTEM@|An indication of a fault associated with a piece of equipment or component that cannot be classified as a specific type.|
+
+h2. Part 3
+
+h3. element-names-condition
+
+|_.DataItem Type|_.Description|
+|@SYSTEM@|An indication of a fault associated with a piece of equipment or component that cannot be classified as a specific type.|
+

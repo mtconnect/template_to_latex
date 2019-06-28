@@ -1,7 +1,8 @@
+he following is proposed content for the Sample type data items discussed at the last WG meeting.
 
 h1. Additive Data Items
 
-h2. Part 2 Content for Sample category data items to be included in Section 8.1 
+h2. Part 2 Content
 
 * Category: @SAMPLE@
 
@@ -34,7 +35,7 @@ h3. Examples
 
 
 
-h2. Part 3 Content to be added to the table in Section 6.1
+h2. Part 3 Content
 
 |_.DataItem Type|_.Element Name|_.Description|
 |@DEPOSITION_VOLUME@|@DepositionVolume@|The spatial volume of material deposited in an additive manufacturing process.@
@@ -44,20 +45,20 @@ Subtypes of @DepositionVolume@ are @ACTUAL@ and @COMMANDED@.@
 If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
 @
 @DepositionVolume@ *MUST* be reported in units of @CUBIC_MILLIMETER@.|
-|@DEPOSITION_RATE_VOLUMETRIC @|@DepositionRateVolumetric@|The rate at which a spatial volume of material is deposited in an additive manufacturing process.@
+|@DEPOSITION_RATE_VOLUMETRIC@|@DepositionRateVolumetric@|The rate at which a spatial volume of material is deposited in an additive manufacturing process.@
 @
 Subtypes of @DepositionRateVolumetric@ are @ACTUAL@ and @COMMANDED@.@
 @
 If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
 @
-@DepositionAcceleration@ *MUST* be reported in units of @CUBIC_MILLIMETER/SECOND@.|
-|@DEPOSITION_ACCELERATION_VOLUMETRIC @|@DepositionAccelerationVolumetric@|The rate of change in spatial volume of material deposited in an additive manufacturing process.@
+@DepositionRateVolumetric@ *MUST* be reported in units of @CUBIC_MILLIMETER/SECOND@.|
+|@DEPOSITION_ACCELERATION_VOLUMETRIC@|@DepositionAccelerationVolumetric@|The rate of change in spatial volume of material deposited in an additive manufacturing process.@
 @
 Subtypes of @DepositionAccelerationVolumetric@ are @ACTUAL@ and @COMMANDED@.@
 @
 If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
 @
-@DepositionAcceleration@ *MUST* be reported in units of @CUBIC_MILLIMETER/SECOND^2@.|
+@DepositionAccelerationVolumetric@ *MUST* be reported in units of @CUBIC_MILLIMETER/SECOND^2@.|
 |@DEPOSITION_MASS@|@DepositionMass@|The mass of the material deposited in an additive manufacturing process.@
 @
 Subtypes of @DepositionMass@ are @ACTUAL@ and @COMMANDED@.@
@@ -82,3 +83,4 @@ h3. Example
   <DepositionMass ... subType="COMMANDED">23.5</DepositionMass>
   <DepositionDensity ... subType="COMMANDED">.0025</DepositionDensity>
 </pre>
+

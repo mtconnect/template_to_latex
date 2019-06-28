@@ -1,0 +1,5 @@
+h1. @DISCRETE@
+
+|_.Key|_.Value|
+|name|DISCRETE (*DEPRECATED*)|
+|kind|representation|

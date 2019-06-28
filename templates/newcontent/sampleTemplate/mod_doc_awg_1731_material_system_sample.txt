@@ -5,15 +5,16 @@ h2. Part 2 Content to be added to table in Section 8.1
 * Category: @SAMPLE@
 
 |_.Type/Sub Type|_.Description|Units|
-|@VOLUME_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric volume of an object or container.| @CUBIC_MILLIMETER@|
-|>.@ACTUAL@|The amount of bulk material currently present in an object or container.| @CUBIC_MILLIMETER@|
-|>.@CONSUMED@|The amount of bulk material consumed from an object or container during a manufacturing process.| @CUBIC_MILLIMETER@|
-|@VOLUME_FLUID@&nbsp;&nbsp;&nbsp;|The fluid volume of an object or container.| @MILLILITER@|
-|>.@ACTUAL@|The amount of fluid currently present in an object or container.| @MILLILITER@|
-|>.@CONSUMED@|The amount of fluid material consumed from an object or container during a manufacturing process.| @MILLILITER@|
-|@CAPACITY_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric capacity of an object or container.| @CUBIC_MILLIMETER@|
-|@CAPACITY_FLUID@&nbsp;&nbsp;&nbsp;|The fluid capacity of an object or container.| @MILLILITERS@|
-|@DENSITY@&nbsp;&nbsp;&nbsp;|The volumetric mass of a material per unit volume of that material.| @MILLIGRAM/CUBIC_MILLIMETER@|
+|@VOLUME_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric volume of an object or container.| CUBIC_MILLIMETER|
+|>.@ACTUAL@|The amount of bulk material currently present in an object or container.| CUBIC_MILLIMETER|
+|>.@CONSUMED@|The amount of bulk material consumed from an object or container during a manufacturing process.| CUBIC_MILLIMETER|
+|@VOLUME_FLUID@&nbsp;&nbsp;&nbsp;|The fluid volume of an object or container.| MILLILITER|
+|>.@ACTUAL@|The amount of fluid currently present in an object or container.| MILLILITER|
+|>.@CONSUMED@|The amount of fluid material consumed from an object or container during a manufacturing process.| MILLILITER|
+|@CAPACITY_SPATIAL@&nbsp;&nbsp;&nbsp;|The geometric capacity of an object or container.| CUBIC_MILLIMETER|
+|@CAPACITY_FLUID@&nbsp;&nbsp;&nbsp;|The fluid capacity of an object or container.| MILLILITER|
+|@DENSITY@&nbsp;&nbsp;&nbsp;|The volumetric mass of a material per unit volume of that material.| MILLIGRAM/CUBIC_MILLIMETER|
+
 
 h3. Examples
 
@@ -48,7 +49,7 @@ If a @subType@ is not specified, the reported value for the data *MUST* default 
 @CapacitySpatial@ *MUST* be reported in units of @CUBIC_MILLIMETER@.|
 |@CAPACITY_FLUID@|@CapacityFluid@|The fluid capacity of an object or container.@
 @
-@CapacityFluid@ *MUST* be reported in units of @MILLILITERS@.|
+@CapacityFluid@ *MUST* be reported in units of @MILLILITER@.|
 |@DENSITY@|@Density@|The volumetric mass of a material per unit volume of that material.@
 @
 @Density@ *MUST* be reported in units of @MILLIGRAM/CUBIC_MILLIMETER@.|

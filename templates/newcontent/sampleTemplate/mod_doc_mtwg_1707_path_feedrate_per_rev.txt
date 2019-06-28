@@ -5,10 +5,16 @@ h2. Part 2 Content
 * Category: @SAMPLE@
 
 |_.Type/Sub Type|_.Description|_.Units|
-|@PATH_FEEDRATE_PER_REVOLUTION@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis, associated with a Path component– a vector.| MILLIMETER/REVOLUTION|
-|>.@ACTUAL@|The measured value of the feedrate of the axes, or a single axis, associated with a Path component.|MILLIMETER/REVOLUTION|
-|>.@COMMANDED@|The feedrate as specified by the Controller type component for the axes, or a single axis, associated with a Path component. The COMMANDED feedrate is a calculated value that includes adjustments and overrides.|MILLIMETER/REVOLUTION|
-|>.@PROGRAMMED@|The feedrate specified by a logic or motion program or set by a switch as the feedrate for the axes, or a single axis, associated with a Path .| MILLIMETER/REVOLUTION|
+|@PATH_FEEDRATE_PER_REVOLUTION@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis.| MILLIMETER/REVOLUTION|
+|>.@ACTUAL@|The measured value of the feedrate of the axes, or a single axis.|MILLIMETER/REVOLUTION|
+|>.@COMMANDED@|The feedrate as specified by the @Controller@ for the axes, or a single axis. The @COMMANDED@ feedrate is a calculated value that includes adjustments and overrides.|MILLIMETER/REVOLUTION|
+|>.@PROGRAMMED@|The feedrate specified by a logic or motion program or set by a switch as the feedrate for the axes, or a single axis.| MILLIMETER/REVOLUTION|
+
+
+h3. units
+
+|_.Units|_.Description|
+|@MILLIMETER/REVOLUTION@|Millimeters per revolution.|
 
 
 h3. Examples
@@ -24,12 +30,11 @@ h3. Examples
 h2. Part 3 Content
 
 |_.DataItem Type|_.Element Name|_.Description|
-|@PATH_FEEDRATE_PER_REVOLUTION@|@PathFeedratePerRevolution@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis, associated with a Path component– a vector.
+|@PATH_FEEDRATE_PER_REVOLUTION@|@PathFeedratePerRevolution@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis.@
 @
-The Valid Data Value MUST be any text string.@
+The _Valid Data Value_ *MUST* be any text string.@
 @
-Subtypes of PathFeedratePerRevolution are ACTUAL, COMMANDED, and PROGRAMMED.
-@|
+Subtypes of @PathFeedratePerRevolution@ are @ACTUAL@, @COMMANDED@, and @PROGRAMMED@.|
 
 h3. Example
 

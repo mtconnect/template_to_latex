@@ -1,0 +1,32 @@
+
+h1. VARIABLE
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@VARIABLE@&nbsp;&nbsp;&nbsp;| A data value whose meaning may change over time due to changes in the opertion of a piece of equipment or the process being executed on that piece of equipment.|
+
+h3. Examples
+
+<pre>
+<DataItem category="EVENT" id="IDCVar" representation="DATA_SET" type="VARIABLE"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@VARIABLE@|@Variable@|A data value whose meaning may change over time due to changes in the opertion of a piece of equipment or the process being executed on that piece of equipment.@
+@
+The valid data value *MUST* be a string.|
+
+h3. Examples
+
+<pre>
+<VariableDataSet dataItemId="IDCVar" timestamp="2019-05-07T01:21:57.464666Z" sequence="118" subType="COMMON" sampleCount="3">
+<Entry key="101:1.111"/>
+<Entry key="102:2.222"/>
+<Entry key="103:3.333"/>
+</VariableDataSet>
+</pre>

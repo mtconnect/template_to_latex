@@ -1,0 +1,34 @@
+h1. CONTROLLER_MODE
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@CONTROLLER_MODE@&nbsp;&nbsp;&nbsp;|The current mode of the @Controller@ component. The valid data value *MUST* be @AUTOMATIC@, @MANUAL@, @MANUAL_DATA_INPUT@, @SEMI_AUTOMATIC@, or @EDIT@. |
+
+
+h3. Examples
+
+<DataItem category="EVENT" id="mode" name="mode" type="CONTROLLER_MODE"/>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@CONTROLLER_MODE@|@ControllerMode@|The current operating mode of the @Controller@ component.@
+@
+_Valid Data Values_:@
+@
+- @AUTOMATIC@: The controller is configured to automatically execute a program. @
+@
+- @MANUAL@: The controller is not executing an active program. It is capable of receiving instructions from an external source – typically an operator. The controller executes operations based on the instructions received from the external source. @
+@
+- @MANUAL_DATA_INPUT@: The operator can enter a series of operations for the controller to perform. The controller will execute this specific series of operations and then stop. @
+@
+- @SEMI_AUTOMATIC@: The controller is operating in an mode that restricts the active program from processing it's next process step without operator intervention. @
+@
+- @EDIT@: The controller is currently functioning as a programming device and is not capable of executing an active program.|
+
+h3. Example
+
+<ControllerMode dataItemId="mode" timestamp="2019-05-13T19:57:54.504819Z" sequence="60">AUTOMATIC</ControllerMode>

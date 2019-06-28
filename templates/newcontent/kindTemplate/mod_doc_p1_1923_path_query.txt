@@ -1,0 +1,24 @@
+h1. @query@
+
+h2. Part 1
+
+h3. query-parameters-for-sample-httprequest
+
+|_.Query Parameters|_.Description|
+|@path@|An XPath that defines specific information or a set of information to be included in an _MTConnectStreams Response Document_.@
+@
+The value for the XPath is the location of the information defined in the _Devices Information Model_ that represents the _Structural Element_(s) and/or the specific _Data Entities_ to be included in the _MTConnectStreams Response Document_ .@
+@
+When a @Component@ element is referenced by the XPath, all _Lower Level_ components and the _Data Entities_ associated with those elements *MUST* be included in the _MTConnectStreams Response Document_.|
+
+
+h3. query-parameters-for-current-httprequest
+
+|_.Query Parameters|_.Description|
+|@path@|An XPath that defines specific information or a set of information to be included in an _MTConnectStreams Response Document_.@
+@
+The value for the XPath is the location of the information defined in the _Devices Information Model_ that represents the _Structural Element_(s) and/or the specific _Data Entities_ to be included in the _MTConnectStreams Response Document_ .@
+@
+When a @Component@ element is referenced by the XPath, all _Lower Level_ components and the _Data Entities_ associated with those elements *MUST* be included in the _MTConnectStreams Response Document_.|
+
+

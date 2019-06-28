@@ -1,6 +1,6 @@
 h1. nativeunits attribute for dataitem
 
-h2. Part 2 Content 
+h2. Part 2
 
 h3. nativeUnits
 

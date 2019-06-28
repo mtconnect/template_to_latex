@@ -1,8 +1,8 @@
 h1. @representation@ (_parent_)
 
-h2. Part 2 Content
+h2. Part 2
 
-h3. Representation (_Adds/Updates_)
+h3. Representation
 
 |_.Representation|_.Description|
 |@DATA_SET@| Add a new @representation@ for associative arrays of values for data items. Any data item can have a representation of @DATA_SET@ that will append the suffix @DataSet@ to @type@ as described in the @TIME_SERIES@ from part 2 enumerations to part 3.|
@@ -10,15 +10,15 @@ h3. Representation (_Adds/Updates_)
 
 h1. @DataSet@ (_parent_)
 
-h2. Part 3 Content
+h2. Part 3
 
-h3. Attributes (_Adds/Updates_)
+h3. Attributes
 
 |_.Attribute|_.Description|_.Occurrence|
 |@count@|The number of @Entries@ @AVAILABLE@ at a given point in time. (_As per Will's Comment_)|0..1|
 
 
-h3. Elements (_Adds/Updates_)
+h3. Elements
 
 |_.Element|_.Description|_.Occurrence|
 |@Entry@|The value of the @Entry@ element will have the same facet or controlled vocabulary from the @type@'s default @representation@. @
@@ -26,32 +26,11 @@ h3. Elements (_Adds/Updates_)
 The contents of the @Entry@ has the same constraints as the un-adorned observation.|0..1|
 
 
-h4. Examples
-
-<pre>
-  <VariableDataSet timestamp="..." sequence="..." ...>
-    <Entry key="a101">100.21</Entry>
-    <Entry key="a102">609</Entry>
-  </VariableDataSet>
-</pre>
-
-Or to be odd–never do this: 
-
-<pre>
-  <ExecutionDataSet timestamp="..." sequence="..." ...>
-    <Entry key="O10021">ACTIVE</Entry>
-    <Entry key="O10022">STOPPED</Entry>
-    <Entry key="O90012">READY</Entry>
-  </ExecutionDataSet >
-</pre>
-
-
-
 h1. @Entry@ (_parent_)
 
-h2. Part 3 Content
+h2. Part 3
 
-h3. Attributes (_Adds/Updates_)
+h3. Attributes
 
 |_.Attribute|_.Description|_.Occurrence|
 |@key@|The identity of this entry|1|

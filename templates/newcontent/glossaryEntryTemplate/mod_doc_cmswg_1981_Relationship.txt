@@ -1,0 +1,30 @@
+
+h1. @Relationships@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|An XML container that organizes information defining the affiliation between pieces of equipment that function independently but together perform a manufacturing operation.  It may also define the affiliation between components within a piece of equipment.|
+
+h1. @Relationship@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|An XML element that describes the association between two pieces of equipment that function independently but together perform a manufacturing operation. It may also be used to define the association between two components within a piece of equipment.|
+
+h1. @DeviceRelationship@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It describes the association between two pieces of equipment that function independently but together perform a manufacturing operation.|
+|kind|relationship|
+
+h1. @ComponentRelationship@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It describes the association between two components within a pieces of equipment that function independently but together perform a capability or service within a piece of equipment.|
+|kind|relationship|

@@ -1,0 +1,30 @@
+
+h1. DeviceUuid
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@DEVICE_UUID@&nbsp;&nbsp;&nbsp;|The identifier of another piece of equipment that is temporarily associated with a component of this piece of equipment to perform a particular function.@
+@
+The valid data value *MUST* be a NMTOKEN XML type.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="DEVICE_UUID"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@DEVICE_UUID@|@DeviceUuid@|The identifier of another piece of equipment that is temporarily associated with a component of this piece of equipment to perform a particular function.@
+@
+_Valid Data Values_ are the value of the UUID attribute of the associated device - a NMTOKEN XML type.|
+
+h3. Example
+
+<pre>
+  <DeviceUuid ... >2828239</DeviceUuid>
+</pre>
