@@ -1,0 +1,20 @@
+
+h1. @Relationships@
+
+* Part: Part 2
+* Parent: @Structural Elements for MTConnectDevices@
+* Add After Section: @Reference@
+
+@Relationships@ is an XML container that organizes information defining the association between pieces of equipment that function independently but together perform a manufacturing operation.  @Relationships@ may also define the association between components within a piece of equipment.@
+@ 
+@Relationships@ may be modeled as part of a @Device@ or a @Component@ _Structural Element_.@
+@ 
+@Relationships@ contains one or more @Relationship@ XML elements.
+
+* Table: @MTConnect Relationships Element@
+
+|_.Element|_.Description|_.Occurrence|
+|@Relationships@ |XML Container consisting of one or more @Relationship@ XML elements.@
+@
+Only one @Relationships@ container *MUST* appear for a @Device@ or a @Component@ element.|0..1|
+

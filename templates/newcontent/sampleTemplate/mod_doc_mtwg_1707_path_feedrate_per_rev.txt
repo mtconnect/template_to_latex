@@ -32,7 +32,7 @@ h2. Part 3 Content
 |_.DataItem Type|_.Element Name|_.Description|
 |@PATH_FEEDRATE_PER_REVOLUTION@|@PathFeedratePerRevolution@&nbsp;&nbsp;&nbsp;|The feedrate for the axes, or a single axis.@
 @
-The _Valid Data Value_ *MUST* be any text string.@
+@PathFeedratePerRevolution@ is reported in units of @MILLIMETER/REVOLUTION@.@
 @
 Subtypes of @PathFeedratePerRevolution@ are @ACTUAL@, @COMMANDED@, and @PROGRAMMED@.|
 

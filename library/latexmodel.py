@@ -97,8 +97,8 @@ class latexModel:
         elif key.endswith(' '):
             return self._extract_key(key[:-1])
 
-        elif search('([a-zA-Z0-9*:]+)([a-zA-Z0-9*: ]+)([a-zA-Z0-9*:]+)',key):
-            key = search('([a-zA-Z0-9*:]+)([a-zA-Z0-9*: ]+)([a-zA-Z0-9*:]+)',key).group(0)
+        elif search('([a-zA-Z0-9*:_]+)([a-zA-Z0-9*: ]+)([a-zA-Z0-9*:]+)',key):
+            key = search('([a-zA-Z0-9*:_]+)([a-zA-Z0-9*: ]+)([a-zA-Z0-9*:]+)',key).group(0)
             return key
         else:
             return key
@@ -177,7 +177,7 @@ class latexModel:
 
     def add_table_row(self, action, table_name, row, columns, values, _type = str()):
 
-        if row in self._tables[table_name]['rows']:
+        if row in self._tables[table_name]['rows']: # or row.split(',')[0] in self._tables[table_name]['rows']: too much effort in latexdiff
             print (row+' already in table '+table_name+'!')
             print ('Updating...')
             self.update_table_cell('replace', table_name, row, columns, values, _type)
@@ -189,9 +189,9 @@ class latexModel:
 
         self._tables[table_name]['string'] = string + new_string + '\end{longtabu}'
 
-        self.write_table(table_name)
+        self.write_table(table_name, True)
 
-        print ("Row entry with key " + row + " added to the table " + table_name + " !")
+        print ("Row entry with key: " + row + " ; added to the table: " + table_name + " !")
 
 
     def add_table_row_string(self, columns, values, plural = False, row = None, _type = None):
@@ -254,8 +254,25 @@ class latexModel:
 
     def update_table_cell(self, action, table_name, row, columns, values, _type = str()):
 
+        add_subtype_to_type = False
         if not self._validate_cell_update_args(action, table_name, row):
-            raise Exception ("Invalid args for update_table_cell !")
+            if not self._validate_cell_update_args(action, table_name, row.split(',')[0]):
+                raise Exception ("Invalid args for update_table_cell !")
+            elif False: #else: too much effort in latexdiff
+                add_subtype_to_type = True
+                parent_row = row.split(',')[0]
+                new_string = self.add_table_row_string(columns, values, False, row, _type)
+
+                pre_string, string = self._tables[table_name]['string'].split('\n\\gls{'+parent_row+'}',1)
+
+                string, post_string = string.split('\n\\gls{',1)
+
+                self._tables[table_name]['string'] = pre_string +'\n\\gls{'+parent_row+'}'+ string + new_string +'\n\\gls{'+ post_string
+
+                self.write_table(table_name, True)
+
+                print ("Row entry with key: " + row + " ; added to the table: " + table_name + "; to row: "+parent_row+" !")
+                return
 
         #partioning file string to identify the substring for update
         parent_file_string = self._tables[table_name]['string']
@@ -275,7 +292,7 @@ class latexModel:
         print ("Updated!")
 
 
-    def write_table(self, table_name = None):
+    def write_table(self, table_name = None, sort = False):
         if table_name not in self._tables:
             raise Exception("Invalid table name!")
 
@@ -284,8 +301,19 @@ class latexModel:
         if not path.isfile(_path):
             raise Exception("Write Error. Invalid path!")
 
+        #sort rows
+        if sort and False: #disabled! need opinion
+            rows = self._tables[table_name]['string'].replace('\\end{longtabu}','').split('\n\n\\gls{')
+            header = [rows[0]]
+            sorted_rows = rows[1:]
+            sorted_rows.sort()
+            sorted_rows[-1] = sorted_rows[-1] + '\n\\end{longtabu}'
+            table_str = str('\n\n\\gls{').join(header+sorted_rows)
+        else:
+            table_str = self._tables[table_name]['string']
+
         _file = open(_path, 'w')
-        _file.write(self._tables[table_name]['string'])
+        _file.write(table_str)
         _file.close()
 
         return "LaTeX file successfully updated!"
@@ -416,7 +444,7 @@ class latexModel:
             values = self._extract_glossary_values(key, string)
             self._glossary['terms'][key] = values
 
-            name = values['name'].split('{')[-1].split('}')[0]
+            name = values['name'].split('{',1)[-1].rsplit('}',1)[0]
 
             if name in self._glossary['names']:
                 if 'category' in values and 'model' in values['category']:
@@ -429,6 +457,9 @@ class latexModel:
 
             self._glossary['names'][name] = [key, '\\gls{'] #key, gls command
 
+            if search(' \((.+?)\)',name):
+                self._glossary['names'][name.replace(search(' \((.+?)\)',name).group(0),'')] = [key, '\\gls{']
+
             if 'elementname' in values:
                 elementname = values['elementname'].split('{')[-1].split('}')[0]
                 if category:
@@ -436,12 +467,20 @@ class latexModel:
 
                 self._glossary['names'][elementname] = [key, '\\glselementname{']
 
+            if 'representation' in values:
+                representation = values['representation'].split('{')[-1].split('}')[0]
+                if category:
+                    representation = str(',').join([category,representation])
+
+                self._glossary['names'][representation] = [key, '\\glsrepresentation{']
+
             if 'plural' in values:
                 plural = values['plural'].split('{')[-1].split('}')[0]
                 if category:
                     plural = str(',').join([category,plural])
 
                 self._glossary['names'][plural] = [key, '\\glspl{']
+
 
             else: #few pluralization rules
                 if name[-1].islower():

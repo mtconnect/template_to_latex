@@ -1,0 +1,28 @@
+h1. _key_
+
+|_.Key|_.Value|
+|description|A unique identifier of a key-value pair association.|
+
+h1. _key-value pair_
+
+|_.Key|_.Value|
+|description|An association between an identifier referred to as the _key_ and a value which taken together create a _key-value pair_. When used in a set of _key-value pairs_ each _key_ is unique and will only have one value associated with it at any point in time.|
+|plural|key-value pairs|
+
+
+h1. _key_
+
+|_.Key|_.Value|
+|description|A unique identifier of a _key-value pair_ association.|
+|plural|keys|
+
+h1. _Data Set_
+
+|_.Key|_.Value|
+|description|A set of _key-value pairs_ where each entry is uniquely identified by the _key_.|
+|plural|Data Sets|
+
+h1. _reset_
+
+|_.Key|_.Value|
+|description|A reset is associated with an occurrence of a _Data Entity_ indicated by the @resetTriggered@ attribute. When a reset occurs, the accumulated value or statistic are reverted back to their initial value. A _Data Entity_ with a _Data Set_ representation removes all _key-value pairs_, setting the _Data Set_ to an empty set.|

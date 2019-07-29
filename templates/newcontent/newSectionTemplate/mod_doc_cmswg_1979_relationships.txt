@@ -1,0 +1,22 @@
+h1. @Configuration for Component@
+
+* Part: Part 2
+* Parent: @Elements of Component@
+* Update Section: @Configuration for Component@
+
+The @Configuration@ XML element contains technical information about a component.  @Configuration@ *MAY* include any information describing the physical layout or functional characteristics of a component, such as capabilities, testing, installation, operation, calibration, or maintenance. @Configuration@ *MAY* also include information representing the inter-relationships between components within a piece of equipment.
+
+* Table: @MTConnect Configuration Element for Component@
+
+|_.Element|_.Description|_.Occurrence|
+|@Configuration@ |An XML element that contains technical information about a component describing its physical layout, functional characteristics, and relationships with other components within a piece of equipment.|0..1|
+
+Configuration data for @Component@ is structured in the @MTConnectDevices@ XML document as shown in {figure:Component Configuration Diagram}.   @AbstractConfiguration@ is an abstract type XML element.   It will never appear in the XML document representing a piece of equipment.    When @Configuration@ is provided for a component, that type of @Configuration@ will appear in the XML document.@
+@
+@SensorConfiguration@ is described in detail in {section:Sensor Configuration}.@
+@
+@Relationships@ is described in detail in {section:Relationships}.
+
+* Figure: @Component Configuration Diagram@
+
+!component-configuration-schema-diagram.png!

@@ -1,0 +1,57 @@
+
+h1. @Data Streaming@
+
+* Part: Part 1
+* Parent: @MTConnect Request/Response Information Exchange Implemented with HTTP@
+* Rename: @Streaming Data@
+* Update Section: @Data Streaming@
+
+When an _HTTP Request_ includes an @interval@ <@query@> parameter, an MTConnect Agent *MUST* provide data with a minimum delay between the end of one data transmission and the beginning of the next data transmission defined by the value (in milliseconds) provided for @interval@ parameter.  A value of zero (0) for the @interval@ parameter indicates that the MTConnect Agent should deliver data at the highest possible rate possible.
+
+The format of the response *MUST* use a MIME encoded message with each section separated by a MIME boundary.  Each section *MUST* contain an entire _MTConnectStreams Response Document_. 
+
+If there are no available _Data Entities_ to be published after the @interval@ time has elapsed, an MTConnect Agent *MUST* wait until additional information is available to be published.  If no new no new information is available to be published within the time defined by the @heartbeat@ parameter, the agent *MUST* then send a new section to ensure the receiver that the MTConnect Agent is functioning correctly.  In this case, the content of the @MTConnectStreams@ document *MUST* be empty since no data is available.
+
+For more information on MIME see IETF RFC 1521 and RFC 822.  
+
+An example of the format for a _HTTP Request_ that  includes an @interval@ parameter is:
+
+* Example: @Example for HTTP Request with interval parameter@
+
+<pre>
+http://localhost:5000/sample?interval=1000
+</pre>
+
+HTTP Response Header:
+
+* Example: @HTTP Response header@
+
+<pre>
+HTTP/1.1 200 OK
+Connection: close
+Date: Sat, 13 Mar 2010 08:33:37 UTC
+Status: 200 OK
+Content-Disposition: inline
+X-Runtime: 144ms
+Content-Type: multipart/x-mixed-replace;boundary=a8e12eced4fb871ac096a99bf9728425
+Transfer-Encoding: chunked
+</pre>
+
+Lines 1-8 in {example:HTTP Response header} represent a standard header for a MIME \cfont{multipart/x-mixed-replace} message.  The boundary is a separator for each section of the stream. Line 7 indicates this is a multipart MIME message and the boundary between sections. 
+
+With streaming protocols, the \cfont{Content-length} *MUST* be omitted and \cfont{Transfer-Encoding} *MUST* be set to \cfont{chunked} (line 8). See IETF RFC 7230 for a full description of the HTTP protocol and chunked encoding.
+
+* Example: @HTTP Response header 2@
+
+<pre>
+--a8e12eced4fb871ac096a99bf9728425
+Content-type: text/xml
+Content-length: 887
+
+<?xml version="1.0" ecoding="UTF-8"?>
+<MTConnectStreams ...>...
+</pre>
+
+Each section of the document begins with a boundary preceded by two hyphens (\cfont{--}). The \cfont{Content-type} and \cfont{Content-length} MIME header fields *MUST* be provided for each section and *MUST* be followed by <CR><LF><CR><LF> (ASCII code for <CR> is 13 and <LF> is 10) before the XML document. The header and the <CR><LF><CR><LF> *MUST NOT* be included in the computation of the content length.
+
+An MTConnect Agent *MUST* continue to stream results until the client closes the connection.  The Agent *MUST NOT* stop the streaming for any other reason other than the Agent process shutting down or the client application becoming unresponsive and not receiving data (as indicated by not consuming data and the write operation blocking).

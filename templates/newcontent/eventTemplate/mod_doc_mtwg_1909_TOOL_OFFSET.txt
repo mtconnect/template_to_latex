@@ -28,7 +28,7 @@ h2. Part 3 Content
 |_.DataItem Type|_.Element Name|_.Description|
 |@TOOL_OFFSET@|@ToolOffset@|A reference to the tool offset variables applied to the active cutting tool.@ 
 @
-Subtypes of ToolOffset are @RADIAL@ and @LENGTH@.@ 
+Subtypes of @ToolOffset@ are @RADIAL@ and @LENGTH@.@ 
 @
 *DEPRECATED* in V1.5 ---A subType *MUST* always be specified.---@ 
 @

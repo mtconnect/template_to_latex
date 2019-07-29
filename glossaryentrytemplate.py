@@ -71,6 +71,17 @@ class glossaryEntryTemplate:
                 entries_dict[name_key]['keys']['kind'] = _type
 
             self._template['entries'] = entries_dict
+
+            if self._get_value_from_key(name_key, 'name'):
+                name = self._get_value_from_key(name_key, 'name')
+                self._latex_model._glossary['names'][name] = [name_key, '\\gls{']
+                self._fmt._latex_model._glossary['names'][name] = [name_key, '\\gls{']
+
+            elif self._get_value_from_key(name_key, 'plural'):
+                plural = self._get_value_from_key(name_key, 'plural')
+                self._latex_model._glossary['names'][plural] = [name_key, '\\glspl{']
+                self._fmt._latex_model._glossary['names'][plural] = [name_key, '\\glspl{']
+
             self._update_entry_in_glossary(entries_dict)
 
 

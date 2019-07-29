@@ -6,5 +6,5 @@ h2. Part 2
 h3. Representation
 
 |_.Representation|_.Description|
-|@DISCRETE@|*DEPRECATED* as a @representation@ in MTConnect Version. 1.5.  Replaced by the @discrete@ attribute for a _Data Entity_ – _See Section x.x._|
+|@DISCRETE@|*DEPRECATED* as a @representation@ in MTConnect Version. 1.5.  Replaced by the @discrete@ attribute for a _Data Entity_ – {section:Attributes for DataItem}.|
 

@@ -1,0 +1,154 @@
+
+h1. @Data Sets@
+
+* Parent: @Storage of Streaming Data@
+* Part: Part 1
+* Add After Section: @Heartbeat@
+
+An _Agent_ *MUST* maintain the current state of the _Data Set_ for every _Data Entity_ with a representation of _Data Set_ for all data associated with a _sequence number_ as described in {section:Management of Streaming Data Storage}.
+
+_Data Entities_ represented as _Data Sets_ provides a facility for providing multiple values for a single _Data Entity_ where each entry in the _Data Set_ is a _key-value pair_ uniquely identified by the _key_. For more details on _Data Entities_ defined as _Data Sets_, see \citetitle{MTCPart2} _Section 7.2.2.12_ and \citetitle{MTCPart3} _Section 5.3.4_.
+
+Any number of _key-value pairs_ may be added, removed or changed in a single update to the _Data Set_. An _Agent_ *MUST* publish the changes to one or more _key-value pairs_ as a single _Data Entity_ associated with a single _sequence number_. An _Agent_ *MUST* indicate the removal of a _key-value pair_ from a _Data Set_.
+
+When the _Data Entity_ definition has the @discrete@ attribute set to @false@ or is not present, an _Agent_, when streaming data, *MUST* suppress identical successive _key-value pairs_ and only publish the _key-value pairs_ that have changed since the previous state of the _Data Set_.
+
+When the _Data Entity_ definition has the @discrete@ attribute set to @true@, an _Agent_, when streaming data, *MUST* report all _key-value pairs_ regardless of the previous state of the _Data Set_, and *MUST NOT* suppressed any identical _key-value pairs_.
+
+When a _reset_ occurs, the current state of the _Data Set_ *MUST* be cleared and contain no _key-value pairs_. The _Data Set_ *MAY* be simultaneously populated with a new set of _key-value pairs_. The previous entries *MUST NOT* be included and *MUST NOT* indicate removal. An _Agent_ *MUST NOT* suppress reporting any _key-value pairs_ regardless of the prior state of the _Data Set_.
+
+When the _Data Entity_ is @UNAVAILABLE@ the _Data Set_ *MUST* be cleared and contain no _key-value pairs_. The prior state of the _Data Set_ *MUST* not be retained and the _Data Set_ *MUST* be repopulated when the data is available.
+
+h1. @Changes to Element Names when representation attribute is used@
+
+* Parent: @Element Names for Data Entities@
+* Part: Part 3
+* Update Line: [[@representation@ attribute of @TIME_SERIES@ or]]
+
+@representation@ attribute of @TIME_SERIES@, @DATA_SET@, or 
+
+* Add After Line: [[*MUST* be transformed to the _Element Name_ @PartCountDiscrete@.]]
+
+Similarly, the @DataItem@ element @VARIABLE@ with a @representation@ attribute defined as @DATA_SET@ *MUST* be transformed to the _Element Name_ \cfont{VariableDataSet}.
+
+h1. @Response for SAMPLE category DataItem Elements with a representation attribute of DATA_SET@
+
+* Parent: @Sample Data Entities@
+* Part: Part 3
+* Add Before Section: @Valid Data Values for Sample@
+
+@SAMPLE@ category @DataItem@ elements defined in the @MTConnectDevices@ document with a @representation@ attribute of @DATA_SET@ *MUST* be represented in the @MTConnectStreams@ document as @Sample@ XML Elements reported as a  _Data Set_ of _key-value pairs_. @DATA_SET@ provides the capability to report a set of related data values as a single _Data Entity_.
+
+The @Sample@ XML Element acts as a container for @Entry@ elements to provide a _Data Set_ of _key-value pairs_ where each @key@ attribute of the @Entry@ *MUST* be unique and acts as the identity of the _key-value pair_. The CDATA of the @Entry@ element represents the value portion of the _key-value pair_ and has the same constraints as the _Data Entity_ type defined for the @DataItem@ @type@.
+
+h2. @XML Schema Structure for SAMPLE when reporting Data Set data@
+
+{figure:Sample Data Set Schema Diagram} represents the XML schema of a @Sample@ XML element that represents a @SAMPLE@ category @DataItem@ element defined in the @MTConnectDevices@ document with a @representation@ attribute of @DATA_SET@.
+
+* Figure: @Sample Data Set Schema Diagram@
+
+!sample-data-set-schema-diagram.png!
+
+h2. @Attributes for SAMPLE when reporting Data Set data@
+
+{table:Attributes for DataSet} defines the additional attribute provided for a @Sample@ XML element that represents a @SAMPLE@ category @DataItem@ element defined in the @MTConnectDevices@ document with a @representation@ attribute of @DATA_SET@.
+
+* Table: @Attributes for DataSet@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@count@|Represents the number of _key-value pairs_ represented as @Entry@ elements as the contents of the @Sample@ element.@
+@
+@count@ *MUST* be provided when the @representation@ attribute of the @DataItem@ element is @DATA_SET@.@
+@
+@count@ *MUST NOT* be provided when the @representation@ attribute is defined as @DISCRETE@, @TIME_SERIES@, or @VALUE@, or when it is not defined.|0..1|
+
+h2. @Elements for SAMPLE when reporting Data Set data@
+
+{table:Elements for DataSet} defines the elements provided for a @Sample@ XML element that represents a @SAMPLE@ category @DataItem@ element defined in the @MTConnectDevices@ document with a @representation@ attribute of @DATA_SET@. @Entry@ is the only child element that *MAY* be associated with a _Data Entity_ with a @representation@ attribute of @DATA_SET@. Each @Entry@ element represents a unique _key-value pair_. 
+
+* Table: @Elements for DataSet@
+
+|_.Element|_.Description|_.Occurrence|
+|@Entry@|A XML element representing a _key-value pair_ published as part of a _Data Set_.|0..*|
+
+h3. @XML Schema Structure for Entry Element for a Data Entity@
+
+{figure:Entry Element Schema Diagram} represents the XML Schema structure for a @Entry@ XML element that represents the information published for a _key-value pair_. Any number of @Entry@ elements *MAY* be provided for a _Data Entity_ defined with a @representation@ attribute of @DATA_SET@. 
+
+* Figure: @Entry Element Schema Diagram@
+
+!entry-element-schema-diagram.png!
+
+Note: The \cfont{VariableDataSet} element shown in the XML schema is an example that illustrates the schema for a _Data Entity_ element and its associated @Entry@ elements representing a _Data Set_.
+
+The following example demonstrates how multiple _key-value pairs_, each defined by an @Entry@ element, are structured in a @MTConnectStreams@ document.
+
+* Example: @Example of multiple key-value pairs Reported for a Data Entity@
+
+<pre>
+  <VariableDataSet timestamp="..." sequence="..." count="2">
+    <Entry key="a101">100.21</Entry>
+    <Entry key="a102">609</Entry>
+    <Entry key="a103" removed="true" />
+  </VariableDataSet>
+</pre>
+
+h3. @Attributes for Entry Element for a Data Entity@
+
+The {table:Attributes for Entry} defines the attributes provided for a @Entry@ XML element. 
+
+* Table: @Attributes for Entry@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|A unique identifier for each _key-value pair_.@
+@
+The value provided for @key@ *MUST* be unique in any given set of @Entry@ elements.@
+@
+The value provided for @key@ is *MUST* be a XML NMTOKEN type.|1|
+|@removed@|A indicator defining whether a specific _key-value pair_ has been removed from the set of _key-value pairs_ associated with this _Data Set_.@
+@
+@removed@ is an XML Boolean type that *MUST* have a value of @true@ or @false@.@
+@
+@true@ indicates that the _key-value pair_ has been removed from the _Data Set_.@
+@
+@false@ indicates that the _key-value pair_ has not been removed from the _Data Set_.@
+@
+If not specified, the default value for @removed@ is @false@|0..1|
+
+h1. @Valid Data Values for Sample@
+
+* Parent: @Sample Data Entities@
+* Part: Part 3
+* Add Before Line: [[
+Data values provided for a @Sample@]]
+
+
+In the case of a @Sample@ element associated with a @SAMPLE@ category @DataItem@ element with a @representation@ attribute of @DATA_SET@, the data reported for each _key-value pair_ *MUST* be provided in the same format and units as specified by the @type@ attribute for the @DataItem@ element.
+
+When an _Agent_ responds to a _Current Request_, the information returned in the @MTConnectStreams@ document for a _Data Entity_ defined to represent a _Data Set_ *MUST* include the full set of _key-value pairs_ that are valid for that _Data Entity_. If the _Current Request_ includes an @at@ _query parameter_, the _Agent_ *MUST* provide the set of _key-value pairs_ that are valid at the specified _sequence number_.
+
+When an _Agent_ responds to a _Sample Request_, the information returned in the @MTConnectStreams@ document for a _Data Entity_ defined to represent a _Data Set_ *MUST* include only those _key-value pairs_ that are valid for the _Data Entity_ at each _sequence number_. 
+
+
+h1. @Response for Event category DataItem Elements with a representation attribute of DATA_SET@
+
+* Parent: @Event Data Entities@
+* Part: Part 3
+* Add Before Section: @Response for EVENT category Data Items with a type attribute of MESSAGE@
+
+The behavior of @EVENT@ category @DataItem@ elements defined in the @MTConnectDevices@ document with a @representation@ attribute of @DATA_SET@ function exactly the same as @SAMPLE@ category @DataItem@ elements with a @representation@ attribute of @DATA_SET@. Refer to {section:Response for SAMPLE category DataItem Elements with a representation attribute of DATA_SET} for details on @DataItem@ elements with a @representation@ attribute of @DATA_SET@.  
+
+
+h1. @Valid Data Values for Event@ 
+
+* Parent: @Event Data Entities@
+* Part: Part 3
+* Add Before Line: [[
+The _Valid Data Value_ reported as CDATA for an @Event@]] 
+
+
+In the case of an @Event@ element associated with a @EVENT@ category @DataItem@ element with a @representation@ attribute of @DATA_SET@, the data reported for each _key-value pair_ *MUST* be provided in the same format and units as specified by the @type@ attribute for the @DataItem@ element.
+
+When an _Agent_ responds to a _Current Request_, the information returned in the @MTConnectStreams@ document for a _Data Entity_ defined to represent a _Data Set_ *MUST* include the full set of _key-value pairs_ that are valid for that _Data Entity_. If the _Current Request_ includes an @at@ _query parameter_, the _Agent_ *MUST* provide the set of _key-value pairs_ that are valid at the specified _sequence number_.
+
+When an _Agent_ responds to a _Sample Request_, the information returned in the @MTConnectStreams@ document for a _Data Entity_ defined to represent a _Data Set_ *MUST* include only those _key-value pairs_ that are valid for the _Data Entity_ at each _sequence number_.

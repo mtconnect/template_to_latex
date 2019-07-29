@@ -8,7 +8,7 @@ h2. Part 2 Content
 |_.Type/Sub Type|_.Description|
 |@PROGRAM_LOCATION_TYPE@&nbsp;&nbsp;&nbsp;|Defines whether the logic or motion program defined by @PROGRAM@ is being executed from the local memory of the controller or from an outside source.@
 @
-The valid data value *MUST* be @MEMORY@ or @EXTERNAL@.|
+The valid data value *MUST* be @LOCAL@ or @EXTERNAL@.|
 |>.@SCHEDULE@|A identity of a control program that is used to specify the order of execution of other programs.|
 |>.@MAIN@|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
 |>.@ACTIVE@|The identity of the logic or motion program currently executing.|
@@ -41,9 +41,9 @@ Subtypes of @PROGRAM_LOCATION_TYPE@ are @SCHEDULE@, @MAIN@, and @ACTIVE@.@
 @
 _Valid Data Values_ are:@
 @
-- @MEMORY@: Program file stored in memory.@
+- @LOCAL@: Managed by the controller.@
 @
-- @EXTERNAL@: Program file stored externally.|
+- @EXTERNAL@: Not managed by the controller.|
 |@PROGRAM_LOCATION@|@ProgramLocation@&nbsp;&nbsp;&nbsp;|The Uniform Resource Identifier (URI) for the source file associated with @PROGRAM@.@
 @
 The _Valid Data Value_ *MUST* be any text string.@

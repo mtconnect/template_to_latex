@@ -1,6 +1,7 @@
 from os import listdir, fsencode, fsdecode, path, getcwd, mkdir
 from shutil import copyfile
 from subprocess import check_call
+from time import perf_counter
 
 from library.formatcontent import formatContent
 from library.config import config
@@ -154,6 +155,40 @@ class writeToDoc:
         perl_path = self.perl_path
 
         for folder in listdir(new_path):
+            safe_commands = ['must',
+                             'mustnot',
+                             'should',
+                             'shouldnot',
+                             'may',
+                             'maynot',
+                             'shall',
+                             'shallnot',
+                             'MUST',
+                             'MUSTNOT',
+                             'SHOULD',
+                             'SHOULDNOT',
+                             'MAY',
+                             'MAYNOT',
+                             'SHALL',
+                             'SHALLNOT',
+                             'fig',
+                             'tbl',
+                             'sect',
+                             'lst',
+                             'apx',
+                             'cfont',
+                             'textit',
+                             'deprecated',
+                             'DEPRECATED',
+                             'DEPRECATIONWARNING',
+                             'glselementname',
+                             'glsrepresentation',
+                             'citetitle',
+                             'glsunits',
+                             'gls',
+                             'glsentrydesc',
+                             'glspl',
+                             'glsentryunits']
             command = [perl_path,
                        latexdiff_path,
                        '--flatten',
@@ -161,7 +196,7 @@ class writeToDoc:
                        path.join(new_path,folder,'main.tex'),
                        '>',
                        path.join(new_path,folder,'main_diff.tex'),
-                       '--exclude-textcmd="section,subsection,subsubsection,paragraph,subparagraph"']
+                       '--append-safecmd='+str(',').join(safe_commands)]
 
             check_call(command, shell = True)
 
@@ -179,6 +214,17 @@ class writeToDoc:
 
         _file_str = _file_str.replace(old_str, new_str).replace('–','-').replace('“','"').replace('”','"').replace("’","'")
 
+        #update latexdiff DIFadd and DIFdel commands
+        difadd_old = '\n\\providecommand{\\DIFadd}[1]{{\\protect\\color{blue}\\uwave{#1}}}'
+        difadd_new = '\n\\providecommand{\\DIFadd}[1]{{\\hspace{0pt}\\protect\\color{blue}#1}}'
+
+        _file_str = _file_str.replace(difadd_old, difadd_new)
+
+        difdel_old = '\n\\providecommand{\\DIFdel}[1]{{\\protect\\color{red}\\sout{#1}}}'
+        difdel_new = '\n\\providecommand{\\DIFdel}[1]{{\\hspace{0pt}\\protect\\color{red}#1}}'
+
+        _file_str = _file_str.replace(difdel_old, difdel_new)
+
         _file = open(file_path,'w')
         _file.write(_file_str)
         _file.close()
@@ -187,9 +233,9 @@ class writeToDoc:
     def write_all_new_content_for_project_group(self, project_group):
 
         #order is significant
+
         self._glossary_entry_template = glossaryEntryTemplate(self.config, self.latex_model, self._fmt)
         self._write_new_content_for('glossaryEntryTemplate', self._glossary_entry_template, project_group)
-        self._fmt = formatContent(self.latex_model())
 
         self._kind_template = kindTemplate(self.config, self.latex_model, self._fmt)
         self._write_new_content_for('kindTemplate', self._kind_template, project_group)
@@ -217,6 +263,14 @@ class writeToDoc:
 
 
 if __name__ == '__main__':
+    time_start = perf_counter()
+
     writetodoc = writeToDoc()
     writetodoc.write_all_new_content()
+
+    time_latexdiff = perf_counter()
+
     writetodoc.create_latexdiff_files(1.4,1.5)
+
+    print ('Completed in: ' + str(time_latexdiff-time_start) + ' seconds!\nLatexdiff completed in ' + str(perf_counter()-time_latexdiff)+ ' seconds!')
+

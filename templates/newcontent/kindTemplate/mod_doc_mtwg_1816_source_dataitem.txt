@@ -1,0 +1,10 @@
+h1. @DataItem@ 
+
+h2. Part 2
+
+h3. Elements
+
+|_.Elements|_.Description|_.Occurrence|
+|@Source@|@Source@ is an optional XML element that identifies the @Component@, @DataItem@, or @Composition@ representing the area of the piece of equipment from which a measured value originates.@
+@
+Additionally, @Source@ *MAY* provide information relating to the identity of a measured value.  This information is reported as CDATA for @Source@. (example, a PLC tag)|0..1|

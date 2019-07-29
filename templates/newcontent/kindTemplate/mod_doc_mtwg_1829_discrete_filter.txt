@@ -1,0 +1,26 @@
+
+h1. @DataItem@ 
+
+h2. Part 2
+
+h3. Attributes
+
+|_.Attributes|_.Description|_.Occurrence|
+|@discrete@|An indication signifying whether each value reported for the _Data Entity_ is significant and whether duplicate values are to be suppressed.@
+@
+The value defined *MUST* be either @true@ or @false@ - an XML boolean type.@
+@
+@true@ indicates that each update to the _Data Entity_'s value is significant and duplicate values *MUST NOT* be suppressed.@
+@
+@false@ indicates that duplicated values *MUST* be suppressed.@
+@
+If a value is not defined for @discrete@, the default value *MUST* be @false@.|0..1|
+
+h2. Part 3
+
+h3. Attributes
+
+|_.Attributes|_.Description|_.Occurrence|
+|@discrete@|An indication signifying whether each value reported for the _Data Entity_ is significant and whether duplicate values are to be suppressed.@
+@
+@discrete@ is an optional attribute.|0..1|

@@ -1,0 +1,28 @@
+h1. @representation@
+
+h2. Part 2
+
+h3. Representation
+
+|_.Representation|_.Description|
+|@DATA_SET@|The reported value(s) are represented as a set of _key-value pairs_.@
+@
+Each reported value in the _Data Set_ *MUST* have a unique key. |
+
+
+h1. @DataItem@
+
+h2. Part 2
+
+h3. Attributes
+
+|_.Attributes|_.Description|_.Occurrence|
+|@representation@|Description of a means to interpret data consisting of multiple data points or as a single value.@
+@    
+@representation@ is an optional attribute.@
+@
+@representation@ defines the structure of the format of the data.@
+@
+@representation@ for @TIME_SERIES@, @DISCRETE@, @DATA_SET@, and @VALUE@ are defined in \sect{representation Attribute for DataItem}.@
+@
+If @representation@ is not specified, it *MUST* be determined to be @VALUE@.|0..1|

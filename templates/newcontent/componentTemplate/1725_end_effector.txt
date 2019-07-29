@@ -1,5 +1,0 @@
-h1. @EndEffector@
-
-h2. Parent: @Systems@
-
-An @EndEffector@ represents the information for those functions that form the last link segment of a robot. It is the part of the robot that interacts with the manufacturing process.

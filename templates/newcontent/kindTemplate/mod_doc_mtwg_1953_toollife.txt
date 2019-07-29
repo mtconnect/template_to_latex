@@ -1,0 +1,13 @@
+h1. ToolLife
+
+h2. Part 4.1
+
+h3. attributes-for-toollife
+
+|_.Attributes|_.Description|_.Occurrence|
+|@limit@|The end of life limit for this tool. If the @countDirection@ is @DOWN@, the point at which this tool should be expired, usually zero. If the @countDirection@ is @UP@, this is the upper limit for which this tool should be expired.@
+@
+@limit@ is an optional attribute.|0..1|
+|@initial@|The initial life of the tool when it is new.@
+@
+@initial@ is an optional attribute.|0..1|

@@ -86,6 +86,8 @@ class formatContent:
 
                     self._latex_model.update_gls_entry(key)
 
+            desc = desc.replace('- @'+self.from_latex_name(gls_name)+'@', '\\tab '+term_formatted)
+
             desc = desc.replace('@'+self.from_latex_name(gls_name)+'@', term_formatted)
 
             return self.format_desc(desc)
@@ -132,16 +134,6 @@ class formatContent:
 
             return self.format_desc(desc)
 
-        elif search('_([a-z A-Z]+)_',desc):
-            category = 'term'
-            term = search('_([a-z A-Z]+)_',desc)
-            gls_name = term.group(1)
-            term_formatted = self._latex_model.get_gls_key_entry_command(gls_name, category)
-
-            desc = desc.replace(term.group(0), term_formatted)
-
-            return self.format_desc(desc)
-
         elif search('_(.+?)_',desc):
             category = 'term'
             term = search('_(.+?)_',desc)
@@ -152,7 +144,22 @@ class formatContent:
                 #Do we add new term? for italics(non-model terms)
                 term_formatted = '\\textit{'+gls_name+'}'
                 print ("WARNING: Please update format for '" + term_formatted + "' in the documentation!")
+                if 'section' in term.group(0).lower():
+                    print ("UPDATE: Section Reference!\n\t text: "+term_formatted)
+                elif 'part' in  term.group(0).lower():
+                    print ("UPDATE: Part Reference!\n\t text: "+term_formatted)
 
+            desc = desc.replace(term.group(0), term_formatted)
+
+            return self.format_desc(desc)
+
+        elif search('_([a-z A-Z -]+)_',desc):
+            category = 'term'
+            term = search('_([a-z A-Z -]+)_',desc)
+            gls_name = term.group(1)
+            term_formatted = self._latex_model.get_gls_key_entry_command(gls_name, category)
+
+            if not term_formatted: print (desc)
             desc = desc.replace(term.group(0), term_formatted)
 
             return self.format_desc(desc)

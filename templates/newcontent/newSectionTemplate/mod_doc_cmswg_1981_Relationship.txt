@@ -1,74 +1,37 @@
 
-_(Only New Sections/Subsections)_
+h1. @Relationship@
 
-h1. @Relationships@ _(Section Heading)_
-
-* Part : Part 2
-
-h2. Parent: @Structural Elements for MTConnectDevices@ _(Parent Section if any)_
-
-@Relationships@ is an XML container that organizes information defining the affiliation between pieces of equipment that function independently but together perform a manufacturing operation.  @Relationships@ may also define the affiliation between components within a piece of equipment.@
-@ 
-@Relationships@ may be modeled as part of a @Device@ or a @Component@ _Structural Element_.@
-@ 
-@Relationships@ contains one or more @Relationship@ XML elements.@
-
-h1. @Relationship@ _(Section Heading)_
-
-* Part : Part 2
-
-h2. Parent: @Structural Elements for MTConnectDevices@ _(Parent Section if any)_
+* Part: Part 2
+* Parent: @Structural Elements for MTConnectDevices@
+* Add After Section: @Relationships@
 
 @Relationship@ is an XML element that describes the association between two pieces of equipment that function independently but together perform a manufacturing operation. @Relationship@ may also be used to define the association between two components within a piece of equipment.@
 @
-@Relationship@ is an abstract type XML element, @Relationship@ will be replaced in the XML document by specific @Relationship@ types.  XML elements representing @Relationship@ are described in _Sections 4.10.1 and Section 4.10.2_.@ 
+@Relationship@ is an abstract type XML element, @Relationship@ will be replaced in the XML document by specific @Relationship@ types.  XML elements representing @Relationship@ are described in {section:DeviceRelationship} and {section:ComponentRelationship}.@ 
 @
 A separate @Relationship@ type element *MAY* be defined to describe each pair of associations with a piece of equipment or between @Component@ elements within a piece of equipment.  Pieces of equipment may only be affiliated with other pieces of equipment and @Component@ elements may only be affiliated with other @Component@ elements within a specific piece of equipment.@
 @
 The current supported types of @Relationship@ are @DeviceRelationship@ and @ComponentRelationship@.@ 
 @
-The XML schema in {ref:relationship-schema-diagram} represents the structure of the @Relationship@ XML element.@
+The XML schema diagram in {figure:Relationship Diagram} represents the structure of the @Relationship@ XML element.@
 @
-{figure:relationship-schema-diagram}@
-@
+* Figure: @Relationship Diagram@
 
-h3. Figure
-* label : @relationship-schema-diagram@
+!relationship-schema-diagram.png!
 
-|_.Key|_.Val|
-|caption|Relationship Schema Diagram|
-|filename|relationship-schema-diagram.png|
-
-
-h1. @DeviceRelationship@ _(Section Heading)_
-
-* Part : Part 2
-
-h2. Parent: @Relationship@
+h2. @DeviceRelationship@
 
 @DeviceRelationship@ describes the association between two pieces of equipment that function independently but together perform a manufacturing operation.@ 
 @
-The XML schema in {ref:devicerelationship-schema-diagram} represents the structure of a @DeviceRelationship@ XML element showing the attributes defined for @DeviceRelationship@.@
+The XML schema diagram in {figure:DeviceRelationship Diagram} represents the structure of a @DeviceRelationship@ XML element showing the attributes defined for @DeviceRelationship@.@
 @
-{figure:devicerelationship-schema-diagram}@
-@
-The {ref:attributes-for-devicerelationship} lists the attributes defined for the @DeviceRelationship@ element.@ 
-@
-{table:attributes-for-devicerelationship}@
-@
+* Figure: @DeviceRelationship Diagram@
 
+!devicerelationship-schema-diagram.png!
 
-h3. Figure
-* label : @devicerelationship-schema-diagram@
+The {table:Attributes for DeviceRelationship} lists the attributes defined for the @DeviceRelationship@ element.
 
-|caption|DeviceRelationship Schema Diagram|
-|filename|devicerelationship-schema-diagram.png|
-
-
-h3. Table
-* label : @attributes-for-devicerelationship@
-
-* caption : @Attributes for DeviceRelationship@
+* Table: @Attributes for DeviceRelationship@
 
 |_.Attribute|_.Description|_.Occurrence|
 |@id@|The unique identifier for this @DeviceRelationship@.@
@@ -112,7 +75,7 @@ The value provided for @deviceUuidRef@ *MUST* be the value provided for the @uui
 @deviceUuidRef@ is a required attribute.@  
 @
 An NMTOKEN XML type.|1|
-|@role@|Defines the services or capabilities that this piece of equipment provides relative to the associated piece of equipment.@
+|@role@|Defines the services or capabilities that the referenced piece of equipment provides relative to this piece of equipment.@
 @
 @role@ is an optional attribute.@  
 @
@@ -121,39 +84,24 @@ The value provided for @role@ *MUST* be one of the following values:@
 - @SYSTEM@:  The associated piece of equipment performs the functions of a System for this piece of equipment.  In MTConnect, System provide utility type services to support the operation of a piece of equipment and these services are required for the operation of a piece of equipment.@
 @ 
 - @AUXILIARY@:  The associated piece of equipment performs the functions as an Auxiliary for this piece of equipment.  In MTConnect, Auxiliary extends the capabilities of a piece of equipment, but is not required for the equipment to function.|0..1|
-|@xlink:href@|A URL identifying the @MTConnect Agent@ associated with the piece of equipment associated with this piece of equipment and the UUID identifying that specific piece of equipment.@
+|@xlink:href@|A URL identifying the _Agent_ associated with the piece of equipment associated with this piece of equipment and the UUID identifying that specific piece of equipment.@
 @
 @xlink:href@ is an optional attribute.|0..1|
 
 
 
-h1. @ComponentRelationship@ _(Section Heading)_
-
-* Part : Part 2
-
-h2. Parent: @Relationship@  _(Parent Section if any)_
+h2. @ComponentRelationship@
 
 @ComponentRelationship@ describes the association between two components within a pieces of equipment that function independently but together perform a capability or service within a piece of equipment.@ 
 @
-The XML schema in {ref:componentrelationship-schema-diagram} represents the structure of a @ComponentRelationship@ XML element showing the attributes defined for @ComponentRelationship@.@
+The XML schema in {figure:ComponentRelationship Diagram} represents the structure of a @ComponentRelationship@ XML element showing the attributes defined for @ComponentRelationship@.@
 @
-{figure:componentrelationship-schema-diagram}@
+* Figure: @ComponentRelationship Diagram@
+!componentrelationship-schema-diagram.png!
+
+The {table:Attributes for ComponentRelationship} lists the attributes defined for the @ComponentRelationship@ element.@ 
 @
-The {ref:attributes-for-componentrelationship} lists the attributes defined for the @ComponentRelationship@ element.@ 
-@
-{table:attributes-for-componentrelationship}
-
-h3. Figure
-* label : @componentrelationship-schema-diagram@
-
-|_.Key|_.Val|
-|caption|ComponentRelationship Schema Diagram|
-|filename|componentrelationship-schema-diagram.png|
-
-h3. Table
-* label : @attributes-for-componentrelationship@
-
-* caption : @Attributes for ComponentRelationship@
+* Table: @Attributes for ComponentRelationship@
 
 |_.Attribute|_.Description|_.Occurrence|
 |@id@|The unique identifier for this @ComponentRelationship@.@
@@ -197,5 +145,3 @@ The value provided for @idRef@ *MUST* be the value provided for the @id@ attribu
 @idRef@ is a required attribute.@  
 @
 An NMTOKEN XML type.|1|
-
-

@@ -90,10 +90,10 @@ class generateContent:
         return fig_str
 
 
-    def _generate_example_str(self, content, label):
+    def _generate_example_str(self, content, label, caption):
         template  = self._content['example']['template']
 
-        caption = 'caption={'+self._create_caption_from_label(label)+'}'
+        caption = 'caption={'+self._create_caption_from_label(label, caption)+'}'
         label = 'label={'+str(':').join(['lst',label])+'}'
         
         lst_str = template.replace('caption={}',caption)

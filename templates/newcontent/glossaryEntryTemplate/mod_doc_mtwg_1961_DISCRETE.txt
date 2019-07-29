@@ -1,5 +1,4 @@
 h1. @DISCRETE@
 
 |_.Key|_.Value|
-|name|DISCRETE (*DEPRECATED*)|
-|kind|representation|
+|name|DISCRETE (\normalfont *DEPRECATED* in _Version 1.5_)|

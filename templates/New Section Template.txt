@@ -1,4 +1,6 @@
-_(Only New Sections/Subsections)_
+_(New Sections/Subsections and updates)_
+_(For updates make sure to include entire current sentence/paragraph that needs to updated which doesn't occur twice within the section.)_
+
 h1. @ComponentRef@ _(Section Heading)_
 
 * Part : Part 2 
@@ -16,8 +18,7 @@ The XML schema in {ref:componentref-schema-diagram} represents the structure of 
 
 {example:example-for-componentref}
 
-
-
+h2. Update: line [900-1000]
 
 h3. Table _(Can be multiple)_
 * label : @attributes-for-componentref@
