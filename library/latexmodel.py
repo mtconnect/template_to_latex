@@ -177,7 +177,7 @@ class latexModel:
 
     def add_table_row(self, action, table_name, row, columns, values, _type = str()):
 
-        if row in self._tables[table_name]['rows']: # or row.split(',')[0] in self._tables[table_name]['rows']: too much effort in latexdiff
+        if row in self._tables[table_name]['rows'] or row.split(',')[0] in self._tables[table_name]['rows']:
             print (row+' already in table '+table_name+'!')
             print ('Updating...')
             self.update_table_cell('replace', table_name, row, columns, values, _type)
@@ -258,16 +258,19 @@ class latexModel:
         if not self._validate_cell_update_args(action, table_name, row):
             if not self._validate_cell_update_args(action, table_name, row.split(',')[0]):
                 raise Exception ("Invalid args for update_table_cell !")
-            elif False: #else: too much effort in latexdiff
+            else:
                 add_subtype_to_type = True
                 parent_row = row.split(',')[0]
                 new_string = self.add_table_row_string(columns, values, False, row, _type)
 
                 pre_string, string = self._tables[table_name]['string'].split('\n\\gls{'+parent_row+'}',1)
 
-                string, post_string = string.split('\n\\gls{',1)
-
-                self._tables[table_name]['string'] = pre_string +'\n\\gls{'+parent_row+'}'+ string + new_string +'\n\\gls{'+ post_string
+                if '\n\\gls{' in string:
+                    string, post_string = string.split('\n\\gls{',1)
+                    self._tables[table_name]['string'] = pre_string +'\n\\gls{'+parent_row+'}'+ string + new_string +'\n\\gls{'+ post_string
+                else:
+                    string, post_string = string.split('\\end{longtabu}',1)
+                    self._tables[table_name]['string'] = pre_string +'\n\\gls{'+parent_row+'}'+ string + new_string +'\\end{longtabu}'+ post_string
 
                 self.write_table(table_name, True)
 
@@ -288,7 +291,7 @@ class latexModel:
 
         self._tables[table_name]['string'] = str().join(file_string_list)
 
-        self.write_table(table_name)
+        self.write_table(table_name, True)
         print ("Updated!")
 
 
@@ -302,7 +305,18 @@ class latexModel:
             raise Exception("Write Error. Invalid path!")
 
         #sort rows
-        if sort and False: #disabled! need opinion
+        tables_to_sort = ['element-names-event',
+                          'element-names-sample',
+                          'element-names-condition',
+                          'dataitem-type-category-event',
+                          'dataitem-type-category-sample',
+                          'dataitem-type-category-condition',
+                          'dataitem-attribute-units-type',
+                          'dataitem-attribute-nativeunits-type',
+                          'elements-lowerlevel-for-composition'
+                          ]
+
+        if sort and table_name in tables_to_sort:
             rows = self._tables[table_name]['string'].replace('\\end{longtabu}','').split('\n\n\\gls{')
             header = [rows[0]]
             sorted_rows = rows[1:]
