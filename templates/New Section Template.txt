@@ -1,50 +1,32 @@
-_(New Sections/Subsections and updates)_
-_(For updates make sure to include entire current sentence/paragraph that needs to updated which doesn't occur twice within the section.)_
 
-h1. @ComponentRef@ _(Section Heading)_
+h1. @Device@
 
-* Part : Part 2 
+* Part: Part 2
 
-h2. Parent: @Reference@ _(Parent Section if any)_
+* Parent: @Structural Elements for MTConnectDevices@
 
-@ComponentRef@ XML element is a pointer to all of the information associated with another Structural Element defined elsewhere in the XML document for a piece of equipment.
-The XML schema in {ref:componentref-schema-diagram} represents the structure of a ComponentRef XML element showing the attributes defined for ComponentRef.
+* Remove Section: @XML Schema Structure for Device@
 
-{figure:componentref-schema-diagram}
+* Remove Section: @Attribute for Device@
 
-{ref:attributes-for-componentref} shows attributes for @ComponentRef@
+* Remove Section: @Elements for Device@
 
-{table:attributes-for-componentref}
+* Update Section: @Device@
 
-{example:example-for-componentref}
+A @Device@ is a @Component@ that represents a piece of equipment that produces observations about itself. It organizes its parts as @Components@.
 
-h2. Update: line [900-1000]
+A @Device@ *MUST* have a @name@ and @uuid@ attribute to identify itself. 
 
-h3. Table _(Can be multiple)_
-* label : @attributes-for-componentref@
+A @Device@ *MUST* have the following @DataItems@: @AVAILABILITY@, @ASSET_CHANGED@, and @ASSET_REMOVED@.
 
-|_.Attribute|_.Description|Occurrence|
-|@idRef@|A pointer to the id attribute of the Component that contains the information to be associated with this XML element.@
-@
-@idRef@ is a required attribute.|1|
+See {section:Component} for details on the @Device@ model. 
 
 
+h1. @Devices@ 
 
+* Part: Part 2
+* Parent: @Structural Elements for MTConnectDevices@
+* Update Line: [[@Devices@ is a container type _XML_ element that *MUST* contain only @Device@ elements. @Devices@ *MUST* contain at least one @Device@ element, but *MAY* contain multiple @Device@ elements. _Data Entities_ *MAY NOT* be directly associated with the @Devices@ container.]]
 
-h3. Figure _(Can be multiple)_
-* label : @componentref-schema-diagram@
+@Devices@ *MUST* _organize_ one or more @Device@ elements.
 
-|_.Key|_.Val|
-|caption|ComponentRef Diagram|
-|filename|componentref-schema-diagram.png|
-|label|componentref-schema-diagram|
-
-
-
-
-h3. Example _(XML example?)_
-*label : @example-for-componentref@
-
-<pre>
- <ElementHere />
-</pre>

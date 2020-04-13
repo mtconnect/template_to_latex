@@ -9,4 +9,8 @@ h3. Representation (_New representation type gets added and/or already defined g
 |@DATA_SET@|A new representation.|
 
 
-(_h3 can be any "kind". kind = [attribute, element, enumeration, representation, coordinatesystem, units, nativeunits, subtype, component, composition, reference, filter, category, configuration, statistic, type])
+(h3 can be any "kind" or any "table name". 
+
+example for kinds = [attribute, element, enumeration, representation, coordinatesystem, units, nativeunits, subtype, component, composition, reference, filter, category, configuration, statistic, type]
+
+)
