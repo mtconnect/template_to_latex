@@ -1,0 +1,10 @@
+
+h1. @Composition@ 
+
+* Part: Part 2
+* Parent: @Structural Elements for MTConnectDevices@
+* Update Line: [[Like @Component@ elements, @Composition@ elements provide the ability to organize information describing _Lower Level_ sub-parts of a higher-level @Component@ element. However, unlike @Component@, @Composition@ *MUST NOT* be further sub-divided and _Data Entities_ *MUST NOT* be assigned to @Composition@ elements.]]
+
+
+@Composition@ provides the ability to organize information describing parts of its parent @Component@. A @Composition@ *MUST NOT* have child @Components@, @Compositions@, or @DataItems@ elements.
+

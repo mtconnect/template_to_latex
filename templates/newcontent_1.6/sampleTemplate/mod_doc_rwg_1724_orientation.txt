@@ -1,0 +1,34 @@
+h1. Orientation
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@ORIENTATION@|A measured or calculated orientation of a plane or vector relative to a cartesian coordinate system. @
+@
+@ORIENTATION@ *SHOULD* have a @coordinateSytemIdRef@ or a @coordinateSystem@ attribute, otherwise the @coordinateSystem@ attribute *MUST* default to *WORK* coordinates.|DEGREE_3D|
+|>.@ACTUAL@|The measured value.|DEGREE_3D|
+|>.@COMMANDED@|The commanded value.|DEGREE_3D|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="SAMPLE" type="ORIENTATION" subType="ACTUAL" units="DEGREE_3D"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.Type/Sub Type|_.Element Name|_.Description|
+|@ORIENTATION@|@Orientation@|A measured or calculated orientation of a plane or vector relative to a cartesian coordinate system @
+@
+The value of @Orientation@ *MUST* be three space-delimited floating-point numbers and *MUST* be in units of @DEGREE_3D@. The values represent the degrees of rotation around the  @X@, @Y@, and @Z@ axes respectively as the ordered values @A@, @B@, and @C@.@
+@
+If any of the rotations is not known, it *MUST* be zero (0).|
+
+h3. Example
+
+<pre>
+  <Orientation ... >10.123 55.232 100.981</Orientation>
+</pre>

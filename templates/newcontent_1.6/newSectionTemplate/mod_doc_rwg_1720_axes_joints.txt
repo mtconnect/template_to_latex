@@ -1,0 +1,49 @@
+h1. @Axes@
+
+* Part: Part 2
+* Parent: @Component Structural Elements@
+* Update Section: @Axes@
+
+@Axes@ is a top-level @Component@ that organizes information representing linear or rotational motion for a _piece of equipment_. The @Linear@ axis @Component@ represents linear motion, and the @Rotary@ axis @Component@ represents rotational motion.
+
+In robotics, the term _Axis_ is synonymous with _Joint_. A _Joint_ is the connection between two parts of the structure that move in relation to each other.
+
+@Linear@ and @Rotary@ Components *MUST* have a @name@ atribute that *MUST* follow the conventions described below. Use the @nativeName@ attribute for the manufacturer's name of the axis if it differs from the assigned @name@.
+
+_MTConnect_ has two high-level classes for automation equipment as follows: (1) Equipment that controls cartesian coordinate axes and (2) Equipment that controls articulated axes. There are ambiguous cases where some machines exhibit both characteristics; when this occurs, the primary control system's configuration determines the classification.
+
+Examples of cartesian coordinate equipment are CNC Machine Tools, Coordinate measurement machines, as specified in ISO 841, and 3D Printers. Examples of articulated automation equipment are Robotic systems as specified in ISO 8373.
+
+The following sections define the designation of names for the axes and additional guidance when selecting the correct scheme to use for a given piece of equipment.
+
+h2. @Cartesian Coordinate Naming Conventions@
+
+A Three-Dimensional Cartesian Coordinate control system organizes its axes orthogonally relative to a _machine coordinate system_ where the manufacturer of the equipment specifies the origin. 
+
+Axes @name@ *SHOULD* comply with ISO 841, if possible.
+
+h3. @Linear Motion@
+
+A piece of equipment *MUST* represent prismatic motion using a @Linear@ axis @Component@ and assign its @name@ using the designations @X@, @Y@, and @Z@. A @Linear@ axis @name@ *MUST* append a monotonically increasing suffix when there are more than one parallel axes; for example, @X2@, @X3@, and @X4@. 
+
+h3. @Rotary Motion@
+
+_MTConnect_ *MUST* assign the @name@ to rotary axes exhibiting rotary motion using @A@, @B@, and @C@. A Rotary axis @name@ *MUST* append a monotonically increasing suffix when more than one @Rotary@ axis rotates around the same @Linear@ axis; for example, @A2@, @A3@, and @A4@. 
+
+h2. @Articulated Machine Control Systems@
+
+An articulated control system's axes represent the connecting linkages between two adjacent rigid members of an assembly. The @Linear@ axis represents prismatic motion, and the @Rotary@ axis represents the rotational motion of the two related members. The control organizes the axes in a kinematic chain from the mounting surface (base) to the end-effector or tooling.
+
+h2. @Articulated Machine Axis Names@
+
+The axes of articulated machines represent forward kinematic relationships between mechanical linkages. Each axis is a connection between linkages, also referred to as joints, and *MUST* be named using a @J@ followed by a monotonically increasing number; for example, @J1@, @J2@, @J3@.  The numbering starts at the base axis connected or closest to the mounting surface, @J1@, incrementing to the mechanical interface, @Jn@, where @n@ is the number of the last axis. The chain forms a parent-child relationship with the parent being the axis closest to the base.
+
+A machine having an axis with more than one child *MUST* number each branch using its numeric designation followed by a branch number and a monotonically increasing number. For example, if @J2@ has two children, the first child branch MUST be named @J2.1.1@ and the second child branch @J2.2.1@. A child of the first branch *MUST* be named @J2.1.2@, incrementing to @J2.1.n@, where @J2.1.n@ is the number of the last axis in that branch. 
+
+h2. @Rotary Component@
+
+A @Rotary@ axis represents rotation about a fixed axis.
+
+h2. @Linear Component@
+
+A @Linear@ axis represents prismatic motion along a fixed axis.

@@ -1,0 +1,23 @@
+
+h1. @Device@
+
+* Part: Part 2
+
+* Parent: @Structural Elements for MTConnectDevices@
+
+* Remove Section: @XML Schema Structure for Device@
+
+* Remove Section: @Attribute for Device@
+
+* Remove Section: @Elements for Device@
+
+* Update Section: @Device@
+
+A @Device@ is a @Component@ that represents a piece of equipment that produces observations about itself. It organizes its parts as @Components@.
+
+A @Device@ *MUST* have a @name@ and @uuid@ attribute to identify itself. 
+
+A @Device@ *MUST* have the following @DataItems@: @AVAILABILITY@, @ASSET_CHANGED@, and @ASSET_REMOVED@.
+
+See {section:Component} for details on the @Device@ model. 
+

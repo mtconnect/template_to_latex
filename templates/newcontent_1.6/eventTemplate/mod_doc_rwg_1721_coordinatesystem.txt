@@ -1,0 +1,46 @@
+h1. Rotation
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@ROTATION@|A three space angular rotation relative to a coordinate system.@
+@
+When the @DataItem@ has a @coordinateSystemIdRef@ attribute and the @CoordinateSystem@ does not specify a @Rotation@, the value of the _Observation_  is the rotation of the the referenced @CoordinateSystem@.@
+@
+The @units@ *MUST* be @DEGREE_3D@|
+|@TRANSLATION@|A three space linear translation relative to a coordinate system.@
+@
+When the @DataItem@ has a @coordinateSystemIdRef@ attribute and the @CoordinateSystem@ does not specify a @Translation@, the value of the _Observation_ is the translation of the referenced @CoordinateSystem@.@
+@
+The @units@ *MUST* be @MILLIMETER_3D@|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="ROTATION"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@ROTATION@|@Rotation@|A three space angular rotation relative to a coordinate system.@
+@
+The value *MUST* be three floating-point numbers representing rotations around the X, Y, and Z axes in degrees.@
+@
+The values in _XML_ are space delimited.|
+|@TRANSLATION@|@Translation@|A three space linear translation relative to a coordinate system.@
+@
+The value *MUST* be three floating-point numbers translation along the X, Y, and Z axes in millimeters.@
+@
+The values in _XML_ are space delimited.|
+
+h3. Example
+
+<pre>
+  <Rotation ... >12.32 44.11 90</Rotation>
+</pre>
+
+

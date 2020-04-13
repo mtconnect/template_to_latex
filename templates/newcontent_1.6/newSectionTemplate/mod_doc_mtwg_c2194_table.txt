@@ -1,0 +1,138 @@
+h1. @Attributes for DataItem@
+
+* Parent: @DataItem@
+* Part: Part 2
+* Update Table: @attributes-for-dataitem@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@representation@|Description of a means to interpret data consisting of multiple data points or as a single value.@
+@   
+@representation@ is an optional attribute.@
+@
+@representation@ defines the unique format for each set of data.@
+@
+@representation@ for @TIME_SERIES@, @DISCRETE@, @DATA_SET@, @TABLE@, and @VALUE@ are defined in {section:representation Attribute for DataItem}.@
+@
+If @representation@ is not specified, it *MUST* be determined to be @VALUE@.|0..1|
+
+
+h1. @representation Attribute for DataItem@
+
+* Parent: @Attributes for DataItem@
+* Part: Part 2
+* Update Table: @dataitem-attribute-representation-type@
+
+|_.Representation|_.Description|
+|@TABLE@|A @Table@ is a two dimensional set of _key-value pairs_ where the @Entry@ represents a row, and the _value_ is a set of _key-value pair_ @Cells@. The @Table@ follows the same behavior as the _Data Set_ for change tracking, clearing, and history. When an @Entry@ changes, all @Cells@ update as a single unit following the behavior of a _Data Set_. @
+@
+Note: It is best to use the @VARIABLE@ @DataItem@ @type@ if the cells represent multiple semantic types.@
+@
+See _Data Set_ for a full description of the @Entry@ behavior.@
+@
+Each @Entry@ in the _Table_ *MUST* have a unique @key@.  Each @Cell@ of each @Entry@ in the _Table_ *MUST* have a unique @key@. |
+
+
+h1. @Elements for DataItem@
+
+* Parent: @DataItem@
+* Part: Part 2
+* Update Table: @elements-for-dataitem@
+
+|_.Element|_.Description|_.Occurrence|
+|@Definition@|The @Definition@ defines the meaning of @Entry@ and @Cells@ associated with the @DataItem@ when the @representation@ is either @DATA_SET@ or @TABLE@.|0..1|
+
+
+h1. @Definition Element for DataItem@
+
+* Parent: @Elements for DataItem@
+* Part: Part 2
+* Add After Section: @ResetTrigger Element for DataItem@
+
+* Figure: @Definition Schema Diagram@
+
+!definition_schema-diagram.png!
+
+The @Definition@  provides additional descriptive information for any @DataItem@ representations. When the @representation@ is either @DATA_SET@ or @TABLE@, it gives the specific meaning of a @key@ and *MAY* provide a @Description@, @type@, and @units@ for semantic interpretation of data.
+
+* Table: @Elements for Definition@
+
+|_.Element|_.Description|_.Occurrence|
+|@Description@|The @Description@ of the @Definition@. See @Component@ @Description@|0..1|
+|@EntryDefinitions@|The @EntryDefinitions@ aggregates @EntryDefinition@ .|0..1|
+|@CellDefinitions@|The @CellDefinitions@ aggregates @CellDefinition@.|0..1|
+
+
+h2. @EntryDefinitions Element for Definition@
+
+The @EntryDefinitions@ aggregates @EntryDefinition@ for @Definition@.  
+
+h3. @Elements for EntryDefinitions@
+
+* Table: @Elements for EntryDefinitions@
+
+|_.Element|_.Description|_.Occurrence|
+|@EntryDefinition@|The semantic definition of an @Entry@|1..*|
+
+
+h2. @EntryDefinition Element for Definition@
+
+When the @representation@ is @DATA_SET@, the @EntryDefinition@ provides the @Description@, @units@, and @type@ of each @Entry@ identified by a unique @key@. 
+
+When the @representation@ is @TABLE@, the @EntryDefinition@ provides a @Description@ and a set of @CellDefinitions@ for an @Entry@ identified by a unique @key@. 
+
+The @key@ for the @EntryDefinion@ *MUST* be unique for a given @DataItem@ @Definition@.
+
+
+h3. @Attributes for EntryDefinition@
+
+* Table: @Attributes for EntryDefinition@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|The unique identification of the @Entry@ in the @Definition@. The description applies to all @Entry@ _Observations_ having this @key@.|1|
+|@units@|Same as @DataItem@ units. See {section:units Attribute for DataItem}. Only valid for @representation@ of @DATA_SET@.|0..1|
+|@type@|Same as @DataItem@ @type@. See {section:Listing of Data Items}.|0..1|
+|@subType@|Same as @DataItem@ @subType@. See {section:Listing of Data Items}.|0..1|
+
+h3. @Elements for EntryDefinition@
+
+* Table: @Elements for EntryDefinition@
+
+|_.Element|_.Description|_.Occurrence|
+|@Description@|The @Description@ of the @EntryDefinition@. See @Component@ @Description@|0..1|
+|@CellDefinitions@|The @CellDefinitions@ aggregates @CellDefinition@ if the representation is @TABLE@.|0..1|
+
+
+h2. @CellDefinitions Element for Definition@
+
+The @CellDefinitions@ aggregates @CellDefinition@ declarations.
+
+h3. @Elements for CellDefinitions@
+
+* Table: @Elements for CellDefinitions@
+
+|_.Element|_.Description|_.Occurrence|
+|@CellDefinition@|The semantic definition of a @Cell@.|1..*|
+
+h2. @CellDefinition Element for Schema or EntryDefinition@
+
+When the @representation@ is @TABLE@, the @CellDefinition@ provides the @Description@ and the @units@ associated each @Cell@ by @key@.
+
+The @key@ for the @CellDefinion@ *MUST* be unique for a given @Definition@ or @EntryDefinition@.
+
+h3. @Attributes for CellDefinition@
+
+* Table: @Attributes for CellDefinition@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|The unique identification of the @Entry@ in the @Definition@. The description applies to all @Entry@ _Observations_ having this @key@.|1|
+|@units@|Same as @DataItem@ units. See {section:units Attribute for DataItem}.|0..1|
+|@type@|Same as @DataItem@ @type@. See {section:Listing of Data Items}.|0..1|
+|@subType@|Same as @DataItem@ @subType@. See {section:Listing of Data Items}.|0..1|
+
+h3. @Elements for CellDefinition@
+
+* Table: @Elements for CellDefinition@
+
+|_.Element|_.Description|_.Occurrence|
+|@Description@|The @Description@ of the @CellDefinition@. See @Component@ @Description@|0..1|
+

@@ -1,0 +1,20 @@
+h1. @Configuration@
+
+* Part: Part 2
+* Add Section: @Configuration@
+
+@Configuration@ contains technical information about a component describing its physical layout, functional characteristics, and relationships with other components within a piece of equipment.
+
+* Figure: @Configuration Element@
+
+!configuration-diagram.png!
+
+{table:Types of Configuration} lists the types of @Configuration@ defined for a @Component@.
+
+* Table: @Types of Configuration@
+
+|_.type|_.Description|
+|@CoordinateSystems@|@CoordinateSystems@ _organizes_ @CoordinateSystem@ elements for a @Component@ and its children.|
+|@Relationships@|@Relationships@ _organizes_ @Relationship@ elements for a @Component@.|
+|@SensorConfiguration@|@SensorConfiguration@ contains configuration information about a @Sensor@.|
+|@Specifications@|@Specifications@ _organizes_ @Specification@ elements for a @Component@.|

@@ -1,0 +1,57 @@
+h1. AMPERAGE
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@AMPERAGE_AC@|The measurement of an electrical current that reverses direction at regular short intervals.@
+@
+A subType *MUST* always be specified.@
+@
+If not specified further in @statistic@, defaults to RMS amperage.|AMPERE|
+|>.@ACTUAL@|The measured amperage within an electrical circuit.|AMPERE|
+|>.@COMMANDED@|The value for a current as specified by a component.@
+@
+The @COMMANDED@ current is a calculated value that includes adjustments and overrides.|AMPERE|
+|>.@PROGRAMMED@|The value for a current as specified by a logic or motion program or set by a switch.|AMPERE|
+|@AMPERAGE_DC@|The measurement of an electric current flowing in one direction only.@
+@
+A subType *MUST* always be specified.|AMPERE|
+|>.@ACTUAL@|The measured amperage within an electrical circuit.|AMPERE|
+|>.@COMMANDED@|The value for a current as specified by a component. @
+@
+The @COMMANDED@ current is a calculated value that includes adjustments and overrides.|AMPERE|
+|>.@PROGRAMMED@|The value for a current as specified by a logic or motion program or set by a switch.|AMPERE|
+|---@AMPERAGE@---|*DEPRECATED* in _Version 1.6_. Replaced by @AMPERAGE_AC@ and @AMPERAGE_DC@.|AMPERE|
+
+h3. Examples
+
+<pre>
+ <DataItem id="aac" category="SAMPLE" type="AMPERAGE_AC" subType="ACTUAL" units="AMPERE"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@AMPERAGE_AC@|@AmperageAC@|The measurement of an electrical current that reverses direction at regular short intervals.@
+@
+Subtypes of @AMPERAGE_AC@ are @ACTUAL@, @COMMANDED@ and @PROGRAMMED@. @
+@
+@AmperageAC@ is reported in units of @AMPERE@.|
+|@AMPERAGE_DC@|@AmperageDC@|The measurement of an electric current flowing in one direction only.@
+@
+Subtypes of @AMPERAGE_DC@ are @ACTUAL@, @COMMANDED@ and @PROGRAMMED@. @
+@
+@AmperageDC@ is reported in units of @AMPERE@.|
+|---@AMPERAGE@---|---@Amperage@---|*DEPRECATED* in _Version 1.6_. Replaced by @AMPERAGE_AC@ and @AMPERAGE_DC@.|
+
+
+
+h3. Example
+
+<pre>
+  <Amperage_AC...subType="COMMANDED" >100</Amperage_AC>
+</pre>
+

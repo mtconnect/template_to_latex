@@ -1,0 +1,103 @@
+
+h1. @CoordinateSystems@
+
+* Parent: @Configuration@
+
+* Part: Part 2
+
+* Add Section: @CoordinateSystems@
+
+@CoordinateSystems@ aggregates @CoordinateSystem@ configurations for a @Component@.
+
+* Figure: @CoordinateSystems Diagram@
+
+!coordinatesystems-diagram.png!
+
+h2. @CoordinateSystem@
+
+A @CoordinateSystem@ is a reference system that associates a unique set of n parameters with each point in an n-dimensional space. {ref:ISO 10303-218:2004}
+
+h3. @Attributes for CoordinateSystem@
+
+{table:Attributes for CoordinateSystem} lists the attributes defined to provide information for a @CoordinateSystem@ element.
+
+* Table: @Attributes for CoordinateSystem@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@id@|The unique identifier for this element.|1|
+|@name@|The name of the coordinate system.@
+@
+If more than one @CoordinateSystem@ elements have the same @type@ for the same @Component@, then the name attribute *MUST* be provided. Otherwise, the @name@ attribute is optional.@
+@
+@name@ provides as an additional human-readable identifier in addition to the @id@.|0..1|
+|@nativeName@|The manufacturer's name or users name for the coordinate system.|0..1|
+|@parentIdRef@|A pointer to the @id@ attribute of the parent @CoordinateSystem@.|0..1|
+|@type@|The type of coordinate system.|1|
+
+h4. @CoordinateSystem types@
+
+{table:CoordinateSystem types} defines the various types of coordinate systems.
+
+* Table: @CoordinateSystem types@
+
+|_.type|_.Description|
+|@WORLD@|stationary coordinate system referenced to earth, which is independent of the robot motion. {ref:ISO 9787:2013}@
+@
+For non-robotic devices, stationary coordinate system referenced to earth, which is independent of the motion of a piece of equipment.|
+|@BASE@|coordinate system referenced to the base mounting surface. {ref:ISO 9787:2013}@
+@
+A base mounting surface is a connection surface between the arm and its supporting structure.{ref:ISO 9787:2013}@
+@
+For non-robotic devices, it is the connection surface between the device and its supporting structure.|
+|@OBJECT@|coordinate system referenced to the object. {ref:ISO 9787:2013}|
+|@TASK@|coordinate system referenced to the site of the task. {ref:ISO 9787:2013}|
+|@MECHANICAL_INTERFACE@|coordinate system referenced to the mechanical interface. {ref:ISO 9787:2013}|
+|@TOOL@|coordinate system referenced to the tool or to the end effector attached to the mechanical interface. {ref:ISO 9787:2013}|
+|@MOBILE_PLATFORM@|coordinate system referenced to one of the components of a mobile platform. {ref:ISO 8373:2012}|
+|@MACHINE@| coordinate system referenced to the home position and orientation of the primary axes of a piece of equipment.|
+|@CAMERA@|coordinate system referenced to the sensor which monitors the site of the task. {ref:ISO 9787:2013}|
+
+
+
+h3. @Elements for CoordinateSystem@
+
+{table:Elements for CoordinateSystem} lists the elements defined to provide information for a @CoordinateSystem@ element.
+
+* Table: @Elements for CoordinateSystem@
+
+|_.Element|_.Description|_.Occurrence|
+|@Origin@| The coordinates of the origin position of a coordinate system. The coordinate *MUST* be in @MILLIMETER_3D@.|0..1|
+|@Transformation@| The process of transforming to the origin position of the coordinate system from a parent coordinate system using @Translation@ and @Rotation@.|0..1|
+
+* Notes:
+
+- Only one of @Location@ or @Transformation@ can be defined for a @CoordinateSystem@.
+
+* End List
+
+
+h4. @Elements for Transformation@
+
+{table:Elements for Transformation} lists the elements defined to provide information for a @Transformation@ element. 
+
+* Table: @Elements for CoordinateSystem@
+
+|_.Element|_.Description|_.Occurrence|
+|@Translation@|Translations along X, Y, and Z axes are expressed as x,y, and z respectively within a 3-dimensional vector. @
+@
+The values *MUST* be given in @MILLIMETER_3D@.|0..1|
+|@Rotation@|Rotations about X, Y, and Z axes are expressed in A, B, and C respectively within a 3-dimensional vector. @
+@
+The values *MUST* be given in @DEGREE_3D@.@
+@
+Positive A, B, and C are in the directions to advance right-hand screws in the positive X, Y, and Z directions, respectively. {ref:ISO 9787:2013}|0..1|
+
+
+h1. @Attributes for DataItem@
+
+* Part: Part 2
+* Parent: @DataItem@
+* Update Table: @attributes-for-dataitem@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@coordinateSystemIdRef@|The associated @CoordinateSystem@ context the for the @DataItem@.|0..1|

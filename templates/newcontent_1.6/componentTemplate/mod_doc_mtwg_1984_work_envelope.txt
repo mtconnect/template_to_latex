@@ -1,0 +1,5 @@
+h1. @WorkEnvelope@ System
+
+h2. Parent: @Systems@
+
+@WorkEnvelope@ organizes information about the physical process execution space within a piece of equipment. The @WorkEnvelope@ *MAY* provide information regarding the physical workspace and the conditions within that workspace.

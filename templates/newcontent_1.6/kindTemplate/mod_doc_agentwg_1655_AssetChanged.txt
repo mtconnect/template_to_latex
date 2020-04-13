@@ -1,0 +1,9 @@
+h1. @ASSET_CHANGED@
+
+h2. Part 4.0
+
+h3. dataitem-type-for-event-category
+
+|_.DataItem Type SubType|_.Description|
+|@ASSET_CHANGED@|The event generated when an asset is added or changed. @AssetChanged@ *MUST* be discrete and the value of the @DataItem@'s @discrete@ attribute *MUST* be @true@.|
+

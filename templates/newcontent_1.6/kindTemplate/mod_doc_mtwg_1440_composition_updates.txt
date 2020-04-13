@@ -1,0 +1,11 @@
+h1. Elements
+
+h2. Part 2
+
+h3. elements-lowerlevel-for-composition
+
+|_.Element Type|_.Description|
+|@ENCODER@| A mechanism to measure position.|
+|@LINEAR_POSITION_FEEDBACK@|A mechanism that measures linear motion or position.@
+@
+*DEPRECATION WARNING* : May be deprecated in the future. Recommend using @ENCODER@.|

@@ -1,0 +1,11 @@
+
+h1. _organize_
+
+|_.Key|_.Value|
+|description|The act of containing and owning one or more elements.|
+
+h1. _organizer_
+
+|_.Key|_.Value|
+|description|An element that contains and owns one or more elements.|
+

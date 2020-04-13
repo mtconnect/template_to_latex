@@ -1,0 +1,13 @@
+h1. @Composition@
+
+h2. Part 2
+
+h3. attributes-for-composition
+
+|_.Attributes|_.Description|_.Occurrence|
+|@name@|The name of the @Composition@ element.@
+@
+If more than one @Composition@ elements have the same @type@ for the same @Component@, then the @name@ attribute *MUST* be provided. Otherwise, the @name@ attribute is optional.@
+@
+If provided, @name@ *MUST* be unique within a @Component@ element. @name@ is an _NMTOKEN_ _XML_ type|0..1|
+

@@ -1,0 +1,42 @@
+
+h1. PROGRAM_HEADER
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@PROGRAM_HEADER@|The non-executable header section of the control program.@
+@
+If not specified, the default @subType@ is @MAIN@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+|>.@SCHEDULE@|The identity of a control program that is used to specify the order of execution of other programs.|
+|>.@MAIN@|The identity of the primary logic or motion program currently being executed. It is the starting nest level in a call structure and may contain calls to sub programs.|
+|>.@ACTIVE@|The identity of the logic or motion program currently executing.|
+
+h3. Examples
+
+<pre>
+<DataItem type="PROGRAM_HEADER" subType="SCHEDULE" id="schedprgmcmnt" category="EVENT"/>
+<DataItem type="PROGRAM_HEADER" subType="MAIN" id="pgm" category="EVENT"/>
+<DataItem type="PROGRAM_HEADER" subType="ACTIVE" id="pgmactive" category="EVENT"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.Element Name|_.Description||
+|@PROGRAM_HEADER@|@ProgramHeader@|The non-executable header section of the control program.@
+@
+Subtypes of @PROGRAM_HEADER@ are @SCHEDULE@, @MAIN@, @ACTIVE@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+
+
+h3. Example
+
+<pre>
+<ProgramHeader subType="SCHEDULE"... >text</<ProgramHeader >
+<ProgramHeader subType="MAIN"... >text</<ProgramHeader >
+<ProgramHeader subType="ACTIVE"... >text</<ProgramHeader >
+</pre>

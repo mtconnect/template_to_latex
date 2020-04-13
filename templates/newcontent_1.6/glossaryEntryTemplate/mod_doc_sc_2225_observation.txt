@@ -1,0 +1,16 @@
+
+h1. _observation_
+
+|_.Key|_.Value|
+|description|The observed value of a property at a point in time.|
+
+h1. _observe_
+
+|_.Key|_.Value|
+|description|The act of measuring or determining the value of a property at a point in time.|
+
+h1. _observable_
+
+|_.Key|_.Value|
+|description|A quality, property, or characteristic that can be observed.|
+

@@ -1,0 +1,134 @@
+h1. Software Modules
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@OPERATING_SYSTEM@|The Operating System of a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.|
+|>.@LICENSE@|The license code to validate or activate the hardware or software.|
+|>.@VERSION@|The version of the hardware or software.|
+|>.@RELEASE_DATE@|The date the hardware or software was released for general use.|
+|>.@INSTALL_DATE@|The date the hardware or software was installed.|
+|>.@MANUFACTURER@|The corporate identity for the maker of the hardware or software.|
+|@FIRMWARE@|The embedded software of a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.|
+|>.@LICENSE@|The license code to validate or activate the hardware or software.|
+|>.@VERSION@|The version of the hardware or software.|
+|>.@RELEASE_DATE@|The date the hardware or software was released for general use.|
+|>.@INSTALL_DATE@|The date the hardware or software was installed.|
+|>.@MANUFACTURER@|The corporate identity for the maker of the hardware or software.|
+|@APPLICATION@|The application on a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.|
+|>.@LICENSE@|The license code to validate or activate the hardware or software.|
+|>.@VERSION@|The version of the hardware or software.|
+|>.@RELEASE_DATE@|The date the hardware or software was released for general use.|
+|>.@INSTALL_DATE@|The date the hardware or software was installed.|
+|>.@MANUFACTURER@|The corporate identity for the maker of the hardware or software.|
+|@LIBRARY@|The software library on a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.|
+|>.@LICENSE@|The license code to validate or activate the hardware or software.|
+|>.@VERSION@|The version of the hardware or software.|
+|>.@RELEASE_DATE@|The date the hardware or software was released for general use.|
+|>.@INSTALL_DATE@|The date the hardware or software was installed.|
+|>.@MANUFACTURER@|The corporate identity for the maker of the hardware or software.|
+|@HARDWARE@|The hardware of a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.|
+|>.@LICENSE@|The license code to validate or activate the hardware or software.|
+|>.@VERSION@|The version of the hardware or software.|
+|>.@RELEASE_DATE@|The date the hardware or software was released for general use.|
+|>.@INSTALL_DATE@|The date the hardware or software was installed.|
+|>.@MANUFACTURER@|The corporate identity for the maker of the hardware or software.|
+|@NETWORK@|Network details of a component.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+A @subType@ *MUST* always be specified.@
+@
+If the @subType@ is @WIRELESS@, the _Valid Data Value_ *MUST* be @YES@ or @NO@.|
+|>.@IPV4_ADDRESS@|The IPV4 network address of the component.|
+|>.@IPV6_ADDRESS@|The IPV6 network address of the component.|
+|>.@GATEWAY@|The Gateway for the component network.|
+|>.@SUBNET_MASK@|The SubNet mask for the component network.|
+|>.@VLAN_ID@|The layer2 Virtual Local Network (VLAN) ID for the component network.|
+|>.@MAC_ADDRESS@|Media Access Control Address.  The unique physical address of the network hardware.|
+|>.@WIRELESS@|Identifies whether the connection type is wireless.  |
+
+
+h3. Examples
+
+<pre>
+ <DataItem id="osl" type="OPERATING_SYSTEM" category="EVENT" subType="LICENSE"/>
+ <DataItem id="os" type="OPERATING_SYSTEM" category="EVENT" subType="VERSION"/>
+ <DataItem id="osrd" type="OPERATING_SYSTEM" category="EVENT" subType="RELEASE_DATE"/>
+ <DataItem id="os" type="OPERATING_SYSTEM" category="EVENT" subType="INSTALL_DATE"/>
+ <DataItem id="osmfg" type="OPERATING_SYSTEM" category="EVENT" subType="MANUFACTURER"/>
+
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@OPERATING_SYSTEM@|@OperatingSystem@|The Operating System of a component.@
+@
+Subtypes of @OPERATING_SYSTEM@ are @LICENSE@, @VERSION@, @RELEASE_DATE@, @INSTALL_DATE@, and @MANUFACTURER@.@
+@
+The _Valid Data Value_ *MUST* be a text string.@
+@
+When specified with no @subType@, use the following vocabulary or specify the name of the operating system:@
+@
+- @WINDOWS@
+- @LINUX@
+- @MACINTOSH@
+- @PROPRIETARY@ |
+|@FIRMWARE@|@Firmware@|The embedded software of a component.@
+@
+Subtypes of @FIRMWARE@ are @LICENSE@, @VERSION@, @RELEASE_DATE@, @INSTALL_DATE@, and @MANUFACTURER@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+|@APPLICATION@|@Application@|The application on a component.@
+@
+Subtypes of APPLICATION are @LICENSE@, @VERSION@, @RELEASE_DATE@, @INSTALL_DATE@, and @MANUFACTURER@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+|@LIBRARY@|@Library@|The software library on a component.@
+@
+Subtypes of @LIBRARY@ are @LICENSE@, @VERSION@, @RELEASE_DATE@, @INSTALL_DATE@, and @MANUFACTURER@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+|@HARDWARE@|@Hardware@|The hardware of a component.@
+@
+Subtypes of @HARDWARE@ are @LICENSE@, @VERSION@, @RELEASE_DATE@, @INSTALL_DATE@, and @MANUFACTURER@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+|@NETWORK@|@Network@|Network details of a component.@
+@
+Subtypes of @NETWORK@ are @IPV4_ADDRESS@, @IPV6_ADDRESS@, @GATEWAY@, @SUBNET_MASK@, @VLAN_ID@, @MAC_ADDRESS@, and @WIRELESS@.@
+@
+The _Valid Data Value_ *MUST* be a text string.|
+
+h3. Example
+
+<pre>
+ <OperatingSystem dataItemId="os" ... subType="LICENSE">WINDOWS</OperatingSystem>
+ <OperatingSystem dataItemId="osmfg" ... subType="MANUFACTURER">MICROSOFT</OperatingSystem>
+ <OperatingSystem dataItemId="osrd" ... subType="RELEASE_DATE">10/23/2019</OperatingSystem>
+</pre>
+
+

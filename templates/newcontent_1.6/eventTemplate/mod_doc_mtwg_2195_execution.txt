@@ -1,0 +1,35 @@
+h1. EXECUTION
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@EXECUTION@|The execution status of the component.@
+@
+The _Valid Data Value_ *MUST* be @READY@, @ACTIVE@, @INTERRUPTED@, @WAIT@, @FEED_HOLD@, @STOPPED@, @OPTIONAL_STOP@, @PROGRAM_STOPPED@, or @PROGRAM_COMPLETED.@|
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@EXECUTION@|@Execution@|The execution status of a component.@
+@
+_Valid Data Values_:@
+@
+- @READY@: The component is ready to execute instructions. It is currently idle.@
+@
+- @ACTIVE@: The component is actively executing an instruction.@
+@
+- @INTERRUPTED@: The component suspends the execution of the program due to an external signal. Action is required to resume execution.@
+@
+- @WAIT@: The component suspends execution while a secondary operation executes. Execution resumes automatically once the secondary operation completes.@
+@
+- @FEED_HOLD@: The motion of the active axes are commanded to stop at their current position. @
+@
+- @STOPPED@: The component program is not @READY@ to execute.@
+@
+- @OPTIONAL_STOP@: A command from the program has intentionally interrupted execution. The component *MAY* have another state that indicates if the execution is interrupted or the execution ignores the interrupt instruction.@
+@
+- @PROGRAM_STOPPED@: A command from the program has intentionally interrupted execution. Action is required to resume execution.@
+@
+- @PROGRAM_COMPLETED@: The program completed execution.|

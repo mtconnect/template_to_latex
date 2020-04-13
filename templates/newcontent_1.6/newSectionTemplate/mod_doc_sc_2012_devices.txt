@@ -1,0 +1,9 @@
+
+h1. @Devices@ 
+
+* Part: Part 2
+* Parent: @Structural Elements for MTConnectDevices@
+* Update Line: [[@Devices@ is a container type _XML_ element that *MUST* contain only @Device@ elements. @Devices@ *MUST* contain at least one @Device@ element, but *MAY* contain multiple @Device@ elements. _Data Entities_ *MAY NOT* be directly associated with the @Devices@ container.]]
+
+@Devices@ *MUST* _organize_ one or more @Device@ elements.
+

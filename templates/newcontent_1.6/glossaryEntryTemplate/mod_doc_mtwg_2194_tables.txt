@@ -1,0 +1,20 @@
+
+
+h1. _Table_
+
+|_.Key|_.Value|
+|description|A two dimensional set of values given by a set of _key-value pairs_ \glspl{table entry}. Each \gls{table entry} contains a set of _key-value-pairs_ of \glspl{table cell}. The \glspl{entry} and \glspl{cell} comprise a tabular representation of the information.|
+|plural|Tables|
+
+h1. _Table Entry_
+
+
+|_.Key|_.Value|
+|description|A subdivision of a _Table_ containing a set of _key-value pairs_ representing \glspl{table cell}.|
+|plural|Table Entries|
+
+h1. _Table Cell_
+
+|_.Key|_.Value|
+|description|A subdivision of a _Table Entry_ representing a singular value.|
+|plural|Table Cells|

@@ -1,0 +1,33 @@
+
+
+h1. @CoordinateSystem@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It is a reference system that associates a unique set of n parameters with each point in an n-dimensional space. _Ref: ISO 10303-218:2004_|
+
+
+h1. @CoordinateSystems@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It aggregates @CoordinateSystem@ configurations for a @Component@.|
+
+
+h1. @Specification@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It defines information describing the design characteristics for a piece of equipment.|
+
+
+
+h1. @Specifications@
+
+|_.Key|_.Value|
+|type|mtc|
+|category|model|
+|description|It aggregates @Specification@ elements describing the design characteristics for a piece of equipment.|

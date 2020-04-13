@@ -1,0 +1,22 @@
+h1. Data Items
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@TEMPERATURE@|The measurement of temperature.|CELSIUS|
+|>.@ACTUAL@|The measured value.|CELSIUS|
+|>.@COMMANDED@|The commanded value.|CELSIUS|
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@TEMPERATURE@|@Temperature@|The measurement of temperature.@
+@
+Subtypes of @Temperature@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@Temperature@ *MUST* be reported in units of @CELSIUS@.|

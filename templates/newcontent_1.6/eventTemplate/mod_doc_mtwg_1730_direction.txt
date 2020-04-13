@@ -1,0 +1,47 @@
+h1. Direction
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@DIRECTION@|The direction of motion.@
+@
+A @subType@ *MUST* always be specified|
+|>.@ROTARY@|The direction of rotary motion using the right-hand rule convention.@
+@
+The _Valid Data Value_ *MUST* be @CLOCKWISE@, @COUNTER_CLOCKWISE@, or @NONE@.|
+|>.@LINEAR@|The direction of linear motion.@
+@
+The _Valid Data Value_ *MUST* be @POSTIVE@, @NEGATIVE@, or @NONE@.|
+
+h3. Examples
+
+<pre>
+ <DataItem id="a2432" category="EVENT" type="ROTARY" subType="ROTARY"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@DIRECTION@|@Direction@|The direction of motion.@
+@
+Subtypes of @Direction@ are @ROTARY@ and @LINEAR@. @
+@
+_Valid Data Values_ for @subType@ @ROTARY@ are as follows:
+- @CLOCKWISE@: Clockwise rotation using the right-hand rule.
+- @COUNTER_CLOCKWISE@: Counter-clockwise rotation using the right-hand rule.
+- @NONE@: No direction.@
+@
+_Valid Data Values_ for @subType@ @LINEAR@ are as follows:
+- @POSITIVE@: Linear position is increasing. 
+- @NEGATIVE@: Linear position is decreasing. 
+- @NONE@: No direction.|
+
+h3. Example
+
+<pre>
+  <Direction ... >POSITIVE</PathPosition>
+</pre>
+
+

@@ -1,0 +1,10 @@
+h1. DataItem attribute units type
+
+h2. Part 2
+
+h3. units
+
+|_.units|_.Description|
+|@REVOLUTION/SECOND@|Revolutions per second.|
+|@REVOLUTION/SECOND^2@|Revolutions per second squared.|
+|@DEGREE_3D@|A space-delimited, floating-point representation of the angular rotation in degrees around the X, Y, and Z axes relative to a cartesian coordinate system respectively in order as A, B, and C. If any of the rotations is not known, it *MUST* be zero (0).|

@@ -1,0 +1,37 @@
+h1. Query Parameters
+
+h2. Part 1
+
+h3. query-parameters-for-sample-httprequest
+
+|_.Query Parameters|_.Description|
+|@from@|The @from@ parameter designates the _sequence number_ of the first _Observation_ in the _buffer_ the _Agent_ *MUST* consider publishing in the _Response Document_.@
+@
+The value of @from@ *MUST* be an unsigned 64-bit integer.@
+@
+If @from@ is zero (0), it *MUST* be set to the @firstSequence@, the oldest _Observation_ in the _buffer_.@
+@
+If @from@ and @count@ parameters are not given, @from@ *MUST* default to the @firstSequence@.@
+@
+If @from@ is not given and @count@ parameter is given, see @count@ for default behavior.@
+@
+If the @from@ parameter is less than the @firstSequence@ or greater than @lastSequence@, the _Agent_ *MUST* return a @404@ _HTTP Status Code_ and *MUST* publish an _MTConnectErrors Response Document_ with an @OUT_OF_RANGE@  @errorCode@.@
+@
+If the @from@ parameter is not a positive numeric value, the _Agent_ *MUST* return a @400@ _HTTP Status Code_ and *MUST* publish an _MTConnectErrors Response Document_ with an @INVALID_REQUEST@  @errorCode@.|
+|@count@|The @count@ parameter designates the maximum number of _Observations_ the _Agent_ *MUST* publish in the _Response Document_.@
+@
+The value of @count@ *MUST* be a signed integer.@
+@
+The @count@ *MUST NOT* be zero (0).@
+@
+When the @count@ is greater than zero (0), the @from@ parameter *MUST* default to the @firstSequence@. The evaluation of _Observations_ starts at @from@ and moves forward accumulating newer _Observations_ until the number of _Observations_ equals the @count@ or the  _Observation_ at @lastSequence@ is considered.@
+@
+When the @count@ is less than zero (0), the @from@ parameter *MUST*  default to the @lastSequence@. The evaluation of _Observations_ starts at @from@ and moves backward accumulating older _Observations_ until the number of _Observations_ equals the absolute value of @count@ or the _Observation_ at @firstSequence@ is considered.@
+@
+@count@ *MUST NOT* be less than zero (0) when an @interval@ parameter is given.@
+@
+If @count@ is not provided, it *MUST* default to @100@.@
+@
+If the absolute value of @count@ is greater than the size of the _buffer_ or equal to zero (0), the _Agent_ *MUST* return a @404@ _HTTP Status Code_ and *MUST* publish an _MTConnectErrors Response Document_ with an @OUT_OF_RANGE@  @errorCode@.@
+@
+If the @count@ parameter is not a numeric value, the _Agent_ *MUST* return a @400@ _HTTP Status Code_ and *MUST* publish an _MTConnectErrors Response Document_ with an @INVALID_REQUEST@  @errorCode@.|

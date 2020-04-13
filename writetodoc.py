@@ -30,7 +30,7 @@ class writeToDoc:
 
     def _configure(self):
         self.path = getcwd()
-        self.new_content_path = path.join(self.path,'templates','newcontent')
+        self.new_content_path = path.join(self.path,'templates','newcontent_1.6')
         self.config = config(_path = self.path)
         self.config.load_config()
         self.perl_path = self.config.get_perl_path()
@@ -77,17 +77,21 @@ class writeToDoc:
 
     def _load_new_content(self):
         for folder in listdir(self.new_content_path):
+            valid_files = list()
 
-            if folder.endswith('Template'):
+            files = listdir(path.join(self.new_content_path,folder))
 
-                for file in listdir(path.join(self.new_content_path,folder)):
-                    filename = fsdecode(file)
-                    if not filename.startswith('mod_doc_'):
-                        continue
+            for file in files:
+                if file.startswith('mod_doc_'):
+                    valid_files.append(file)
+            
+            if folder.endswith('Template') and len(valid_files)>0:
+
+                for filename in valid_files:
 
                     #by template?
                     file_path = path.join(self.new_content_path,folder, filename)
-                    file_creation_time = path.getctime(file_path)
+                    file_creation_time = path.getmtime(file_path)
                     self._new_content_dict[folder].append([file_creation_time,filename,file_path])
 
                     #OR
@@ -138,7 +142,7 @@ class writeToDoc:
         self.update_glossary_for_all_parts()
 
     def update_glossary_for_all_parts(self):
-        new_path = path.join(self.path,'overleaf','v1.5')
+        new_path = path.join(self.path,'overleaf','v1.6')
         glossary_path = self.config.latex_model(2)
         glossary_file_path = path.join(glossary_path, 'mtc-terms.tex')
 
@@ -268,9 +272,10 @@ if __name__ == '__main__':
     writetodoc = writeToDoc()
     writetodoc.write_all_new_content()
 
-    time_latexdiff = perf_counter()
+    #time_latexdiff = perf_counter()
 
-    writetodoc.create_latexdiff_files(1.4,1.5)
+    #print('Creating Latexdiff documents')
+    #writetodoc.create_latexdiff_files(1.5,1.6)
 
-    print ('Completed in: ' + str(time_latexdiff-time_start) + ' seconds!\nLatexdiff completed in ' + str(perf_counter()-time_latexdiff)+ ' seconds!')
+    #print ('Completed in: ' + str(time_latexdiff-time_start) + ' seconds!\nLatexdiff completed in ' + str(perf_counter()-time_latexdiff)+ ' seconds!')
 

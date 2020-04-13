@@ -1,0 +1,11 @@
+
+h1. @DataItemRef@
+
+h2. Part 2
+
+h3. attributes-for-dataitemref
+
+|_.Attribute|_.Description|_.Occurrence|
+|name|The optional @name@ of the @DataItemRef@. Only informative.@
+@
+@name@ is an @NMTOKEN@ _XML_ type.|0..1|

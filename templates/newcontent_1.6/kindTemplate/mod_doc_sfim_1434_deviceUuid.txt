@@ -1,0 +1,9 @@
+h1. @deviceUuid@
+
+h2. Part 4.1
+
+h3. attributes-for-cuttingtool-and-cuttingtoolarchetype
+
+|_.Attribute|_.Description|_.Occurrence|
+|@deviceUuid@|A reference to the @Device@'s @uuid@ that created the @Asset@ information. The @deviceUuid@ *MUST* be an _NMTOKEN_ _XML_ type.|1|
+

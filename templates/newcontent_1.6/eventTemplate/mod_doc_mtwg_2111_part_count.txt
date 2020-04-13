@@ -1,0 +1,43 @@
+h1. PART_COUNT
+
+h2. Part 2 Content
+
+* Category: @EVENT@
+
+|_.Type/Sub Type|_.Description|
+|@PART_COUNT@|The aggregate count of parts.@
+@
+Use the @discrete@ attribute with value @true@ to report non-aggregate part count.
+@
+See {section:ResetTrigger Element for DataItem} to reset the count.
+@
+The _Valid Data Value_ *MUST* be numeric.|
+|>.@ALL@|The number of parts produced. @ALL@ is the default @subType@.|
+|>.@BAD@|The number of parts produced that do not conform to specification.|
+|>.@GOOD@|The number of parts produced that conform to specification.|
+|>.@REMAINING@|The number of remaining or in-stock parts to be produced.|
+|>.@TARGET@|The number of projected or planned parts to be produced.|
+
+
+h3. Examples
+
+<pre>
+ <DataItem type="PART_COUNT" id="pc" category="EVENT" subType="TARGET"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@PART_COUNT@|@PartCount@|The aggregate count of parts.@
+@
+When the @discrete@ attribute is @true@, the value represents the number of parts since the previous occurrence of the event.@
+@
+Subtypes of @PartCount@ are @ALL@, @GOOD@, @BAD@, @TARGET@, and @REMAINING@.@
+@
+The _Valid Data Value_ *MUST* be numeric.|
+
+h3. Example
+
+<pre>
+  <PartCount dataItemId="pc" timestamp="2020-03-05T22:46:27.997876Z" sequence="39" subType="TARGET">75</PartCount>
+</pre>

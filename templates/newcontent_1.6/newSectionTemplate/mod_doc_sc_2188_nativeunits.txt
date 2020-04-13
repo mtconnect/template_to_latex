@@ -1,0 +1,16 @@
+
+h1. @nativeUnits Attribute for DataItem@ 
+
+* Part: Part 2
+* Parent: @Attributes for DataItem@
+* Update Line: [[The @nativeUnits@ attribute provides additional information about the original measured value for a _Data Entity_ reported by a piece of equipment.  @nativeUnits@ *MAY* be specified to provide additional information about the data if the units of the measured value supplied by the piece of equipment differ from the value provided for that data when converted to standard units.]]
+
+
+The @DataItem@ *MAY* specify the _engineering units_ used by the information source using the optional attribute @nativeUnits@. The @nativeUnits@ are inclusive of the _engineering units_ for the @units@ attribute (see: {table:DataItem attribute units type}). One *MAY* use a prefixed value, for example @nativeUnits="x:MILE"@, to extend the _Controlled Vocabulary_ with a namespace.
+
+
+* Update Line: [[{table:DataItem attribute nativeunits type} defines the @nativeUnits@ currently supported by the @MTConnectDevices@ _XML_ document:]]
+
+
+_MTConnect_ specifies the following _Controlled Vocabulary_ for @nativeUnits@ in {table:DataItem attribute nativeunits type}:
+

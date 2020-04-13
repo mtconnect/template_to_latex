@@ -180,13 +180,17 @@ class eventTemplate:
             description = row[1]
             subtype = ', '.join(subtype)
 
+            formatted_name = self._fmt.to_latex_name(name)
+
+            if self._latex_model.get_gls_key(formatted_name):
+                gls_key = self._latex_model.get_gls_key(formatted_name)
+
             if _type == 'subType':
                 elementname = str()
-                formatted_name = self._fmt.to_latex_name(name)
-
+                
                 if self._latex_model.get_gls_key(formatted_name):
                     print ("subType "+ name + " is already in the Glossary!")
-                    gls_key = self._latex_model.get_gls_key(formatted_name)
+                
 
             if not self._latex_model.get_gls_name(gls_key):
                 self._latex_model.add_glossary_entry(
@@ -208,6 +212,11 @@ class eventTemplate:
 
             elementname = row[1]
             description = row[2]
+
+            formatted_name = self._fmt.to_latex_name(row[0])
+
+            if self._latex_model.get_gls_key(formatted_name):
+                gls_key = self._latex_model.get_gls_key(formatted_name)
 
             table_name = self._config.table_name(3, "elementName")
             values = [gls_key, elementname, description]

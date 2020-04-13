@@ -1,0 +1,297 @@
+
+h1. @Sample Data Entities@
+
+* Part: Part 3
+
+* Parent: @Data Entities@
+
+* Remove Section: @Response for SAMPLE category DataItem Elements with a representation Attribute of TIME_SERIES@
+
+* Remove Section: @Response for SAMPLE category DataItem Elements with a representation attribute of DATA_SET@
+
+
+h1. @Event Data Entities@
+
+* Part: Part 3
+
+* Parent: @Data Entities@
+
+* Remove Section: @Response for EVENT category DataItem Elements with a representation attribute of DATA_SET@
+
+h1. @Representations@
+
+* Part: Part 3
+* Parent: @Data Entities@
+* Add Before Section: @Condition Container@
+
+A @representation@ specifies the format and structure of the information for an _observation_. The default @representation@ is @VALUE@ indicating the format as specified in {cite:Part 3}.
+
+A @representation@, other than @VALUE@, will modify the _Element Name_ of the _observation_ by appending the pascal case of the @representation@ as follows:
+
+* Itemized List:
+
+- A @DataItem@ with @type@ @TEMPERATURE@ and @representation@ of @TIME_SERIES@ becomes @TemperatureTimeSeries@
+
+- *DEPRECATED* A @DataItem@ with @type@ @PART_COUNT@ and @representation@ of @DISCRETE@ becomes @PartCountDiscrete@
+
+- A @DataItem@ with @type@ @VARIABLE@ and @representation@ of @DATA_SET@ becomes @VariableDataSet@
+
+- A @DataItem@ with @type@ @WORK_OFFSET@ and @representation@ of @TABLE@ becomes @WorkOffsetTable@
+
+* End List
+
+The following constraints apply to each @representation@:
+
+* Itemized List:
+
+- A @DataItem@ with @representation@ @TIME_SERIES@ *MUST* have a @category@ @SAMPLE@
+
+- *DEPRECATED* A @DataItem@ with @representation@ @DISCRETE@ *MUST* have a @category@ @EVENT@
+
+- A @DataItem@ with @representation@ @DATA_SET@ *MUST* have a @category@ @EVENT@ or @SAMPLE@
+
+- A @DataItem@ with @representation@ @TABLE@ *MUST* have a @category@ @EVENT@ or @SAMPLE@
+
+* End List
+
+
+h2. @Observations for DataItem with representation of TIME_SERIES@
+
+A @DataItem@ with @TIME_SERIES@ @representation@ *MUST* have a @category@ of @SAMPLE@. 
+
+A _Time Series_ _observation_ *MUST* have a @sampleCount@ attribute.
+
+_Time Series_ _observation_ *MUST* report multiple values at fixed intervals in a single _observation_. At minimum, one of @DataItem@ or _observation_ *MUST* specify the @sampleRate@ in _hertz_ (values/second); fractional rates are permitted. When the _observation_ and the @DataItem@ specify the @sampleRate@, the _observation_ @sampleRate@ supersedes the @DataItem@.
+
+The _observation_ *MUST* set the @timestamp@ to the time the last value was observed. The @duration@ *MAY* indicate the time interval from the first to the last value in the series.
+
+In _XML_, the format of the _Time Series_ _observation_ *MUST* be space-separated floating-point numbers. 
+
+
+
+h3. @XML Schema for Time Series Observation@
+
+{figure:abstimeseries-schema-diagram} shows the attributes that can be applied to all @TIME_SERIES@ _observations_.
+
+* Figure: @AbsTimeSeries Schema Diagram@
+
+!abstimeseries-schema-diagram.png!
+
+
+h3. @Attributes for Time Series Observation@
+
+{table:Attributes for Time Series Observation} defines the additional attribute provided for a @DataItem@ of @category@ @SAMPLE@ with a @representation@ attribute of @TIME_SERIES@.
+
+* Table: @Attributes for Time Series Observation@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@sampleCount@|The number of values given for the _observation_|1|
+
+
+h2. @Observations for DataItem with representation of DISCRETE (DEPRECATED)@
+
+_MTConnect_ Version 1.5 replaced @representation@ @DISCRETE@ with a @discrete@ _attribute_ for @DataItem@.
+
+@DISCRETE@ *MUST* only be used with a @DataItem@ with a @category@ of @EVENT@.
+
+Each occurrence of the _observation_ *MAY* have the same value as the previous occurrence, and *MUST NOT* suppress duplicates.
+
+Examples of @DISCRETE@ information as follows: A @PartCount@ reporting the completion of each part using a 1 to indicate completion of a single part, a @Message@ that occurs each time a door opens. 
+
+
+h2. @Observations for DataItem with representation of DATA_SET@
+
+A @DataItem@ with @DATA_SET@ @representation@ *MUST* have a @category@ of @SAMPLE@ or @EVENT@. 
+
+A _Data Set_ _observation_ *MUST* have a @count@ attribute.
+
+_Data Set_ _observation_ reports multiple values as a set of _key-value pairs_ where each _key_ *MUST* be unique. The representation of the _key-value pair_ in _XML_ is an @Entry@. The value of each @Entry@ *MUST* have the same constraints and format as the _observation_ defined for the @VALUE@ @representation@ for the @DataItem@ @type@. 
+
+The meaning of each @Entry@ *MAY* be provided as the @DataItem@ @EntryDefinition@.
+
+
+h3. @XML Schema for Data Set Observation@
+
+* Figure: @Sample Data Set Schema Diagram@
+
+!sample-data-set-schema-diagram.png!
+
+* Table: @Attributes for Data Set Observation@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@count@|The number of @Entry@ elements for the _observation_|1|
+
+* Table: @Elements for Data Set Observation@
+
+|_.Element|_.Description|_.Occurrence|
+|@Entry@|A _key-value pair_ published as part of a _Data Set_ _observation_.|0..*|
+
+
+h3. @Entry Element for Data Set Observation@
+
+* Figure: @Entry Element Schema Diagram@
+
+!entry-element-schema-diagram.png!
+
+* Notes:
+
+- The @VariableDataSet@ is an example of a @DataItem@ with @type@ @VARIABLE@ and @representation@ @DATA_SET@.
+
+* End List
+
+The following is an example in _XML_ of @Entry@ elements for a @DataItem@ with @type@ @VARIABLE@:
+
+* Example: @Example of multiple key-value pairs Reported for a Data Entity@
+
+<pre>
+  <VariableDataSet timestamp="..." sequence="..." count="2">
+    <Entry key="a101">100.21</Entry>
+    <Entry key="a102">609</Entry>
+    <Entry key="a103" removed="true" />
+  </VariableDataSet>
+</pre>
+
+
+h3. @Attributes for Entry Element for Data Set Observation@
+
+{table:Attributes for Entry} lists the attributes for @Entry@ element.
+
+* Table: @Attributes for Entry@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|A unique identifier for each _key-value pair_.@
+@
+The value provided for @key@ *MUST* be unique in a set of @Entry@ elements.@
+@
+The value provided for @key@ *MUST* be a XML NMTOKEN type.|1|
+|@removed@|Boolean removal indicator of a _key-value pair_ that *MUST* be @true@ or @false@.@
+@
+@true@ indicates the @Entry@ is removed.@
+@
+@false@ (default) indicates the @Entry@ is present.|0..1|
+
+
+h3. @Constraints for Entry Values@
+
+The value of each @Entry@ *MUST* have the same restrictions as the value of an _observation_ with @representaton@ of @VALUE@.
+
+An @Entry@ *MAY* be further constrained by the @DataItem@ definition (see {cite:Part 2}), for example a @VariableDataSet@ having a string value *MAY* have a floating-point @Temperature@ value. A restriction *MUST NOT* be broadened or removed, for example, the value "READY" *MUST NOT* occur with a @TemperatureDataSet@ constrained to floating-point numbers.
+
+The {cite:Part 2} @DataItem@ @Definition@ *MAY* provide the @type@ and @units@ of an @Entry@ for a @key@.
+
+
+h2. @Management of Data Set Observations@
+
+An _Agent_ *MUST* maintain the current state of the _Data Set_ as described in {cite:Part 1: Management of Streaming Data Storage}.
+
+One or more _key-value pairs_ *MAY* be added, removed, or changed in an _observation_. An _Agent_ *MUST* publish the changes to one or more _key-value pairs_ as a single _observation_. An _Agent_ *MUST* indicate the removal of a _key-value pair_ from a _Data Set_ using the @removed@ attribute equal @true@.
+
+When the @DataItem@ @discrete@ attribute is @false@ or is not present, an _Agent_ in response to a _sample request_ *MUST* only publish the changed _key-value pair_ since the previous state of the _Data Set_.
+
+When the @DataItem@ @discrete@ attribute is @true@, an _Agent_, in response to a _sample request_, *MUST* report all _key-value pairs_ ignoring the state of the _Data Set_.
+
+When an _Agent_ responds to a _Current Request_, the _response document_ *MUST* include the full set of _key-value pairs_. If the _Current Request_ includes an @at@ _query parameter_, the _Agent_ *MUST* provide the set of _key-value pairs_ at the  _sequence number_.
+
+When an _observation_ _reset_ occurs, the _Data Set_ *MUST* remove all _key-value pairs_ making the set empty. The _observation_ *MAY* simultaneously populate the _Data Set_ with new _key-value pairs_. The previous entries *MUST NOT* be included and *MUST NOT* have @removed@ attribute equal @true@.
+
+When the _observation_ is @UNAVAILABLE@ the _Data Set_ *MUST* remove all _key-value pairs_ making the set empty.
+
+
+h2. @Observations for DataItem with representation of TABLE@
+
+A @Table@ represents two-dimensional sets of _key-value pairs_ where the @Entry@ represents rows containing sets of _key-value pairs_ given by @Cell@ s. The @Table@ has the same behavior as the _Data Set_ {ref:Data Set} for change tracking, clearing, and history. When an @Entry@ changes. All @Cells@ update at the same time; they are not tracked separately like @Entry@.
+
+The meaning of each @Entry@ and @Cell@ *MAY* be provided as the @DataItem@ @EntryDefinition@ and @CellDefinition@.
+
+The @Entry@ @key@ attribute *MUST* be the unique identity of the @Entry@ within an _observation_. The @Cell@ @key@ attribute *MUST* be the unique identity of the @Cell@ within an @Entry@.
+
+
+h3. @Structure of Table Observations@
+
+{figure:Table Schema Diagram} represents the XML schema representing @DataItem@ defined in the {cite:Part 2} with a @representation@ attribute of @TABLE@.
+
+* Figure: @Table Schema Diagram@
+
+!table-schema-diagram.png!
+
+
+h3. @Attributes of Table Observations@
+
+* Table: @Attributes for DataSet@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@count@|Represents the number of _key-value pairs_ represented as @Entry@ elements.@
+@
+@count@ *MUST* be provided when the @DataItem@ @representation@ is @TABLE@.|1|
+
+
+h3. @Elements of Table Observations@
+
+{table:Elements for Table} An @Entry@ is the only child element that *MAY* be associated with a _Table_ _observation_.
+
+* Table: @Elements for Table@
+
+|_.Element|_.Description|_.Occurrence|
+|@Entry@|A _key-value-pair_ containing a set of _key-value pairs_.|0..*|
+
+
+h4. @Structure for Table Entry for an Observation@
+
+An @Entry@ represents a _Row_ subdivided into @Cells@ when representing tabular data. The meaning of an @Entry@ *MAY* be given in the @DataItem@ @EntryDefinition@ associated with its unique @key@.
+
+
+h4. @Attributes for Table Entry for an Observation@
+
+See {section:Attributes for Entry Element for Data Set Observation}.
+
+
+h4. @Elements for Table Cell for an Observation@
+
+* Table: @Elements for Table Cell@
+
+|_.Element|_.Description|_.Occurrence|
+|@Cell@|An element representing a _key-value pair_ published as part of an _Entry_.|0..*|
+
+
+h4. @Structure for Table Cell for an Entry@
+
+A @Cell@ represents a _Column_ within a _Row_ of a tabular data. The @DataItem@ @CellDefinition@  *MAY* give the meaning of the @Cell@ associated with its unique @key@.
+
+Any number of @Cell@ elements *MAY* be provided for an _Entry_ for a _Table_ _observation_.
+
+The @type@ of the @DataItem@ constrains the _CDATA_ of the @Cell@ as specified in {cite:Part 2}.
+
+h4. @Attributes for Table Cell for an Observation@
+
+{table:Attributes for Table Cell} defines the attributes provided for a @Cell@ XML element for an @Entry@. 
+
+* Table: @Attributes for Table Cell@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@key@|A unique identifier for each _key-value pair_.@
+@
+The value provided for @key@ *MUST* be unique in a set of @Cell@ elements.@
+@
+The value provided for @key@ *MUST* be a XML NMTOKEN type.|1|
+
+h4. @Constraints for Cell Values@
+
+The value of each @Cell@ *MUST* have the same restrictions as the value of an _observation_ with @representaton@ of @VALUE@.
+
+An @Cell@ *MAY* be further constrained by the @DataItem@ definition (see {cite:Part 2}), for example a @VariableDataSet@ having a string value *MAY* have a floating-point @Temperature@ value. A restriction *MUST NOT* be broadened or removed, for example, the value "READY" *MUST NOT* occur with a @TemperatureDataSet@ constrained limited to floating-point numbers.
+
+The {cite:Part 2} @DataItem@ @Definition@ *MAY* provide the @type@ and @units@ of a @Cell@ for a @key@.
+
+
+h4. @Example Table Observation@
+
+* Example: @Example of WorkpieceOffset observation for a TABLE representation@
+
+<pre>
+<WorkpieceOffsetTable dataItemId="wp1" timestamp="TIME" name="wpo" sequence="15" count="3">
+  <Entry key="G53.1"><Cell key="X">1</Cell><Cell key="Y">2</Cell><Cell key="Z">3</Cell></Entry>
+  <Entry key="G53.2"><Cell key="X">4</Cell><Cell key="Y">5</Cell><Cell key="Z">6</Cell></Entry>
+  <Entry key="G53.3"><Cell key="U">10</Cell><Cell key="X">7</Cell><Cell key="Y">8</Cell><Cell key="Z">9</Cell></Entry>
+</WorkpieceOffsetTable>
+</pre>
+

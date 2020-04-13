@@ -156,10 +156,16 @@ class sampleTemplate:
                         rows_dict[key]['initial']['parent'] = self._latex_model._glossary['terms'][key]
                     else:
                         rows_dict[key]['initial']['parent'] = None
+                elif _type == 'deprecated':
+                    name = self._fmt.to_latex_name(col)
+                    key = self._latex_model.get_gls_key(name)
+                    rows_dict[key] = dict()
+                    rows_dict[key]['_type'] = _type
+                    rows_dict[key][key] = [col]
 
             elif i%len(columns) >= 1:
                 col = self._fmt.format_desc(col)
-                if _type == 'type':
+                if _type == 'type' or _type == 'deprecated':
                     rows_dict[key][key].append(col)
                 elif _type == 'subType':
                     rows_dict[key][_type][subType_key][subType_key].append(col)
@@ -175,6 +181,12 @@ class sampleTemplate:
         for key, val in rows.items():
 
             row = val[key]
+            if '_type' in val:
+                _type = 'sample,type'
+                if val['_type'] == 'deprecated':
+                    _type = 'sample,deprecated'
+            else:
+                _type = 'subtype'
 
             #Check for subtypes of type
             
@@ -195,7 +207,7 @@ class sampleTemplate:
 
 
             # adding types then its subtypes : is order significant?
-            self._add_to_glossary(row, key, subtype = subtype, model = model)
+            self._add_to_glossary(row, key, _type = _type, subtype = subtype, model = model)
 
             if 'subType' in val:
                 for k,v in val['subType'].items():
@@ -237,6 +249,16 @@ class sampleTemplate:
                     'elementname',elementname,
                     'subtype',subtype
                     )
+
+            if _type == 'sample,deprecated':
+                self._latex_model._glossary['terms'][gls_key]['name'] = '\\deprecated{'+self._fmt.to_latex_name(name)+'}'
+                self._latex_model._glossary['terms'][gls_key]['elementname'] = '\\deprecated{\\cfont{'+self._fmt.to_elem_name(name)+'}}'
+                self._latex_model._glossary['terms'][gls_key]['description'] = '{' + description + '}'
+                self._latex_model._glossary['terms'][gls_key]['units'] = '\\deprecated{\\cfont{'+self._latex_model.get_gls_key_entry_command(self._fmt.to_latex_name(units))+'}}'
+
+                self._latex_model.update_gls_entry(gls_key)
+
+
             table_name = self._config.table_name(2, "category")
             values = [gls_key, description, units]
 

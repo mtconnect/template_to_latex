@@ -1,0 +1,40 @@
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|_.Units|
+|@X_DIMENSION@|Measured dimension of an entity relative to the X direction of the referenced coordinate system.|MILLIMETER|
+|@Y_DIMENSION@|Measured dimension of an entity relative to the Y direction of the referenced coordinate system.|MILLIMETER|
+|@Z_DIMENSION@|Measured dimension of an entity relative to the Z direction of the referenced coordinate system.|MILLIMETER|
+|@DIAMETER@|The measured dimension of a diameter.|MILLIMETER|
+
+h3. Examples
+
+<pre>
+ <DataItem id="xdim" category="SAMPLE" type="X_DIMENSION"  units="MILLIMETER"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@X_DIMENTION@|@XDimension@|Measured dimension of an entity relative to the X direction of the referenced coordinate system.@
+@
+@XDimension@ *MUST* be reported in units of @MILLIMETER@.@
+|
+|@Y_DIMENTION@|@YDimension@|Measured dimension of an entity relative to the Y direction of the referenced coordinate system.@
+@
+@YDimension@ *MUST* be reported in units of @MILLIMETER@.@
+|
+|@Z_DIMENTION@|@ZDimension@|Measured dimension of an entity relative to the Z direction of the referenced coordinate system.@
+@
+@ZDimension@ *MUST* be reported in units of @MILLIMETER@.@
+|
+|@DIAMETER@|@Diameter@|The measured dimension of a diameter.@
+@
+@Diameter@ *MUST* be reported in units of @MILLIMETER@.|
+
+h3. Example
+
+<pre>
+  <Diameter... >100.23</Diameter>
+</pre>

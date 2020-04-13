@@ -1,0 +1,46 @@
+
+h1. @Specifications@
+
+* Parent: @Configuration@
+
+* Part: Part 2
+
+* Add Section: @Specifications@
+
+@Specifications@ is an _XML_ container in the @Configuration@ of a @Component@ that contains one or more @Specification@ elements describing the design characteristics for a piece of equipment.
+
+* Figure: @Specifications Diagram@
+
+!specifications-diagram.png!
+
+h2. @Specification@
+
+@Specification@ elements define information describing the design characteristics for a piece of equipment.
+
+h3. @Attributes for Specification@
+
+{table:Attributes for Specification} lists the attributes defined to provide information for a @Specification@ element.
+
+* Table: @Attributes for Specification@
+
+|_.Attribute|_.Description|_.Occurrence|
+|@type@|Same as @DataItem@ type. See {section:Listing of Data Items}.|1|
+|@subType@|Same as @DataItem@ subtypes. See {section:Listing of Data Items}.|0..1|
+|@dataItemIdRef@|A reference to the @id@ attribute of the @DataItem@ associated with this element.|0..1|
+|@units@|Same as @DataItem@ units. See {section:units Attribute for DataItem}.|0..1|
+|@compositionIdRef@|A reference to the @id@ attribute of the @Composition@ associated with this element.|0..1|
+|@name@|The @name@ provides additional meaning and differentiates between @Specifications@.@
+@
+A @name@ *MUST* exist when two @Specifications@ have the same @type@ and @subType@ within a @Component@.|0..1|
+|@coordinateSystemIdRef@|References the @CoordinateSystem@ for geometric @Specifications@.|0..1|
+
+h3. @Elements for Specification@
+
+{table:Elements for Specification} lists the elements defined to provide information for a @Specification@ element.
+
+* Table: @Elements for Specification@
+
+|_.Element|_.Description|_.Occurrence|
+|@Maximum@|A numeric upper limit constraint.|0..1|
+|@Minimum@|A numeric lower limit constraint.|0..1|
+|@Nominal@|The numeric target or expected value.|0..1|

@@ -1,0 +1,11 @@
+h1. CuttingItem
+
+h2. Part 4.1
+
+h3. elements-for-cuttingitem
+
+|_.Element|_.Description|_.Occurrence|
+|@CutterStatus@|The status of this item.@
+@
+@CutterStatus@ *MUST* one of the following values: @NEW@, @AVAILABLE@, @UNAVAILABLE@, @ALLOCATED@, @UNALLOCATED@, @MEASURED@, @RECONDITIONED@, @NOT_REGISTERED@, @USED@, @EXPIRED@, @BROKEN@, or @UNKNOWN@.|0..1|
+|@ProgramToolGroup@|The tool group the part program assigned this item.|0..1|

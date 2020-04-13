@@ -1,0 +1,5 @@
+
+h1. _engineering units_
+
+|_.Key|_.Value|
+|description|A quantity, dimension, or magnitude used in engineering adopted as a standard in terms of which the magnitude of other quantities of the same kind can be expressed or calculated.|

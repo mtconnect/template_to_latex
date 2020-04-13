@@ -1,0 +1,30 @@
+h1. Query Parameters
+
+h2. Part 1
+
+h3. query-parameters-for-current-httprequest
+
+|_.Query Parameters|_.Description|
+|@interval@|The _Agent_ *MUST* continuously publish _Response Documents_ when the query parameters include @interval@ using the value as the period between adjacent publications.@
+@
+The @interval@ value *MUST* be in milliseconds, and *MUST* be a positive integer greater than zero (0).@
+@
+The _Query_ *MUST NOT* specify both @interval@ and @at@ parameters.|
+
+
+h1. Query Parameters
+
+h2. Part 1
+
+h3. query-parameters-for-sample-httprequest
+
+|_.Query Parameters|_.Description|
+|@interval@|The _Agent_ *MUST* continuously publish _Response Documents_ when the query parameters include @interval@ using the value as the minimum period between adjacent publications.@
+@
+The @interval@ value *MUST* be in milliseconds, and *MUST* be a positive integer greater than or equal to zero (0).@
+@
+The _Query_ *MUST NOT* specify both @interval@ and @from@ parameters.@
+@
+If the value for the @interval@ parameter is zero (0), the _Agent_ *MUST* publish  _Response Documents_ at the fastest rate possible.@
+@
+If the period between the publication of a _Response Document_ and reception of data exceeds the @interval@, the _Agent_ *MUST* wait for a maximum of @heartbeat@ milliseconds for data. Upon the arrival of data, the _Agent_ *MUST* immediately publish a _Response Document_. When the period equals or exceeds the @heartbeat@, the _Agent_ *MUST* publish an empty _Response Document_.|

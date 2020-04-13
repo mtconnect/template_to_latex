@@ -1,0 +1,54 @@
+h1. Voltage
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@VOLTAGE_AC@|The measurement of the electrical potential between two points in an electrical circuit in which the current periodically reverses direction.@
+@
+A @subType@ *MUST* be specified.@
+@
+If not specified further in @statistic@, defaults to RMS voltage.|VOLT|
+|>.@ACTUAL@|The measured voltage within an electrical circuit.|VOLT|
+|>.@COMMANDED@|The value for a voltage as specified by a @Controller@ component. @
+@
+The @COMMANDED@ voltage is a calculated value that includes adjustments and overrides.|VOLT|
+|>.@PROGRAMMED@|The value for a current as specified by a logic or motion program or set by a switch.|VOLT|
+|@VOLTAGE_DC@|The measurement of the electrical potential between two points in an electrical circuit in which the current is unidirectional.@
+@
+A @subType@ *MUST* be specified.|VOLT|
+|>.@ACTUAL@|The measured voltage within an electrical circuit.|VOLT|
+|>.@COMMANDED@|The value for a voltage as specified by a @Controller@ component. @
+@
+The @COMMANDED@ voltage is a calculated value that includes adjustments and overrides.|VOLT|
+|>.@PROGRAMMED@|The value for a voltage as specified by a logic or motion program or set by a switch.|VOLT|
+|---@VOLTAGE@---|*DEPRECATED* in _Version 1.6_. Replaced by @VOLTAGE_AC@ and @VOLTAGE_DC@.|VOLT|
+
+h3. Examples
+
+<pre>
+ <DataItem id="volts" category="SAMPLE" type="VOLTAGE_AC" subType="ACTUAL" units="VOLT"/>
+</pre>
+
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@VOLTAGE_AC@|@VoltageAC@|The measurement of the electrical potential between two points in an electrical circuit in which the current periodically reverses direction.@
+@
+Subtypes of @VOLTAGE_AC@ are @ACTUAL@, @PROGRAMMED@, and @COMMANDED@.@
+@
+@VoltageAC@ *MUST* be in units of @VOLT@.|
+|@VOLTAGE_DC@|@VoltageDC@|The measurement of the electrical potential between two points in an electrical circuit in which the current is unidirectional.@
+@
+Subtypes of @VOLTAGE_DC@ are @ACTUAL@, @PROGRAMMED@, and @COMMANDED@.@
+@
+@VoltageDC@ *MUST* be in units of @VOLT@.|
+|---@VOLTAGE@---|---@Voltage@---|*DEPRECATED* in _Version 1.6_. Replaced by @VOLTAGE_AC@ and @VOLTAGE_DC@.|
+
+h3. Example
+
+<pre>
+  <Voltage_AC...subType="ACTUAL" >230</Voltage_AC>
+</pre>

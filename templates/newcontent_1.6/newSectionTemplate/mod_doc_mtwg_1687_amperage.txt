@@ -1,0 +1,13 @@
+
+h1. @Element Names when MTConnectDevices category is SAMPLE or EVENT@
+
+* Part: Part 3
+
+* Parent: @Element Names for Data Entities@
+
+* Add After Line: [[_Element Name_ derived from the @type@ attribute defined for that @DataItem@ element in the @MTConnectDevices@ document.]]
+
+
+The element name *MUST* derive from the @DataItem@ @type@ converted to _Pascal-Case_ by removing underscores ( \textunderscore ) and capitalizing each word. The conversion *MUST NOT* apply to the following abbreviated words: @PH@, @AC@, and @DC@. 
+
+

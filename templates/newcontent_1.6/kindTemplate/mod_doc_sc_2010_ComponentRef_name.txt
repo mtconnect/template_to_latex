@@ -1,0 +1,11 @@
+
+h1. @ComponentRef@
+
+h2. Part 2
+
+h3. attributes-for-componentref
+
+|_.Attribute|_.Description|_.Occurrence|
+|@name@|The optional @name@ of the @ComponentRef@. Only informative.@
+@
+@name@ is an _NMTOKEN_ _XML_ type.|0..1|

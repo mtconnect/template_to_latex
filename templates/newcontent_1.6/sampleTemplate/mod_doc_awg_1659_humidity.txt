@@ -1,0 +1,62 @@
+h1. Data Items
+
+h2. Part 2 Content
+
+* Category: @SAMPLE@
+
+|_.Type/Sub Type|_.Description|Units|
+|@HUMIDITY_RELATIVE@|The amount of water vapor present expressed as a percent to reach saturation at the same temperature.|PERCENT|
+|>.@ACTUAL@|The measured value.|PERCENT|
+|>.@COMMANDED@|The commanded value.|PERCENT|
+|@HUMIDITY_ABSOLUTE@|The amount of water vapor expressed in grams per cubic meter.|GRAM/CUBIC_METER|
+|>.@ACTUAL@|The measured value.|GRAM/CUBIC_METER|
+|>.@COMMANDED@|The commanded value.|GRAM/CUBIC_METER|
+|@HUMMIDITY_SPECIFIC@|The ratio of the water vapor present over the total weight of the water vapor and air present expressed as a percent.|PERCENT|
+|>.@ACTUAL@|The measured value.|PERCENT|
+|>.@COMMANDED@|The commanded value.|PERCENT|
+
+h3. Units 
+
+|_.Units|_.Description|
+|@GRAM/CUBIC_METER@|Gram per cubic meter.|
+
+h3. Examples
+
+<pre>
+  <DataItem id="a2432" category="SAMPLE" type="HUMIDITY_RELATIVE" subType="ACTUAL" units="PERCENTAGE"/>
+ <DataItem id="a2346" category="SAMPLE" type="HUMIDITY_ABSOLUTE" subType="COMMANDED" units="GRAM/CUBIC_METER"/>
+ <DataItem id="49433" category="SAMPLE" type="HUMIDITY_SPECIFIC" subType="ACTUAL" units="PERCENTAGE"/>
+</pre>
+
+h2. Part 3 Content
+
+|_.DataItem Type|_.Element Name|_.Description|
+|@HUMIDITY_RELATIVE@|@HumidityRelative@|The amount of water vapor present expressed as a percent to reach saturation at the same temperature.@
+@
+Subtypes of @HumidityRelative@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@HumidityRelative@ *MUST* be reported in units of @PERCENT@.|
+|@HUMIDITY_ABSOLUTE@|@HumidityAbsolute@|The amount of water vapor expressed in grams per cubic meter.@
+@
+Subtypes of @HumidityAbsolute@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@HumidityAbsolute@ *MUST* be reported in units of @GRAM/CUBIC_METER@.|
+|@HUMIDITY_SPECIFIC@|@HumiditySpecific@|The ratio of the water vapor present over the total weight of the water vapor and air present expressed as a percent.@
+@
+Subtypes of @HumiditySpecific@ are @ACTUAL@ and @COMMANDED@.@
+@
+If a @subType@ is not specified, the reported value for the data *MUST* default to the subtype of @ACTUAL@.@
+@
+@HumiditySpecific@ *MUST* be reported in units of @PERCENT@.|
+
+h3. Example
+
+<pre>
+    <HumidityRelative ... subType="ACTUAL">23.45</HumidityRelative>
+  <HumidityAbsolute ... subType="COMMANDED">354.6</HumidityActual>
+  <HumiditySpecific ... subType="ACTUAL">27.54</HumiditySpecific>
+</pre>
