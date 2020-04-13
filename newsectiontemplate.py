@@ -6,11 +6,13 @@ from library.formatcontent import formatContent
 class newSectionTemplate:
 
     def __init__(self, config, latex_model, formatter):
-        self._commands_dict = dict()
+
         self._config = config
         self._generate = generateContent(config)
+
         self._config.load_config("newSectionTemplate")
         self._get_latex_model = latex_model
+
         self._fmt = formatter
 
 
@@ -20,32 +22,26 @@ class newSectionTemplate:
             raise Exception("Enter a valid latex directory path!")
 
         else:
-            template = open(self._path,'r').read()
-            self._add_all_content_to_doc(template)
+            new_content = open(self._path,'r').read()
+            self._add_new_content_to_doc(new_content)
 
 
-    def _add_all_content_to_doc(self, template):
+    def _add_new_content_to_doc(self, templated_content):
 
-        sub_templates = template.split('h1. ')
-        doc_str = str()
+        sub_templates = templated_content.split('h1. ')
 
         for sub_template in sub_templates[1:]:
             self._commands_dict = dict()
-            self._get_content_from_template(doc_str, sub_template)
-
-        #self._write_doc(doc_str)
+            self._get_content_from_template(str(), sub_template)
 
 
-    def _get_content_from_template(self, doc_str, template):
+    def _get_content_from_template(self, doc_str, templated_content):
 
-        self._commands_dict['part_no'] = self._get_part_no(template)
+        self._commands_dict['part_no'] = self._get_part_no(templated_content)
 
-        sections_list = split('(\n\* )|(\nh2. )|(\nh3. )|(\nh4. )|(\nh5. )', template)
-        sections_list = self._rearrange_for_table_figures(sections_list)
-
-        self._commands_dict['seclist'] = sections_list
-
-        for i, section_commands_list in enumerate(sections_list):
+        sections = self._rearrange_for_table_figures(templated_content)
+        
+        for i, section_commands_list in enumerate(sections):
 
             self._extract_commands(section_commands_list)
 
@@ -76,8 +72,8 @@ class newSectionTemplate:
             else:
                 if not doc_str:
                     doc_str = self._read_doc()
-                content_type = self._get_command('content_type')
-                action_commands = self._get_command(content_type)
+                action_commands = self._get_command('action_commands')
+                if not action_commands: continue
 
                 section_name_string = section_commands_list[0].split('\n')[0]
                 section_name = self._fmt.format_key(section_name_string)[0]
@@ -88,12 +84,13 @@ class newSectionTemplate:
                 for action_command in action_commands:
 
                     desc = action_command[1]
+                    content_type = action_command[-1]
                     doc_str = self._add_to_doc(doc_str,
                                                section_name,
                                                desc,
                                                parent,
                                                parent_section_type,
-                                               action_command,
+                                               action_command[:-1],
                                                content_type)
 
 
@@ -111,7 +108,9 @@ class newSectionTemplate:
         #return doc_str
         self._write_doc(doc_str)
 
-    def _rearrange_for_table_figures(self, command_list):
+    def _rearrange_for_table_figures(self, templated_content):
+
+        command_list = split('(\n\* )|(\nh2. )|(\nh3. )|(\nh4. )|(\nh5. )', templated_content)
 
         self._parents_dict = dict()
         parent = str()
@@ -139,34 +138,24 @@ class newSectionTemplate:
                 heading_key = self._fmt.format_key(commands_list[i+1])[0]
                 heading_level = int(command_str[2])
 
+                self._parents_dict[heading_key] = dict()
+
                 if not parent:
                     parent = 'parent'
-                    self._parents_dict[heading_key] = dict()
                     self._parents_dict[heading_key]['parent'] = parent
-                    self._parents_dict[heading_key]['heading_level'] = heading_level
-                    self._parents_dict[heading_level] = heading_key
-                    parent = heading_key
 
                 elif heading_level > self._parents_dict[parent]['heading_level']:
-                    self._parents_dict[heading_key] = dict()
                     self._parents_dict[heading_key]['parent'] = parent
-                    self._parents_dict[heading_key]['heading_level'] = heading_level
-                    self._parents_dict[heading_level] = heading_key
-                    parent = heading_key
 
                 elif heading_level == self._parents_dict[parent]['heading_level']:
-                    self._parents_dict[heading_key] = dict()
                     self._parents_dict[heading_key]['parent'] = self._parents_dict[parent]['parent']
-                    self._parents_dict[heading_key]['heading_level'] = heading_level
-                    self._parents_dict[heading_level] = heading_key
-                    parent = heading_key
 
                 elif heading_level < self._parents_dict[parent]['heading_level']:
-                    self._parents_dict[heading_key] = dict()
                     self._parents_dict[heading_key]['parent'] = self._parents_dict[self._parents_dict[heading_level]]['parent']
-                    self._parents_dict[heading_key]['heading_level'] = heading_level
-                    self._parents_dict[heading_level] = heading_key
-                    parent = heading_key
+
+                self._parents_dict[heading_key]['heading_level'] = heading_level
+                self._parents_dict[heading_level] = heading_key
+                parent = heading_key
 
             elif command_str.startswith('Table'):
                 caption = self._fmt.format_key(search('Table:(.+?)\n',command_str).group(1))[0]
@@ -174,17 +163,34 @@ class newSectionTemplate:
 
                 updated_content_list[-1] = updated_content_list[-1] + content_update
 
+            elif command_str.startswith('Update Table'):
+                caption = self._fmt.format_key(search('Update Table:(.+?)\n',command_str).group(1))[0]
+                content_update = self._add_table(caption, command_str)
+
             elif command_str.startswith('Figure'):
                 caption = self._fmt.format_key(search('Figure:(.+?)\n',command_str).group(1))[0]
                 content_update = self._add_figure(caption, command_str)
 
-                updated_content_list[-1] = updated_content_list[-1] + content_update
+                updated_content_list[-1] = updated_content_list[-1] + '\n' + content_update
 
             elif command_str.startswith('Example'):
                 caption = self._fmt.format_key(search('Example:(.+?)\n',command_str).group(1))[0]
                 content_update = self._add_example(caption, command_str)
 
                 updated_content_list[-1] = updated_content_list[-1] + content_update
+
+            elif command_str.startswith('Notes:') or command_str.startswith('Note:'):
+                content_update = self._add_notes(command_str)
+
+                updated_content_list[-1] = updated_content_list[-1] + content_update
+
+            elif command_str.startswith('Itemized List:'):
+                content_update = self._add_itemized_list(command_str)
+
+                updated_content_list[-1] = updated_content_list[-1] + content_update
+
+            elif command_str.startswith('End List'):
+                updated_content_list[-1] = updated_content_list[-1] + '\n' + command_str.split('End List',1)[-1]
 
             else:
                 updated_content_list.append(command_str)
@@ -200,7 +206,9 @@ class newSectionTemplate:
 
         new_section = list()
         action, new_content, position, old_content = action_command
-        section_type = self._subsection_type(parent_sect_type)
+        if parent_sect_type: section_type = self._subsection_type(parent_sect_type)
+        else:section_type = 'section'
+        
 
         if parent:
             split_str = '\\'+parent_sect_type+'{'+parent+'}'
@@ -215,7 +223,25 @@ class newSectionTemplate:
         else:
             parent_sect = doc_str
 
-        if 'section' in content_type:
+        if action.lower() == 'remove':
+            subsection_list = parent_sect.split('\n\\'+section_type)
+            for subsection in subsection_list:
+                if subsection.startswith('{'+section_name+'}'):
+                    sect = '\n\\'+section_type+subsection
+                    break        
+            
+            subsection_type = self._subsection_type(section_type)
+            subsubsection_list = sect.split('\n\\'+subsection_type)
+            for subsubsection in subsubsection_list:
+                if subsubsection.startswith('{'+action_command[-1]+'}'):
+                    subsect = '\n\\'+subsection_type+subsubsection
+                    break
+            
+            new_section_str = parent_sect.replace(sect,sect.replace(subsect,'\n\n'))
+            doc_str = doc_str.replace(parent_sect, new_section_str)
+            return doc_str
+        
+        elif 'section' in content_type:
             if action_command[-1]:
                 subsection_list = parent_sect.split('\n\\'+section_type)
                 for subsection in subsection_list:
@@ -224,11 +250,11 @@ class newSectionTemplate:
                         break
 
             section_type_str = '\n\\'+section_type+'{'+section_name+'}'
+            
             if 'paragraph' in section_type_str: section_type_str += '\\mbox{}'
             section_type_str += '\n\\label{sec:'+section_name+'}\n'
 
             new_content = section_type_str + section_desc
-
         new_section_str = self._modify_doc_section(parent_sect, action, new_content, position, old_content)
 
         if new_section_str not in parent_sect:
@@ -249,23 +275,17 @@ class newSectionTemplate:
 
         if action == 'add':
             if position == 'before':
-                updated_content = new_content + old_content
+                updated_content = '\n' + new_content + '\n' + old_content
                 section = section.replace(old_content, updated_content)
 
             elif position == 'after':
-                updated_content = old_content + new_content
+                updated_content = old_content + '\n' + new_content
                 section = section.replace(old_content, updated_content)
 
             elif not position:
                 section = section + new_content
 
         elif action == 'update':
-            section = section.replace(old_content, new_content)
-
-        elif action == 'remove':
-            section = section.replace(old_content, '\n')
-
-        elif action == 'rename':
             section = section.replace(old_content, new_content)
 
         return section
@@ -277,13 +297,17 @@ class newSectionTemplate:
         sect_types = ['section','subsection','subsubsection','paragraph','subparagraph', 'ulheading']
         self._sect_types = sect_types
 
-        for _type in sect_types:
-            sect_type_str = '\\'+_type+'{'+parent+'}'
-            if sect_type_str in doc_str:
-                parent_sect_type = _type
-                break
+        if parent:
+                
+            for _type in sect_types:
+                sect_type_str = '\\'+_type+'{'+parent+'}'
+                if sect_type_str in doc_str:
+                    parent_sect_type = _type
+                    break
 
-        return parent_sect_type
+            return parent_sect_type
+        else:
+            return str()
 
 
 
@@ -318,6 +342,16 @@ class newSectionTemplate:
         content_update = content_update + example_str.split(content_search.group(0))[-1]
 
         return content_update
+
+    def _add_notes(self, note_str):
+
+        note_latex_str = self._generate._generate_note_str(note_str)
+        return note_latex_str
+
+    def _add_itemized_list(self, itemized_list_str):
+
+        itemized_list_str = self._generate._generate_itemized_list_str(itemized_list_str)
+        return itemized_list_str
 
     def _get_types_from_template(self, string, columns, columns_str):
 
@@ -387,19 +421,20 @@ class newSectionTemplate:
         columns_str = search('\|(.+?)\|\n', table_str, DOTALL).groups()[0]
         columns = self._fmt.extract_row_columns_from_string(columns_str)
 
+        table_str_split = split('\|', table_str)
+        table_str = str('|').join(table_str_split[:-1]+[''])
+
         label = caption.lower().replace(' ','-').replace('_','')
 
         if label not in self._latex_model._tables:
             path = self._latex_model._path +'/tables/' + label + '.tex'
             self._generate.create_table(path, label, columns, caption)
             self._latex_model._load_tables()
-
-        content_update = content_update + '\n\\input{tables/'+label+'.tex}'
-
-        table_str_split = split('\|', table_str)
-        table_str = str('|').join(table_str_split[:-1]+[''])
-
-        content_update = content_update + table_str_split[-1]
+            content_update += '\n\\input{tables/'+label+'.tex}'
+            content_update += table_str_split[-1]
+        else:
+            content_update += '\n\\input{tables/'+label+'.tex}'
+            content_update += table_str_split[-1]
 
         rows = self._get_types_from_template(table_str, columns, columns_str)
 
@@ -460,6 +495,8 @@ class newSectionTemplate:
 
 
     def _extract_commands(self, commands_list):
+        self._commands_dict['action_commands'] = list()
+
         for command_str in commands_list:
 
             if command_str.startswith('Parent'):
@@ -475,20 +512,14 @@ class newSectionTemplate:
                 self._commands_dict['rename'] = rename
 
             elif command_str.split(':')[0].endswith('Line'):
-                if not self._get_command('line'):
-                    self._commands_dict['line'] = list()
-
+                content_type = 'line'
                 action, new, position, old = self._get_line_content(command_str)
-                self._commands_dict['line'].append([action, new, position, old])
-                self._commands_dict['content_type'] = 'line'
+                self._commands_dict['action_commands'].append([action, new, position, old, content_type])
 
             elif command_str.split(':')[0].endswith('Section'):
-                if not self._get_command('section'):
-                    self._commands_dict['section'] = list()
-
+                content_type = 'section'
                 action, new, position, relative_sect = self._get_section_content(command_str)
-                self._commands_dict['section'].append([action, new, position, relative_sect])
-                self._commands_dict['content_type'] = 'section'
+                self._commands_dict['action_commands'].append([action, new, position, relative_sect, content_type])
 
                 
 
@@ -522,6 +553,14 @@ class newSectionTemplate:
 
     def _get_rename(self, command_str):
         pattern = 'Rename:(.+?)$'
+        pattern_search = search(pattern, command_str)
+        if pattern_search:
+            return self._fmt.format_key(pattern_search.group(1))[0]
+        else:
+            return str()
+
+    def _get_remove(self, command_str):
+        pattern = 'Remove Section:(.+?)$'
         pattern_search = search(pattern, command_str)
         if pattern_search:
             return self._fmt.format_key(pattern_search.group(1))[0]
@@ -598,12 +637,12 @@ class newSectionTemplate:
 
 
     def _format_section_content(self, section):
-        pattern = '{(section):([a-z A-Z 0-9 - _]+)}|{(table):([a-z A-Z 0-9 - _]+)}|{(example):([a-z A-Z 0-9 - _]+)}|{(figure):([a-z A-Z 0-9 - _]+)}'
+        pattern = '{(section):([a-z A-Z 0-9 - _]+)}|{(table):([a-z A-Z 0-9 - _]+)}|{(example):([a-z A-Z 0-9 - _]+)}|{(figure):([a-z A-Z 0-9 - _]+)}|{(cite):(.+?)}|{(ref):(.+?)}'
 
         if search(pattern,section, DOTALL):
             search_result = search(pattern,section, DOTALL)
             content = search_result.group(0)
-            [key,val] = content.split(':')
+            [key,val] = content.split(':',1)
             key = key[1:]
             val = val[:-1]
 
@@ -631,6 +670,18 @@ class newSectionTemplate:
 
         elif ref_type == 'section':
             return '\\sect{'+caption+'}'
+
+        elif ref_type == 'cite':
+            section = str()
+            if ':' in caption:
+                part, section = caption.split(':',1)
+                part = part.replace(' ','')
+                return '\\citetitle{MTC'+part+'} \\textit{Section '+caption+'}'
+            else:
+                part = caption.replace(' ','')
+                return '\\citetitle{MTC'+part+'}'
+        elif ref_type == 'ref':
+            return '\\textit{Ref: '+caption+'}'
 
         else:
             return str()
