@@ -1,5 +1,5 @@
 from os import path, listdir
-from re import search, sub, DOTALL
+from re import search, sub, DOTALL, findall
 
 
 class latexModel:
@@ -181,6 +181,24 @@ class latexModel:
             print (row+' already in table '+table_name+'!')
             print ('Updating...')
             self.update_table_cell('replace', table_name, row, columns, values, _type)
+            if 'deprecated' in _type:
+                subtypes = self.get_subtypes(row)
+                if subtypes:
+                    for subtype in subtypes:
+                        row_name = str(',').join([row,subtype])
+                        if row_name in self._tables[table_name]['rows']:
+                            row_string = self._tables[table_name]['rows'][row_name][-1]
+                            row_columns = self._tables[table_name]['rows'][row_name]
+                            for i in range(len(row_columns)-1):
+                                if i==0: row_columns[i] = '\n\n\\quad \\deprecated{'+ row_columns[i].split('\\quad')[-1] +'}\n'
+                                else: row_columns[i] = '\n\\deprecated{'+row_columns[i] +'}\n'
+
+                            row_columns[-1] = str('&').join(row_columns[:-1]) + ' \\\\ \\hline'
+
+                            self._tables[table_name]['string'] = self._tables[table_name]['string'].replace(row_string, row_columns[-1])
+
+                            self.write_table(table_name)
+                            
             return
 
         new_string = self.add_table_row_string(columns, values, False, row, _type)
@@ -189,7 +207,7 @@ class latexModel:
 
         self._tables[table_name]['string'] = string + new_string + '\end{longtabu}'
 
-        self.write_table(table_name, True)
+        self.write_table(table_name) #Sort=False
 
         print ("Row entry with key: " + row + " ; added to the table: " + table_name + " !")
 
@@ -272,7 +290,7 @@ class latexModel:
                     string, post_string = string.split('\\end{longtabu}',1)
                     self._tables[table_name]['string'] = pre_string +'\n\\gls{'+parent_row+'}'+ string + new_string +'\\end{longtabu}'+ post_string
 
-                self.write_table(table_name, True)
+                self.write_table(table_name)# Sort = False
 
                 print ("Row entry with key: " + row + " ; added to the table: " + table_name + "; to row: "+parent_row+" !")
                 return
@@ -291,7 +309,7 @@ class latexModel:
 
         self._tables[table_name]['string'] = str().join(file_string_list)
 
-        self.write_table(table_name, True)
+        self.write_table(table_name) #sort = False
         print ("Updated!")
 
 
@@ -573,13 +591,21 @@ class latexModel:
             else:
                 return None
 
+    def get_subtypes(self, term):
+        if term in self._glossary['terms'] and 'subtype' in self._glossary['terms'][term]:
+            subtypes = findall('\\\\gls{(.+?)}', self._glossary['terms'][term]['subtype'])
+            return subtypes
+        else:
+            return None
+
     def get_gls_key(self, name):
         if name in self._glossary['names']:
             return self._glossary['names'][name][0]
         else:
             return None
 
-    def get_gls_key_entry_command(self, name, category):
+    def get_gls_key_entry_command(self, name, category = str()):
+
         if self.get_gls_key(str(',').join([category,name])):
             name = str(',').join([category,name])
             gls_key = self.get_gls_key(name)
@@ -588,8 +614,17 @@ class latexModel:
             return gls_string_format + gls_key + '}'
 
         elif self.get_gls_key(name):
-            gls_key = self.get_gls_key(name)
-            gls_string_format = self._glossary['names'][name][1]
+            if category == 'term':
+                gls_name = '\\normalfont '+name
+                if gls_name in self._glossary['names']:
+                    gls_key = self.get_gls_key(gls_name)
+                    gls_string_format = self._glossary['names'][gls_name][1]
+                else:
+                    gls_key = self.get_gls_key(name)
+                    gls_string_format = self._glossary['names'][name][1]
+            else:
+                gls_key = self.get_gls_key(name)
+                gls_string_format = self._glossary['names'][name][1]
 
             return gls_string_format + gls_key + '}'
             
