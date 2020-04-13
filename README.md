@@ -5,30 +5,30 @@ Automating new content defined in Templates from Project Site into the MTConnect
 Templates
 ---------
 
-Following are the Templates defined. Please refer to examples in `templates/newcontent_1.6`.
+Following are the Templates defined. The usages and examples can be found in `templates/`. For more detailed examples, refer to `templates/newcontent_1.6`.
 
-* glossaryEntryTemplate
+* Glossary Entry Template
   To add or update a term in the Glossary.
 
-* newSectionTemplate
+* New Section Template
   To add or update a section.
 
-* kindTemplate
+* Kind Template
   To add or update a row entry in a Table.
   * Can also be done using `newSectionTemplate`
 
-* componentTemplate
+* Component Template
   To add or update a Component.
   * Can also be done using `newSectionTemplate`
 
-* compositionTemplate
+* Composition Template
   To add or update a Composition.
   * Can also be done using `newSectionTemplate`
 
-* eventTemplate
+* Event Template
   To add or update a dataitem type of category = EVENT
 
-* sampleTemplate
+* Sample Template
   To add or update a dataitem type of category = SAMPLE
 
 
