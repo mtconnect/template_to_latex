@@ -8,27 +8,37 @@ Templates
 Following are the Templates defined. The usages and examples can be found in `templates/`. For more detailed examples, refer to `templates/newcontent_1.6`.
 
 * Glossary Entry Template
+  
   To add or update a term in the Glossary.
 
 * New Section Template
+  
   To add or update a section.
 
 * Kind Template
+  
   To add or update a row entry in a Table.
+  
   * Can also be done using `newSectionTemplate`
 
 * Component Template
+  
   To add or update a Component.
+  
   * Can also be done using `newSectionTemplate`
 
 * Composition Template
+  
   To add or update a Composition.
+  
   * Can also be done using `newSectionTemplate`
 
 * Event Template
+  
   To add or update a dataitem type of category = EVENT
 
 * Sample Template
+  
   To add or update a dataitem type of category = SAMPLE
 
 
