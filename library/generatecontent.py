@@ -101,3 +101,19 @@ class generateContent:
         lst_str = lst_str.replace('<>',content)
 
         return lst_str
+
+    def _generate_note_str(self, content):
+
+        note_str = ' \n\\begin{note}\nNotes:\n\\newline '
+        note_str += str('\\newline ').join(content.split('\n-')[1:])
+        note_str += '\n\n\\end{note}\n\n '
+
+        return note_str
+
+    def _generate_itemized_list_str(self, content):
+
+        itemized_list_str = '\\begin{itemize}\n\\item '
+        itemized_list_str += str('\n\n\\item ').join(content.split('\n-')[1:])
+        itemized_list_str += '\n\n\\end{itemize}\n'
+
+        return itemized_list_str
