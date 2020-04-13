@@ -10,7 +10,11 @@ class formatContent:
         key = str()
         key_kind = str()
 
-        if search('>.@(.+?)@',string):
+        if search('---@(.+?)@---',string):
+            key = search('---@(.+?)@---',string).group(1)
+            key_kind = 'deprecated'
+
+        elif search('>.@(.+?)@',string):
             key = search('>.@(.+?)@',string).group(1)
             key_kind = 'subType'
 
@@ -49,7 +53,12 @@ class formatContent:
         return string.replace('_.','')
 
     def to_elem_name(self, string, separator = '_'):
-        return string.title().replace(separator,'')
+        string_list = string.split(separator)
+        for i, elem in enumerate(string_list):
+            if elem not in ['PH', 'AC', 'DC']:
+                string_list[i] = elem.title()
+
+        return str().join(string_list)
 
     def format_desc(self, desc):
 
@@ -117,9 +126,9 @@ class formatContent:
                 term_formatted = self._latex_model.get_gls_key_entry_command(gls_name, category)
             """
             if not term_formatted:
-                term_formatted = self.to_key(self.from_latex_name(gls_name))
-                print ("WARNING: Term '" + term_formatted + "' not defined in the glossary yet!")
-                term_formatted = '\\gls{'+term_formatted+'}'
+                #term_formatted = self.to_key(self.from_latex_name(gls_name))
+                print ("WARNING: Term '" + gls_name + "' not defined in the glossary yet!")
+                term_formatted = '\\cfont{'+gls_name+'}'
                 print ("WARNING: Confirm default style '" + term_formatted + "' used in the documentation!")
 
             desc = desc.replace(term.group(0), term_formatted)
@@ -171,7 +180,7 @@ class formatContent:
             desc = desc.replace(term.group(0), term_formatted)
 
             return self.format_desc(desc)
-
+        
         return desc
 
 
